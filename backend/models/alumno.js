@@ -1,6 +1,20 @@
 const { Schema, model } = require('mongoose');
 
 const AlumnoSchema = Schema({
+    nif: {
+        type: String,
+        required: [true, 'El NIF es obligatorio'],
+        unique: true
+    },
+    email: {
+        type: String,
+        required: [true, 'El correo electrónico es obligatorio'],
+        unique: true
+    },
+    password: {
+        type: String,
+        required: [true, 'La contraseña es obligatoria']
+    },
     nombre: {
         type: String,
         required: [true, 'El nombre es obligatorio']
@@ -9,43 +23,30 @@ const AlumnoSchema = Schema({
         type: String,
         required: [true, 'Los apellidos son obligatorios']
     },
-    email: {
-        type: String,
-        required: [true, 'El correo electrónico es obligatorio'],
-    },
     telefono: {
         type: Number,
         required: [true, 'El número de teléfono es obligatorio']
     },
-    educacion: {
+    ciclos_formativos: {
         type: [String],
-        required: [true, 'El campo de educación es obligatorio']
+        required: [true, 'Los ciclos formativos son obligatorios']
     },
-    habilidades: {
+    tecnologias: {
         type: [String],
-        required: [true, 'Las habilidades son obligatorias']
+        required: [true, 'Las tecnologías son obligatorias']
     },
     idiomas: {
         type: [String]
     },
-    repositorios: {
-        type: [String]
-    },
-    experiencia_laboral: {
-        type: [String]
-    },
-    municipio: {
+    cv_url: {
         type: String
-    },
-    fecha_registro: {
-        type: Date,
     },
     estado: {
         type: String,
         default: 'pendiente'
     },
-    cv_url: {
-        type: String
+    fecha_registro: {
+        type: Date
     }
 });
 

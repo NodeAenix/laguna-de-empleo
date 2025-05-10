@@ -14,9 +14,12 @@ class Server {
     }
 
     routes() {
+        this.app.use('/auth', require('../routes/auth.routes'));
+        this.app.use('/admin', require('../routes/admin.routes'));
         this.app.use('/alumnos', require('../routes/alumnos.routes'));
         this.app.use('/empresas', require('../routes/empresas.routes'));
-        this.app.use('/admins', require('../routes/admin.routes'));
+        this.app.use('/ofertas', require('../routes/ofertas.routes'));
+        this.app.use('/postulaciones', require('../routes/postulaciones.routes'));
     }
 
     middlewares() {

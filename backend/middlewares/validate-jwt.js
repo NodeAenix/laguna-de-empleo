@@ -1,20 +1,28 @@
 const jwt = require('jsonwebtoken');
-const Admin = require('../models/admin');
+const { mongoose } = require('mongoose');
 
-const validateJWT = async(req, res, next) => {
-    const token = req.header('X-token');
-
-    if (!token) {
-        return res.status(401).json({ msg: 'No hay token en la petición' });
+const validateJWT = (Model) => async(req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ msg: 'Token faltante o incorrecto' });
     }
 
+    const token = authHeader.split(' ')[1];
+    
     try {
         const { uid } = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
-        const admin = await Admin.findById(uid);
-        if (!admin) {
+        // Comprobar que el modelo es válido
+        if (!Model || !(Model.prototype instanceof mongoose.Model)) {
+            return res.status(500).json({ msg: 'Modelo de usuario no válido' });
+        }
+
+        // Buscar al usuario
+        const user = await Model.findById(uid);
+        if (!user) {
             return res.status(401).json({ msg: 'Token no válido: el usuario no existe' });
         }
-        req.admin = admin;
+
+        req.user = user;
         next();
     } catch (error) {
         console.log(error);

@@ -2,8 +2,10 @@ const { Router } = require('express');
 const { loginAdmin, registerAdmin, activateAlumno, deactivateAlumno, activateEmpresa, deactivateEmpresa } = require('../controllers/admin.controller');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validate-fields');
-const { checkEmail, checkPassword, checkPhoneNumber } = require('../helpers/db-patterns');
+const { checkEmail, checkPassword } = require('../helpers/db-patterns');
 const { empresaEmailExists } = require('../helpers/db-validators');
+const { validateJWT } = require('../middlewares/validate-jwt');
+const Admin = require('../models/admin');
 
 const router = Router();
 
@@ -22,15 +24,15 @@ router.post('/registro', [
 ], registerAdmin);
 
 // Activar alumno
-router.patch('/alumnos/:id/validar', activateAlumno);
+router.patch('/validar-alumno/:id', validateJWT(Admin), activateAlumno);
 
 // Desactivar o rechazar alumno
-router.patch('/alumnos/:id/rechazar', deactivateAlumno);
+router.patch('/rechazar-alumno/:id', validateJWT(Admin), deactivateAlumno);
 
 // Activar empresa
-router.patch('/empresas/:id/validar', activateEmpresa);
+router.patch('/validar-empresa/:id', validateJWT(Admin), activateEmpresa);
 
 // Desactivar o rechazar empresa
-router.patch('/empresas/:id/rechazar', deactivateEmpresa);
+router.patch('/rechazar-empresa/:id', validateJWT(Admin), deactivateEmpresa);
 
 module.exports = router;
