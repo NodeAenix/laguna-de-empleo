@@ -17,30 +17,19 @@ const getEmpresa = async(req, res) => {
 }
 
 const patchEmpresa = async(req, res) => {
-    const { id } = req.params;
+    const uid = req.user._id;
     const { _id, ...resto } = req.body;
 
     const updatedEmpresa = removeEmptyFields(resto);
-    const empresa = await Empresa.findByIdAndUpdate(id, updatedEmpresa, { new: true });
+    const empresa = await Empresa.findByIdAndUpdate(uid, updatedEmpresa, { new: true });
     
-    if  (!empresa) {
-        res.status(404).json({ msg: `Empresa con ID ${id} no encontrado` });
-    }
-
     res.json(empresa);
 }
 
 const deleteEmpresa = async(req, res) => {
-    const id = req.params.id;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ msg: 'ID inválido' });
-    }
+    const uid = req.user._id;
 
-    const empresa = await Empresa.findById(id);
-    if (!empresa) {
-        return res.status(404).json({ msg: 'Empresa no encontrada' });
-    }
-
+    const empresa = await Empresa.findById(uid);
     empresa.estado = 'inactivo';
     empresa.save();
 

@@ -4,6 +4,8 @@ const { check } = require('express-validator');
 const { checkEmail, checkPassword, checkPhoneNumber } = require('../helpers/db-patterns');
 const { empresaEmailExists } = require('../helpers/db-validators');
 const { validateFields } = require('../middlewares/validate-fields');
+const { validateJWT } = require('../middlewares/validate-jwt');
+const Empresa = require('../models/empresa');
 
 const router = Router();
 
@@ -11,7 +13,7 @@ const router = Router();
 router.get('/:id', getEmpresa);
 
 // Actualizar perfil
-router.patch('/:id', [
+router.patch('/', [
     check('email').optional({ values: [null, ''] }).custom(empresaEmailExists).custom(checkEmail),
     check('password').optional({ values: [null, ''] }).custom(checkPassword),
     check('nombre').optional({ values: [null, ''] }),
@@ -20,10 +22,11 @@ router.patch('/:id', [
     check('persona_contacto').optional({ values: [null, ''] }),
     check('telefono').optional({ values: [null, ''] }).custom(checkPhoneNumber),
     check('descripcion').optional({ values: [null, ''] }),
+    validateJWT(Empresa),
     validateFields
 ], patchEmpresa);
 
 // Borrar empresa (desactivar)
-router.delete('/:id', deleteEmpresa);
+router.delete('/', validateJWT(Empresa), deleteEmpresa);
 
 module.exports = router;

@@ -13,7 +13,7 @@ const router = Router();
 router.get('/:id', getAlumno);
 
 // Actualizar perfil
-router.patch('/:id', [
+router.patch('/', [
     check('email').optional({ values: [null, ''] }).custom(alumnoEmailExists).custom(checkEmail),
     check('password').optional({ values: [null, ''] }).custom(checkPassword),
     check('telefono').optional({ values: [null, ''] }).custom(checkPhoneNumber),
@@ -24,6 +24,6 @@ router.patch('/:id', [
 ], patchAlumno);
 
 // Borrar alumno (desactivar)
-router.delete('/:id', validateJWT(Alumno), deleteAlumno);
+router.delete('/', validateJWT(Alumno), deleteAlumno);
 
 module.exports = router;

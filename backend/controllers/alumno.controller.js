@@ -17,30 +17,19 @@ const getAlumno = async(req, res) => {
 }
 
 const patchAlumno = async(req, res) => {
-    const { id } = req.params;
+    const uid = req.user._id;
     const { _id, ...resto } = req.body;
 
     const updatedAlumno = removeEmptyFields(resto);
-    const alumno = await Alumno.findByIdAndUpdate(id, updatedAlumno, { new: true });
-    
-    if (!alumno) {
-        res.status(404).json({ msg: `Alumno con ID ${id} no encontrado` });
-    }
+    const alumno = await Alumno.findByIdAndUpdate(uid, updatedAlumno, { new: true });
 
     res.json(alumno);
 }
 
 const deleteAlumno = async(req, res) => {
-    const id = req.params.id;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ msg: 'ID inválido' });
-    }
+    const uid = req.user._id;
     
-    const alumno = await Alumno.findById(id);
-    if (!alumno) {
-        return res.status(404).json({ msg: 'Alumno no encontrado' });
-    }
-
+    const alumno = await Alumno.findById(uid);
     alumno.estado = 'inactivo';
     alumno.save();
     

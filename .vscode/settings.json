@@ -1,0 +1,15 @@
+{
+    "editor.tabSize": 4,
+    "[typescript]": {
+        "editor.tabSize": 4
+    },
+    "[html]": {
+        "editor.tabSize": 4
+    },
+    "angular-schematics.schematicsDefaultOptions": {
+        "angular-*": {
+            "externalTemplate": true,
+            "standalone": true
+        }
+    }
+}

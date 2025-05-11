@@ -1,1 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --border-radius: .75rem;
+    --small-border-radius: .5rem;
+}
+
+/* Utils */
+.flex { display: flex; }
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.jc-center { justify-content: center; }
+
+.ai-center { align-items: center; }
+
+.gap-xs { gap: .5rem; }
+.gap-s { gap: .75rem; }
+.gap-m { gap: 1rem; }
+.gap-l { gap: 1.5rem; }
+.gap-xl { gap: 2rem; }
+
+.rounded-border { border-radius: var(--border-radius); }
+.small-rounded-border { border-radius: var(--small-border-radius); }
+/* ------ */
+
+/* Contenedor principal */
+div.container {
+    
+}
