@@ -1,6 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap');
+
 :root {
+    /* Paleta de colores */
+    --color-primary: #f97316;
+    --color-primary-dark: #ea580c;
+    --color-text: #1f2937;
+    --color-muted: #6b7280;
+    --color-border: #e5e7eb;
+    --color-bg: #eff3f6;
+    
+    --font-size: 100%; /* 16px */
+    
+    /* Bordes */
     --border-radius: .75rem;
     --small-border-radius: .5rem;
+}
+
+.theme-dark {
+    /* Modo oscuro */
+    --color-bg: #1e1e1e;
+    --color-primary: #fb923c;
+    --color-primary-dark: #f97316;
+    --color-text: #f3f4f6;
+    --color-muted: #9ca3af;
+    --color-border: #3f3f46;
 }
 
 /* Utils */
@@ -12,7 +35,6 @@
 }
 
 .jc-center { justify-content: center; }
-
 .ai-center { align-items: center; }
 
 .gap-xs { gap: .5rem; }
@@ -23,9 +45,60 @@
 
 .rounded-border { border-radius: var(--border-radius); }
 .small-rounded-border { border-radius: var(--small-border-radius); }
-/* ------ */
+
+
+/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    transition: background-color 0.3s ease, color 0.3s ease; /* cambio de modo claro/oscuro */
+}
+
+body {
+    font-family: 'Host Grotesk', 'Arial', 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
 
 /* Contenedor principal */
-div.container {
-    
+.container {
+    padding: 1rem;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+
+/* Responsive y modo oscuro */
+@media (min-width: 768px) {
+    :root {
+        font-size: 112.5%; /* ~18px */
+    }
+
+    .container {
+        max-width: 720px;
+        padding: 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    :root {
+        font-size: 125%; /* ~20px */
+    }
+
+    .container {
+        max-width: 960px;
+        padding: 3rem;
+    }
+}
+
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1140px;
+    }
 }
