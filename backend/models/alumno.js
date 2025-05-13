@@ -38,7 +38,7 @@ const AlumnoSchema = Schema({
     idiomas: {
         type: [String]
     },
-    cv_url: {
+    cv: {
         type: String
     },
     estado: {

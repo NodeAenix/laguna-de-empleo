@@ -1,1 +1,15 @@
-<p>register-page works!</p>,
+<div class="form-box">
+    <div class="tabs">
+        <button [class.active]="activeTab() === 'alumno'" (click)="activeTab.set('alumno')"></button>
+        <button [class.active]="activeTab() === 'empresa'" (click)="activeTab.set('empresa')"></button>
+    </div>
+
+    <!-- Formulario alumno/empresa -->
+    <form [formGroup]="currentForm()">
+        @if (activeTab() === 'alumno') {
+           
+        } @else {
+
+        }
+    </form>
+</div>
