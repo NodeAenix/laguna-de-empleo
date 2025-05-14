@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
     selector: 'app-register-page',
@@ -10,8 +11,9 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 export class RegisterPageComponent {
     
     private fb = inject(FormBuilder);
+    private authService = inject(AuthService);
 
-    activeTab = signal<'empresa' | 'alumno'>('alumno');
+    activeTab = signal<'empresas' | 'alumnos'>('alumnos');
 
     // Formulario del alumno
     alumnoForm = this.fb.group({
@@ -26,7 +28,21 @@ export class RegisterPageComponent {
         idiomas: [''],
         cv: ['']
     });
+
     alumnoFieldKeys = Object.keys(this.alumnoForm.controls);
+
+    alumnoLabels: Record<string, string> = {
+        nif: 'NIF',
+        email: 'Email',
+        password: 'Contraseña',
+        nombre: 'Nombre',
+        apellidos: 'Apellidos',
+        telefono: 'Teléfono',
+        ciclos_formativos: 'Ciclos Formativos',
+        tecnologias: 'Tecnologías',
+        idiomas: 'Idiomas',
+        cv: 'CV',
+    };
 
     // Formulario de la empresa
     empresaForm = this.fb.group({
@@ -40,15 +56,41 @@ export class RegisterPageComponent {
         telefono: ['', Validators.required],
         descripcion: ['', Validators.required]
     });
+
     empresaFieldKeys = Object.keys(this.empresaForm.controls);
 
-    currentForm = computed(() => this.activeTab() === 'empresa' ? this.empresaForm : this.alumnoForm);
+    empresaLabels: Record<string, string> = {
+        cif: 'CIF',
+        email: 'Email',
+        password: 'Contraseña',
+        nombre: 'Nombre',
+        razon_social: 'Razón Social',
+        direccion_fiscal: 'Dirección Fiscal',
+        persona_contacto: 'Persona de Contacto',
+        telefono: 'Teléfono',
+        descripcion: 'Descripción',
+    };
+
+    currentForm = computed(() => this.activeTab() === 'alumnos' ? this.alumnoForm : this.empresaForm);
 
     submit() {
-        if (this.currentForm().invalid) {
-            this.currentForm().markAllAsTouched();
-            console.log('invalid');
+        const type = this.activeTab();
+        const form = this.currentForm();
+
+        if (form.invalid) {
+            form.markAllAsTouched();
+            //return;
         }
+
+        this.authService.register(type, form.value).subscribe({
+            next: (res) => {
+                console.log(res);
+            },
+            error: (error) => {
+                console.error('Error al hacer el registro', error);
+            }
+        });
+
         console.log('valid!');
     }
 

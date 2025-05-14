@@ -1,28 +1,28 @@
 <div class="form-box">
     <div class="tabs">
-        <button [class.active]="activeTab() === 'alumno'" (click)="activeTab.set('alumno')">Alumno</button>
-        <button [class.active]="activeTab() === 'empresa'" (click)="activeTab.set('empresa')">Empresa</button>
+        <button [class.active]="activeTab() === 'alumnos'" (click)="activeTab.set('alumnos')">Alumno</button>
+        <button [class.active]="activeTab() === 'empresas'" (click)="activeTab.set('empresas')">Empresa</button>
     </div>
 
     <!-- Formulario alumno/empresa -->
     <form [formGroup]="currentForm()">
-        @if (activeTab() === 'alumno') {
+        @if (activeTab() === 'alumnos') {
             @for (key of alumnoFieldKeys; track key) {
                 <div class="form-field">
-                    <label [for]="key">{{ key }}</label>
+                    <label [for]="key">{{ alumnoLabels[key] }}</label>
                     <input [id]="key" [formControlName]="key" [type]="key === 'password' ? 'password' : 'text'">
                     @if (alumnoForm.get(key)?.touched && alumnoForm.get(key)?.invalid) {
-                        <span class="error">{{ key }} es obligatorio</span>
+                        <span class="error">Este campo es obligatorio</span>
                     }
                 </div>
             }
         } @else {
             @for (key of empresaFieldKeys; track key) {
                 <div class="form-field">
-                    <label [for]="key">{{ key }}</label>
+                    <label [for]="key">{{ empresaLabels[key] }}</label>
                     <input [id]="key" [formControlName]="key" [type]="key === 'password' ? 'password' : 'text'">
                     @if (empresaForm.get(key)?.touched && empresaForm.get(key)?.invalid) {
-                        <span class="error">{{ key }} es obligatorio</span>
+                        <span class="error">Este campo es obligatorio</span>
                     }
                 </div>
             }
