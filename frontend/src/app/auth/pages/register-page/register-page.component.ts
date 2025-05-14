@@ -11,7 +11,7 @@ export class RegisterPageComponent {
     
     private fb = inject(FormBuilder);
 
-    activeTab = signal<'empresa' | 'alumno'>('empresa');
+    activeTab = signal<'empresa' | 'alumno'>('alumno');
 
     // Formulario del alumno
     alumnoForm = this.fb.group({
@@ -26,6 +26,7 @@ export class RegisterPageComponent {
         idiomas: [''],
         cv: ['']
     });
+    alumnoFieldKeys = Object.keys(this.alumnoForm.controls);
 
     // Formulario de la empresa
     empresaForm = this.fb.group({
@@ -39,6 +40,7 @@ export class RegisterPageComponent {
         telefono: ['', Validators.required],
         descripcion: ['', Validators.required]
     });
+    empresaFieldKeys = Object.keys(this.empresaForm.controls);
 
     currentForm = computed(() => this.activeTab() === 'empresa' ? this.empresaForm : this.alumnoForm);
 
