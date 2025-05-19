@@ -6,38 +6,67 @@ import { OfertaDetailsPageComponent } from './empresas-front/pages/oferta-detail
 import { OfertaListPageComponent } from './alumnos-front/pages/oferta-list-page/oferta-list-page.component';
 import { LoginPageComponent } from './auth/pages/login-page/login-page.component';
 import { RegisterPageComponent } from './auth/pages/register-page/register-page.component';
+import { NotAuthenticatedGuard } from './guards/not-authenticated.guard';
+import { AuthenticatedGuard } from './guards/authenticated.guard';
+import { ProfilePageComponent } from './shared/pages/profile-page/profile-page.component';
+import { SettingsPageComponent } from './shared/pages/settings-page/settings-page.component';
 
 export const routes: Routes = [
-    // Página de inicio y autenticación
-    {
-        path: '',
-        component: HomePageComponent
-    },
+    // Páginas de inicio de sesión y registro
     {
         path: 'iniciar-sesion',
-        component: LoginPageComponent
+        component: LoginPageComponent,
+        canMatch: [NotAuthenticatedGuard]
     },
     {
         path: 'registrarse',
-        component: RegisterPageComponent
+        component: RegisterPageComponent,
+        canMatch: [NotAuthenticatedGuard]
+    },
+    // Página de inicio y compartidas
+    {
+        path: '',
+        component: HomePageComponent,
+        canMatch: [AuthenticatedGuard]
+    },
+    {
+        path: 'perfil/:id',
+        component: ProfilePageComponent,
+        canMatch: [AuthenticatedGuard]
+    },
+    {
+        path: 'ajustes',
+        component: SettingsPageComponent,
+        canMatch: [AuthenticatedGuard]
     },
     // Páginas específicas de empresas
     {
         path: 'crear-oferta',
-        component: CreateOfertaPageComponent
+        component: CreateOfertaPageComponent,
+        canMatch: [AuthenticatedGuard]
+
     },
     {
         path: 'detalles-oferta/:id',
-        component: OfertaDetailsPageComponent
+        component: OfertaDetailsPageComponent,
+        canMatch: [AuthenticatedGuard]
+
     },
     // Páginas específicas de alumnos
     {
         path: 'ofertas',
-        component: OfertaListPageComponent
+        component: OfertaListPageComponent,
+        canMatch: [AuthenticatedGuard]
+
     },
     // Página 404 Not Found
     {
-        path: '**',
+        path: 'not-found',
         component: NotFoundPageComponent
+
+    },
+    {
+        path: '**',
+        redirectTo: 'not-found'
     }
 ];

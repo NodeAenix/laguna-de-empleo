@@ -46,7 +46,18 @@ const loginModel = (Model) => async(req, res) => {
     }
 }
 
+const checkStatus = (req, res) => {
+    const user = req.user;
+
+    res.json({
+        ok: true,
+        user: user,
+        token: req.header('Authorization').split(' ')[1]
+    });
+}
+
 module.exports = {
     registerModel,
-    loginModel
+    loginModel,
+    checkStatus
 }

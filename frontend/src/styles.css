@@ -5,26 +5,44 @@
     --color-primary: #f97316;
     --color-primary-dark: #ea580c;
     --color-text: #1f2937;
+    --color-text-opposite: #f3f4f6;
     --color-muted: #6b7280;
     --color-border: #e5e7eb;
     --color-bg: #eff3f6;
+    --color-bg-form: #fff;
+    --color-bg-theme-toggle: #4b5cbb;
+    --color-text-form: #1f2937;
+    --color-link: #56adff;
+    --color-link-hover: #c072ff;
     
+    /* Tamaño de fuentes y bordes */
     --font-size: 100%; /* 16px */
     --small-font-size: 80%;
-
-    /* Bordes */
     --border-radius: .75rem;
     --small-border-radius: .4rem;
+
+    /* Éxito, error e información */
+    --success-color: #2bb866;
+    --error-color: #eb1717;
+    --info-color: #4692e9;
 }
 
+/* Modo oscuro */
 .theme-dark {
-    /* Modo oscuro */
-    --color-bg: #1e1e1e;
+    --color-bg: #333;
     --color-primary: #fb923c;
     --color-primary-dark: #f97316;
     --color-text: #f3f4f6;
+    --color-text-opposite: #1f2937;
     --color-muted: #9ca3af;
-    --color-border: #3f3f46;
+    --color-bg-form: #333;
+    --color-text-form: #f3f4f6;
+    --success-color: #7dd8a3;
+    --error-color: #fd9393;
+    --info-color: #8ec1fc;
+    --color-bg-theme-toggle: #f3e38a;
+    --color-link: #8dd5ff;
+    --color-link-hover: #ea97ff;
 }
 
 /* Utils */
@@ -44,6 +62,10 @@
 .gap-l { gap: 1.5rem; }
 .gap-xl { gap: 2rem; }
 
+.mb-1 { margin-bottom: .5rem; }
+.mb-2 { margin-bottom: .75rem; }
+.mb-3 { margin-bottom: 1rem; }
+
 .rounded-border { border-radius: var(--border-radius); }
 .small-rounded-border { border-radius: var(--small-border-radius); }
 
@@ -57,13 +79,23 @@
 }
 
 html {
-    transition: background-color 0.3s ease, color 0.3s ease; /* cambio de modo claro/oscuro */
+    transition: background-color .3s ease, color .3s ease; /* cambio de modo claro/oscuro */
 }
 
 body {
     line-height: 1.6;
     background-color: var(--color-bg);
     color: var(--color-text);
+}
+
+a {
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+a:hover {
+    color: var(--color-link-hover);
 }
 
 
@@ -129,7 +161,8 @@ body {
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--color-border);
     border-radius: var(--small-border-radius);
-    background-color: white;
+    background-color: var(--color-bg-form);
+    color: var(--color-text-form);
     font-size: var(--small-font-size);
     transition: all .2s ease;
 }
@@ -140,7 +173,7 @@ body {
 }
 
 .error {
-    color: red;
+    color: var(--error-color);
     font-size: var(--small-font-size);
 }
 

@@ -11,13 +11,15 @@ const validateJWT = (Model) => async(req, res, next) => {
     
     try {
         const { uid } = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
-        // Comprobar que el modelo es válido
-        if (!Model || !(Model.prototype instanceof mongoose.Model)) {
-            return res.status(500).json({ msg: 'Modelo de usuario no válido' });
-        }
 
         // Buscar al usuario
-        const user = await Model.findById(uid);
+        let user;
+        if (Model) {
+            user = await Model.findById(uid);
+        } else {
+            user = await mongoose.model('Alumno').findById(uid) || await mongoose.model('Empresa').findById(uid) || await mongoose.model('Admin').findById(uid);
+        }
+        
         if (!user) {
             return res.status(401).json({ msg: 'Token no válido: el usuario no existe' });
         }

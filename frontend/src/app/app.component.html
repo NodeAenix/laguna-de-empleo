@@ -1,1 +1,5 @@
+<theme-toggle-button />
 <router-outlet />
+@if (message().type) {
+    <floating-message-box [message]="message().text" [type]="message().type!"/>
+}

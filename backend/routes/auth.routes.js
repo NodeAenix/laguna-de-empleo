@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { registerModel, loginModel } = require('../controllers/auth.controller');
+const { registerModel, loginModel, checkStatus } = require('../controllers/auth.controller');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validate-fields');
 const { alumnoEmailExists, empresaEmailExists, validateNif } = require('../helpers/db-validators');
@@ -7,6 +7,7 @@ const { checkEmail, checkPassword, checkPhoneNumber } = require('../helpers/db-p
 const Alumno = require('../models/alumno');
 const Empresa = require('../models/empresa');
 const Admin = require('../models/admin');
+const { validateJWT } = require('../middlewares/validate-jwt');
 
 const router = Router();
 
@@ -65,5 +66,8 @@ router.post('/login-admin', [
     check('password').custom(checkPassword),
     validateFields
 ], loginModel(Admin));
+
+// Check status
+router.get('/check-status', validateJWT(null), checkStatus);
 
 module.exports = router;

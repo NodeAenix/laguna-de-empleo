@@ -1,19 +1,22 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, Renderer2, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
+import { MessageService } from '../../../services/message.service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-register-page',
-    imports: [ReactiveFormsModule],
-    templateUrl: './register-page.component.html',
-    styleUrl: './register-page.component.css'
+    imports: [ReactiveFormsModule, RouterLink],
+    templateUrl: './register-page.component.html'
 })
 export class RegisterPageComponent {
     
     private fb = inject(FormBuilder);
     private authService = inject(AuthService);
+    private messageService = inject(MessageService);
+    private router = inject(Router);
 
-    activeTab = signal<'empresas' | 'alumnos'>('alumnos');
+    activeTab = signal<'alumnos' | 'empresas'>('alumnos');
 
     // Formulario del alumno
     alumnoForm = this.fb.group({
@@ -79,19 +82,24 @@ export class RegisterPageComponent {
 
         if (form.invalid) {
             form.markAllAsTouched();
-            //return;
+            this.messageService.showMessage({ text: 'Por favor, revise los datos', type: 'error' });
+            return;
         }
 
         this.authService.register(type, form.value).subscribe({
-            next: (res) => {
-                console.log(res);
+            next: (response) => {
+                if (response.success) {
+                    this.messageService.showMessage({ text: '¡Usuario registrado con éxito!', type: 'success' });
+                    this.router.navigateByUrl('/iniciar-sesion');
+                } else {
+                    this.messageService.showMessage({ text: 'Error al hacer el registro', type: 'error' });
+                }
             },
             error: (error) => {
                 console.error('Error al hacer el registro', error);
+                this.messageService.showMessage({ text: 'Error al hacer el registro', type: 'error' });
             }
         });
-
-        console.log('valid!');
     }
 
 }

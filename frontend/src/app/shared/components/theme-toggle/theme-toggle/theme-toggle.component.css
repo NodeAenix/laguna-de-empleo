@@ -1,0 +1,18 @@
+#theme-toggle-btn {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--color-text);
+    border-radius: 100%;
+    z-index: 99;
+    transition: all .3s ease;
+}
+
+#theme-toggle-btn:hover {
+    cursor: pointer;
+    color: var(--color-text-opposite);
+    border-color: var(--color-text-opposite);
+    background-color: var(--color-bg-theme-toggle);
+}

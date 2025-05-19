@@ -1,32 +1,35 @@
-<div class="form-box">
-    <div class="tabs">
-        <button [class.active]="activeTab() === 'alumnos'" (click)="activeTab.set('alumnos')">Alumno</button>
-        <button [class.active]="activeTab() === 'empresas'" (click)="activeTab.set('empresas')">Empresa</button>
+<div class="container">
+    <div class="form-box" id="form-div">
+        <div class="tabs" id="tab-div">
+            <button [class.active]="activeTab() === 'alumnos'" (click)="activeTab.set('alumnos')">Alumno</button>
+            <button [class.active]="activeTab() === 'empresas'" (click)="activeTab.set('empresas')">Empresa</button>
+        </div>
+    
+        <!-- Formulario alumno/empresa -->
+        <form [formGroup]="currentForm()">
+            @if (activeTab() === 'alumnos') {
+                @for (key of alumnoFieldKeys; track key) {
+                    <div class="form-field">
+                        <label [for]="key">{{ alumnoLabels[key] }}</label>
+                        <input [id]="key" [formControlName]="key" [type]="key === 'password' ? 'password' : 'text'">
+                        @if (alumnoForm.get(key)?.touched && alumnoForm.get(key)?.invalid) {
+                            <span class="error">Este campo es obligatorio</span>
+                        }
+                    </div>
+                }
+            } @else {
+                @for (key of empresaFieldKeys; track key) {
+                    <div class="form-field">
+                        <label [for]="key">{{ empresaLabels[key] }}</label>
+                        <input [id]="key" [formControlName]="key" [type]="key === 'password' ? 'password' : 'text'">
+                        @if (empresaForm.get(key)?.touched && empresaForm.get(key)?.invalid) {
+                            <span class="error">Este campo es obligatorio</span>
+                        }
+                    </div>
+                }
+            }
+            <button class="submit-btn mb-3" type="submit" (click)="submit()">Registrarse</button>
+            <p>¿Ya tienes una cuenta? Inicia sesión <a routerLink="/iniciar-sesion">aquí</a>.</p>
+        </form>
     </div>
-
-    <!-- Formulario alumno/empresa -->
-    <form [formGroup]="currentForm()">
-        @if (activeTab() === 'alumnos') {
-            @for (key of alumnoFieldKeys; track key) {
-                <div class="form-field">
-                    <label [for]="key">{{ alumnoLabels[key] }}</label>
-                    <input [id]="key" [formControlName]="key" [type]="key === 'password' ? 'password' : 'text'">
-                    @if (alumnoForm.get(key)?.touched && alumnoForm.get(key)?.invalid) {
-                        <span class="error">Este campo es obligatorio</span>
-                    }
-                </div>
-            }
-        } @else {
-            @for (key of empresaFieldKeys; track key) {
-                <div class="form-field">
-                    <label [for]="key">{{ empresaLabels[key] }}</label>
-                    <input [id]="key" [formControlName]="key" [type]="key === 'password' ? 'password' : 'text'">
-                    @if (empresaForm.get(key)?.touched && empresaForm.get(key)?.invalid) {
-                        <span class="error">Este campo es obligatorio</span>
-                    }
-                </div>
-            }
-        }
-        <button class="submit-btn" type="submit" (click)="submit()">Registrarse</button>
-    </form>
 </div>

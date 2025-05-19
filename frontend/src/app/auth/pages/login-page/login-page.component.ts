@@ -1,9 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
+import { MessageService } from '../../../services/message.service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-login-page',
-    imports: [],
-    templateUrl: './login-page.component.html',
-    styleUrl: './login-page.component.css'
+    imports: [ReactiveFormsModule, RouterLink],
+    templateUrl: './login-page.component.html'
 })
-export class LoginPageComponent { }
+export class LoginPageComponent {
+    
+    private fb = inject(FormBuilder);
+    private authService = inject(AuthService);
+    private messageService = inject(MessageService);
+    private router = inject(Router);
+
+    activeTab = signal<'alumnos' | 'empresas'>('alumnos');
+
+    form = this.fb.group({
+        email: ['', Validators.required],
+        password: ['', Validators.required],
+    });
+
+    submit() {
+        const type = this.activeTab();
+
+        if (this.form.invalid) {
+            this.form.markAllAsTouched();
+            this.messageService.showMessage({ text: 'Por favor, revise los datos', type: 'error' });
+            return;
+        }
+
+        this.authService.login(type, this.form.value.email ?? '', this.form.value.password ?? '').subscribe(isAuthenticated => {
+            if (isAuthenticated) {
+                this.router.navigate(['/']);
+                return;
+            }
+            this.messageService.showMessage({ text: 'Error al iniciar sesión - Revise los datos', type: 'error' });
+        });
+    }
+    
+}
