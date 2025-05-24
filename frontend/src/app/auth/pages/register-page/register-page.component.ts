@@ -1,8 +1,9 @@
 import { Component, computed, inject, Renderer2, signal } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { MessageService } from '../../../services/message.service';
 import { Router, RouterLink } from '@angular/router';
+import { FormUtils } from '../../../utils/form-utils';
 
 @Component({
     selector: 'app-register-page',
@@ -17,18 +18,19 @@ export class RegisterPageComponent {
     private router = inject(Router);
 
     activeTab = signal<'alumnos' | 'empresas'>('alumnos');
+    formUtils = FormUtils;
 
     // Formulario del alumno
     alumnoForm = this.fb.group({
         nif: ['', Validators.required],
-        email: ['', Validators.required],
-        password: ['', Validators.required],
-        nombre: ['', Validators.required],
-        apellidos: ['', Validators.required],
-        telefono: ['', Validators.required],
-        ciclos_formativos: ['', Validators.required],
-        tecnologias: ['', Validators.required],
-        idiomas: [''],
+        email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
+        password: ['', [Validators.required, Validators.pattern(FormUtils.passwordPattern)]],
+        nombre: ['', [Validators.required, FormUtils.notBlank]],
+        apellidos: ['', [Validators.required, FormUtils.notBlank]],
+        telefono: ['', [Validators.required, Validators.pattern(FormUtils.phonePattern)]],
+        ciclos_formativos: this.fb.array<FormControl<string>>([], Validators.required),
+        tecnologias: this.fb.array<FormControl<string>>([], Validators.required),
+        idiomas: this.fb.array<FormControl<string>>([], Validators.required),
         cv: ['']
     });
 
@@ -50,14 +52,14 @@ export class RegisterPageComponent {
     // Formulario de la empresa
     empresaForm = this.fb.group({
         cif: ['', Validators.required],
-        email: ['', Validators.required],
-        password: ['', Validators.required],
-        nombre: ['', Validators.required],
-        razon_social: ['', Validators.required],
-        direccion_fiscal: ['', Validators.required],
-        persona_contacto: ['', Validators.required],
-        telefono: ['', Validators.required],
-        descripcion: ['', Validators.required]
+        email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
+        password: ['', [Validators.required, Validators.pattern(FormUtils.passwordPattern)]],
+        nombre: ['', [Validators.required, FormUtils.notBlank]],
+        razon_social: ['', [Validators.required, FormUtils.notBlank]],
+        direccion_fiscal: ['', [Validators.required, FormUtils.notBlank]],
+        persona_contacto: ['', [Validators.required, FormUtils.notBlank]],
+        telefono: ['', [Validators.required, Validators.pattern(FormUtils.phonePattern)]],
+        descripcion: ['', [Validators.required, FormUtils.notBlank]]
     });
 
     empresaFieldKeys = Object.keys(this.empresaForm.controls);

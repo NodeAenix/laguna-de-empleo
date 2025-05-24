@@ -10,15 +10,19 @@
             <div class="form-field">
                 <label for="email">Correo electrónico</label>
                 <input id="email" formControlName="email" type="text">
-                @if (form.get('email')?.touched && form.get('email')?.invalid) {
-                    <span class="error">Este campo es obligatorio</span>
+                @if (formUtils.isValidField(form, 'email')) {
+                    <span class="error">
+                        {{ formUtils.getFieldError(form, 'email') }}
+                    </span>
                 }
             </div>
             <div class="form-field">
                 <label for="password">Contraseña</label>
                 <input id="password" formControlName="password" type="password">
-                @if (form.get('password')?.touched && form.get('password')?.invalid) {
-                    <span class="error">Este campo es obligatorio</span>
+                @if (formUtils.isValidField(form, 'password')) {
+                    <span class="error">
+                        {{ formUtils.getFieldError(form, 'password') }}
+                    </span>
                 }
             </div>
             <button class="submit-btn mb-3" type="submit" (click)="submit()">Iniciar sesión</button>

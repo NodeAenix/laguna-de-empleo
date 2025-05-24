@@ -15,6 +15,7 @@ export class AuthService {
     private _authStatus = signal<AuthStatus>('checking');
     private _user = signal<Alumno | Empresa | null>(null);
     private _token = signal<string | null>(this.getToken());
+    private _theme = signal<string | null>(this.getTheme());
 
     private http = inject(HttpClient);
 
@@ -25,6 +26,7 @@ export class AuthService {
     });
     user = computed(() => this._user());
     token = computed(() => this._token());
+    theme = computed(() => this._theme());
 
     // ------------------------
     //     Login y registro
@@ -105,6 +107,14 @@ export class AuthService {
         if (this.isBrowser()) {
             const token = localStorage.getItem('token');
             return token;
+        }
+        return null;
+    }
+
+    getTheme(): string | null {
+        if (this.isBrowser()) {
+            const theme = localStorage.getItem('theme');
+            return theme;
         }
         return null;
     }

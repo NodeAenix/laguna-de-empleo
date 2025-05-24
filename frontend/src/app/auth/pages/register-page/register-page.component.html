@@ -9,13 +9,21 @@
         <form [formGroup]="currentForm()">
             @if (activeTab() === 'alumnos') {
                 @for (key of alumnoFieldKeys; track key) {
-                    <div class="form-field">
-                        <label [for]="key">{{ alumnoLabels[key] }}</label>
-                        <input [id]="key" [formControlName]="key" [type]="key === 'password' ? 'password' : 'text'">
-                        @if (alumnoForm.get(key)?.touched && alumnoForm.get(key)?.invalid) {
-                            <span class="error">Este campo es obligatorio</span>
-                        }
-                    </div>
+                    @if (['ciclos_formativos', 'tecnologias', 'idiomas'].includes(key)) {
+                        <div class="form-field-datalist">
+                            
+                        </div>
+                    } @else {
+                        <div class="form-field">
+                            <label [for]="key">{{ alumnoLabels[key] }}</label>
+                            <input [id]="key" [formControlName]="key" [type]="key === 'password' ? 'password' : 'text'">
+                            @if (formUtils.isValidField(alumnoForm, key)) {
+                                <span class="error">
+                                    {{ formUtils.getFieldError(alumnoForm, key) }}
+                                </span>
+                            }
+                        </div>
+                    }
                 }
             } @else {
                 @for (key of empresaFieldKeys; track key) {

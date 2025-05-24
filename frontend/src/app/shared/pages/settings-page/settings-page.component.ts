@@ -50,7 +50,7 @@ export class SettingsPageComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.isBrowser()) {
-            const theme = localStorage.getItem('theme') || 'light';
+            const theme = this.authService.getTheme();
             if (theme === 'dark') {
                 this.renderer.addClass(document.body, 'theme-dark');
                 this.isDarkMode = true;

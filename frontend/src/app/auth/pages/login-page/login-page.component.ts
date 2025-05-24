@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { MessageService } from '../../../services/message.service';
 import { Router, RouterLink } from '@angular/router';
+import { FormUtils } from '../../../utils/form-utils';
 
 @Component({
     selector: 'app-login-page',
@@ -17,10 +18,11 @@ export class LoginPageComponent {
     private router = inject(Router);
 
     activeTab = signal<'alumnos' | 'empresas'>('alumnos');
+    formUtils = FormUtils;
 
     form = this.fb.group({
-        email: ['', Validators.required],
-        password: ['', Validators.required],
+        email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
+        password: ['', [Validators.required, Validators.pattern(FormUtils.passwordPattern)]],
     });
 
     submit() {
