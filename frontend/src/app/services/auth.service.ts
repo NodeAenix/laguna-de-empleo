@@ -4,7 +4,6 @@ import { catchError, map, Observable, of, tap } from 'rxjs';
 import { Alumno } from '../interfaces/alumno.interface';
 import { Empresa } from '../interfaces/empresa.interface';
 import { AuthResponse } from '../interfaces/auth-response.interface';
-import { error } from 'console';
 
 type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';
 

@@ -1,1 +1,34 @@
-<p>profile-page works!</p>,
+<div class="container flex-col jc-center text-center gap-s">
+    <h1>Perfil de {{ currentUser.nombre }}</h1>
+    <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
+    <table class="rounded-table profile-table">
+        <tr>
+            <td>Nombre completo</td>
+            <td>{{ currentUser.nombre }} {{ currentUser.apellidos }}</td>
+        </tr>
+        <tr>
+            <td>Correo electrónico</td>
+            <td>{{ currentUser.email }}</td>
+        </tr>
+        <tr>
+            <td>Teléfono</td>
+            <td>{{ currentUser.telefono }}</td>
+        </tr>
+        <tr>
+            <td>Ciclos formativos</td>
+            <td>{{ currentUser.ciclos_formativos.join(', ') }}</td>
+        </tr>
+        <tr>
+            <td>Tecnologías</td>
+            <td>{{ currentUser.tecnologias.join(', ') }}</td>
+        </tr>
+        <tr>
+            <td>Idiomas</td>
+            <td>{{ currentUser.idiomas.join(', ') }}</td>
+        </tr>
+        <tr>
+            <td>Currículum Vitae</td>
+            <td><a href="">Ver CV</a></td>
+        </tr>
+    </table>
+</div>

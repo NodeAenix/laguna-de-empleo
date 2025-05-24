@@ -30,7 +30,7 @@ export const routes: Routes = [
         canMatch: [AuthenticatedGuard]
     },
     {
-        path: 'perfil/:id',
+        path: 'perfil',
         component: ProfilePageComponent,
         canMatch: [AuthenticatedGuard]
     },

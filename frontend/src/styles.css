@@ -7,13 +7,14 @@
     --color-text: #1f2937;
     --color-text-opposite: #f3f4f6;
     --color-muted: #6b7280;
-    --color-border: #e5e7eb;
+    --color-border: #c2c2c2;
     --color-bg: #eff3f6;
     --color-bg-form: #fff;
     --color-bg-theme-toggle: #4b5cbb;
     --color-text-form: #1f2937;
     --color-link: #56adff;
     --color-link-hover: #c072ff;
+    --color-bg-table-cell: #efefef;
     
     /* Tamaño de fuentes y bordes */
     --font-size: 100%; /* 16px */
@@ -35,6 +36,7 @@
     --color-text: #f3f4f6;
     --color-text-opposite: #1f2937;
     --color-muted: #9ca3af;
+    --color-border: #a1a1a1;
     --color-bg-form: #333;
     --color-text-form: #f3f4f6;
     --success-color: #7dd8a3;
@@ -43,6 +45,7 @@
     --color-bg-theme-toggle: #f3e38a;
     --color-link: #8dd5ff;
     --color-link-hover: #ea97ff;
+    --color-bg-table-cell: #3f3f3f;
 }
 
 /* Utils */
@@ -55,6 +58,7 @@
 
 .jc-center { justify-content: center; }
 .ai-center { align-items: center; }
+.text-center { text-align: center; }
 
 .gap-xs { gap: .5rem; }
 .gap-s { gap: .75rem; }
@@ -78,14 +82,11 @@
     font-family: 'Host Grotesk', 'Arial', 'Segoe UI', sans-serif;
 }
 
-html {
-    transition: background-color .3s ease, color .3s ease; /* cambio de modo claro/oscuro */
-}
-
 body {
     line-height: 1.6;
     background-color: var(--color-bg);
     color: var(--color-text);
+    transition: background-color .3s ease, color .3s ease; /* cambio de modo claro/oscuro */
 }
 
 a {
@@ -97,6 +98,21 @@ a {
 a:hover {
     color: var(--color-link-hover);
 }
+
+table {
+    border-collapse: separate;
+    border-radius: var(--border-radius);
+}
+
+th, td {
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg-table-cell);
+}
+
+.rounded-table tr:first-of-type td:first-of-type { border-top-left-radius: var(--border-radius); }
+.rounded-table tr:first-of-type td:last-of-type { border-top-right-radius: var(--border-radius); }
+.rounded-table tr:last-of-type td:first-of-type { border-bottom-left-radius: var(--border-radius); }
+.rounded-table tr:last-of-type td:last-of-type { border-bottom-right-radius: var(--border-radius); }
 
 
 /* Contenedor principal y estilos generales */
