@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { Alumno } from '../interfaces/alumno.interface';
 import { Empresa } from '../interfaces/empresa.interface';
 import { AuthResponse } from '../interfaces/auth-response.interface';
@@ -52,6 +52,29 @@ export class AuthService {
         );
     }
 
+    getCurrentUser(): Observable<Alumno | Empresa | null> {
+        const token = this.token();
+
+        if (!token) {
+            return of(null);
+        }
+
+        return this.http.get<AuthResponse>(`${this.BASE_URL}/check-status`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).pipe(
+            map(resp => resp.user)
+        );
+    }
+
+    getUserType(user: Alumno | Empresa | null): 'alumno' | 'empresa' | null {
+        if (!user) {
+            return null;
+        }
+        return 'razon_social' in user ? 'empresa' : 'alumno';
+    }
+
     logout() {
         this._user.set(null);
         this._token.set(null);
@@ -78,6 +101,14 @@ export class AuthService {
         );
     }
 
+    getToken(): string | null {
+        if (this.isBrowser()) {
+            const token = localStorage.getItem('token');
+            return token;
+        }
+        return null;
+    }
+    
     private handleSuccess({ token, user }: AuthResponse) {
         this._user.set(user);
         this._authStatus.set('authenticated');
@@ -88,14 +119,6 @@ export class AuthService {
         }
 
         return true;
-    }
-
-    getToken(): string | null {
-        if (this.isBrowser()) {
-            const token = localStorage.getItem('token');
-            return token;
-        }
-        return null;
     }
 
     private handleError() {

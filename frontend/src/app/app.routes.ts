@@ -23,6 +23,12 @@ export const routes: Routes = [
         component: RegisterPageComponent,
         canMatch: [NotAuthenticatedGuard]
     },
+    {
+        path: 'ofertas',
+        component: OfertaListPageComponent,
+        canMatch: [AuthenticatedGuard]
+
+    },
     // Página de inicio y compartidas
     {
         path: '',
@@ -49,13 +55,6 @@ export const routes: Routes = [
     {
         path: 'detalles-oferta/:id',
         component: OfertaDetailsPageComponent,
-        canMatch: [AuthenticatedGuard]
-
-    },
-    // Páginas específicas de alumnos
-    {
-        path: 'ofertas',
-        component: OfertaListPageComponent,
         canMatch: [AuthenticatedGuard]
 
     },
