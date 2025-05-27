@@ -1,34 +1,69 @@
 <div class="container flex-col jc-center text-center gap-s">
-    <h1>Perfil de {{ currentUser.nombre }}</h1>
-    <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
-    <table class="rounded-table profile-table">
-        <tr>
-            <td>Nombre completo</td>
-            <td>{{ currentUser.nombre }} {{ currentUser.apellidos }}</td>
-        </tr>
-        <tr>
-            <td>Correo electrónico</td>
-            <td>{{ currentUser.email }}</td>
-        </tr>
-        <tr>
-            <td>Teléfono</td>
-            <td>{{ currentUser.telefono }}</td>
-        </tr>
-        <tr>
-            <td>Ciclos formativos</td>
-            <td>{{ currentUser.ciclos_formativos.join(', ') }}</td>
-        </tr>
-        <tr>
-            <td>Tecnologías</td>
-            <td>{{ currentUser.tecnologias.join(', ') }}</td>
-        </tr>
-        <tr>
-            <td>Idiomas</td>
-            <td>{{ currentUser.idiomas.join(', ') }}</td>
-        </tr>
-        <tr>
-            <td>Currículum Vitae</td>
-            <td><a href="">Ver CV</a></td>
-        </tr>
-    </table>
+    @if (userType() === 'alumno') {
+        <h1>Perfil de {{ alumnoUser()?.nombre }}</h1>
+        <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
+        <table class="rounded-table profile-table">
+            <tr>
+                <td>Nombre completo</td>
+                <td>{{ alumnoUser()?.nombre }} {{ alumnoUser()?.apellidos }}</td>
+            </tr>
+            <tr>
+                <td>Correo electrónico</td>
+                <td>{{ alumnoUser()?.email }}</td>
+            </tr>
+            <tr>
+                <td>Teléfono</td>
+                <td>{{ alumnoUser()?.telefono }}</td>
+            </tr>
+            <tr>
+                <td>Ciclos formativos</td>
+                <td>{{ alumnoUser()?.ciclos_formativos?.join(', ') }}</td>
+            </tr>
+            <tr>
+                <td>Tecnologías</td>
+                <td>{{ alumnoUser()?.tecnologias?.join(', ') }}</td>
+            </tr>
+            <tr>
+                <td>Idiomas</td>
+                <td>{{ alumnoUser()?.idiomas?.join(', ') }}</td>
+            </tr>
+            <tr>
+                <td>Currículum Vitae</td>
+                <td><a href="">Ver CV</a></td>
+            </tr>
+        </table>
+    } @else {
+        <h1>Perfil de {{ empresaUser()?.nombre }}</h1>
+        <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
+        <table class="rounded-table profile-table">
+            <tr>
+                <td>Nombre</td>
+                <td>{{ empresaUser()?.nombre }}</td>
+            </tr>
+            <tr>
+                <td>Razón social</td>
+                <td>{{ empresaUser()?.razon_social }}</td>
+            </tr>
+            <tr>
+                <td>Descripción</td>
+                <td>{{ empresaUser()?.descripcion }}</td>
+            </tr>
+            <tr>
+                <td>Correo electrónico</td>
+                <td>{{ empresaUser()?.email }}</td>
+            </tr>
+            <tr>
+                <td>Teléfono de contacto</td>
+                <td>{{ empresaUser()?.telefono }}</td>
+            </tr>
+            <tr>
+                <td>direccion_fiscal</td>
+                <td>{{ empresaUser()?.direccion_fiscal }}</td>
+            </tr>
+            <tr>
+                <td>persona_contacto</td>
+                <td>{{ empresaUser()?.persona_contacto }}</td>
+            </tr>
+        </table>
+    }
 </div>

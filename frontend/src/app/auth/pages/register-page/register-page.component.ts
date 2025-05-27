@@ -1,5 +1,5 @@
 import { Component, computed, inject, Renderer2, signal } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { MessageService } from '../../../services/message.service';
 import { Router, RouterLink } from '@angular/router';
@@ -49,6 +49,52 @@ export class RegisterPageComponent {
         cv: 'CV',
     };
 
+    alumnoDatalistLabels: Record<string, string[]> = {
+        ciclos_formativos: [
+            'Desarrollo de Aplicaciones Multiplataforma',
+            'Desarrollo de Aplicaciones Web',
+            'Administración de Sistemas Microinformáticos y Redes'
+        ],
+        tecnologias: [
+            'Java',
+            'SpringBoot',
+            'Git',
+            'SQL',
+            'PL/SQL',
+            'MongoDB',
+            'React',
+            'NodeJS',
+            'Angular',
+            'C++',
+            'Python',
+            'C#',
+            '.NET',
+            'PHP',
+            'Bootstrap',
+            'Odoo',
+            'Android Studio',
+            'Flutter',
+            'Linux',
+            'Windows Server',
+            'Wireshark',
+            'Docker',
+            'Virtualización',
+            'Bash',
+            'Powershell',
+            'Kubernetes'
+        ],
+        idiomas: [
+            'Inglés',
+            'Francés',
+            'Alemán',
+            'Chino',
+            'Japonés',
+            'Italiano',
+            'Ruso',
+            'Catalán'
+        ]
+    }
+
     // Formulario de la empresa
     empresaForm = this.fb.group({
         cif: ['', Validators.required],
@@ -78,6 +124,31 @@ export class RegisterPageComponent {
 
     currentForm = computed(() => this.activeTab() === 'alumnos' ? this.alumnoForm : this.empresaForm);
 
+    addElement(key: string, value: string) {
+        const formArray = this.alumnoForm.get(key) as FormArray;
+        const existingValues = formArray.value as string[];
+
+        if (existingValues.includes(value.trim())) {
+            this.messageService.showMessage({ text: 'Valor ya añadido', type: 'error' });
+            return;
+        }
+
+        if (!this.alumnoDatalistLabels[key].includes(value.trim())) {
+            this.messageService.showMessage({ text: 'Valor no admitido', type: 'error' });
+            return;
+        }
+
+        formArray.push(new FormControl(value));
+    }
+
+    getElementList(key: string): FormArray {
+        return this.alumnoForm.get(key) as FormArray;
+    }
+
+    removeElement(key: string, index: number) {
+        this.getElementList(key).removeAt(index);
+    }
+
     submit() {
         const type = this.activeTab();
         const form = this.currentForm();
@@ -98,7 +169,6 @@ export class RegisterPageComponent {
                 }
             },
             error: (error) => {
-                console.error('Error al hacer el registro', error);
                 this.messageService.showMessage({ text: 'Error al hacer el registro', type: 'error' });
             }
         });

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getEmpresa, patchEmpresa, deleteEmpresa } = require('../controllers/empresa.controller');
+const { getEmpresa, deleteEmpresa, putEmpresa } = require('../controllers/empresa.controller');
 const { check } = require('express-validator');
 const { checkEmail, checkPassword, checkPhoneNumber } = require('../helpers/db-patterns');
 const { empresaEmailExists } = require('../helpers/db-validators');
@@ -13,18 +13,19 @@ const router = Router();
 router.get('/:id', getEmpresa);
 
 // Actualizar perfil
-router.patch('/', [
-    check('email').optional({ values: [null, ''] }).custom(empresaEmailExists).custom(checkEmail),
-    check('password').optional({ values: [null, ''] }).custom(checkPassword),
-    check('nombre').optional({ values: [null, ''] }),
-    check('razon_social').optional({ values: [null, ''] }),
-    check('direccion_fiscal').optional({ values: [null, ''] }),
-    check('persona_contacto').optional({ values: [null, ''] }),
-    check('telefono').optional({ values: [null, ''] }).custom(checkPhoneNumber),
-    check('descripcion').optional({ values: [null, ''] }),
+router.put('/', [
     validateJWT(Empresa),
+    check('cif').notEmpty(),
+    check('email').custom((email, { req }) => empresaEmailExists(email, { req })).custom(checkEmail),
+    check('password').custom(checkPassword),
+    check('nombre').notEmpty(),
+    check('razon_social').notEmpty(),
+    check('direccion_fiscal').notEmpty(),
+    check('persona_contacto').notEmpty(),
+    check('telefono').custom(checkPhoneNumber),
+    check('descripcion').notEmpty(),
     validateFields
-], patchEmpresa);
+], putEmpresa);
 
 // Borrar empresa (desactivar)
 router.delete('/', validateJWT(Empresa), deleteEmpresa);

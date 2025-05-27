@@ -44,7 +44,7 @@
     --color-bg-form: #333;
     --color-text-form: #f3f4f6;
     --success-color: #7dd8a3;
-    --error-color: #fd9393;
+    --error-color: #df7d7d;
     --info-color: #8ec1fc;
     --color-bg-theme-toggle: #f3e38a;
     --color-link: #8dd5ff;
@@ -204,6 +204,11 @@ input[type="checkbox"] {
     border-color: var(--color-primary);
 }
 
+.input-datalist input {
+    flex: 1;
+    background-color: var(--color-bg);
+}
+
 .error {
     color: var(--error-color);
     font-size: var(--small-font-size);
@@ -251,7 +256,7 @@ input[type="checkbox"] {
     transition: border-color .3s ease;
 }
 
-.table-input-button button {
+.input-add-button {
     border: none;
     border-radius: var(--small-border-radius);
     background-color: var(--color-primary);
@@ -260,9 +265,13 @@ input[type="checkbox"] {
     transition: opacity .2s ease;
 }
 
-.table-input-button button:hover {
+.input-add-button:hover, .remove-button:hover {
     cursor: pointer;
     opacity: .8;
+}
+
+.remove-button {
+    color: var(--color-link);
 }
 
 .small-text {

@@ -16,11 +16,10 @@ const getAlumno = async(req, res) => {
     res.json(alumno);
 }
 
-const patchAlumno = async(req, res) => {
+const putAlumno = async(req, res) => {
     const uid = req.user._id;
-    const { _id, ...resto } = req.body;
 
-    const updatedAlumno = removeEmptyFields(resto);
+    const updatedAlumno = removeEmptyFields(req.body);
     const alumno = await Alumno.findByIdAndUpdate(uid, updatedAlumno, { new: true });
 
     res.json(alumno);
@@ -38,6 +37,6 @@ const deleteAlumno = async(req, res) => {
 
 module.exports = {
     getAlumno,
-    patchAlumno,
+    putAlumno,
     deleteAlumno
 }

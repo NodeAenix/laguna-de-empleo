@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getAlumno, patchAlumno, deleteAlumno } = require('../controllers/alumno.controller');
+const { getAlumno, deleteAlumno, putAlumno } = require('../controllers/alumno.controller');
 const { check } = require('express-validator');
 const { alumnoEmailExists } = require('../helpers/db-validators');
 const { checkEmail, checkPhoneNumber, checkPassword } = require('../helpers/db-patterns');
@@ -13,15 +13,16 @@ const router = Router();
 router.get('/:id', getAlumno);
 
 // Actualizar perfil
-router.patch('/', [
-    check('email').optional({ values: [null, ''] }).custom(alumnoEmailExists).custom(checkEmail),
-    check('password').optional({ values: [null, ''] }).custom(checkPassword),
-    check('telefono').optional({ values: [null, ''] }).custom(checkPhoneNumber),
-    check('ciclos_formativos').optional({ values: [null, ''] }),
-    check('tecnologias').optional({ values: [null, ''] }),
+router.put('/', [
     validateJWT(Alumno),
+    check('nif').notEmpty(),
+    check('email').custom((email, { req }) => alumnoEmailExists(email, { req })).custom(checkEmail),
+    check('password').custom(checkPassword),
+    check('telefono').custom(checkPhoneNumber),
+    check('ciclos_formativos').notEmpty(),
+    check('tecnologias').notEmpty(),
     validateFields
-], patchAlumno);
+], putAlumno);
 
 // Borrar alumno (desactivar)
 router.delete('/', validateJWT(Alumno), deleteAlumno);

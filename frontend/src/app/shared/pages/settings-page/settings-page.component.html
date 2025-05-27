@@ -20,129 +20,76 @@
     <!-- Actualizar información -->
     <h2>Actualizar información</h2>
     @if (userType() === 'alumno') {
-        <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
-        <table class="rounded-table settings-table">
-            <tr>
-                <td>Nombre</td>
-                <td>
-                    <input type="text" class="table-input">
-                </td>
-            </tr>
-            <tr>
-                <td>Apellidos</td>
-                <td>
-                    <input type="text" class="table-input">
-                </td>
-            </tr>
-            <tr>
-                <td>Correo electrónico</td>
-                <td>
-                    <input type="text" class="table-input">
-                </td>
-            </tr>
-            <tr>
-                <td>Teléfono</td>
-                <td>
-                    <input type="text" class="table-input">
-                </td>
-            </tr>
-            <tr>
-                <td>Ciclos formativos</td>
-                <td>
-                    <span class="flex-col">
-                        <label>
-                            <input type="checkbox">
-                            Desarrollo de Aplicaciones Multiplataforma
-                        </label>
-                        <label>
-                            <input type="checkbox">
-                            Desarrollo de Aplicaciones Web
-                        </label>
-                        <label>
-                            <input type="checkbox">
-                            Administración de Sistemas Microinformáticos y Redes
-                        </label>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td>Tecnologías</td>
-                <td>
-                    <span class="flex gap-xs table-input-button">
-                        <input list="tecnologias-list" class="table-datalist-input">
-                        <datalist id="tecnologias-list">
-                            <option value="Java">
-                            <option value="SpringBoot">
-                            <option value="Git">
-                            <option value="SQL">
-                            <option value="PL/SQL">
-                            <option value="MongoDB">
-                            <option value="React">
-                            <option value="NodeJS">
-                            <option value="Angular">
-                            <option value="C++">
-                            <option value="Python">
-                            <option value="C#">
-                            <option value=".NET">
-                            <option value="PHP">
-                            <option value="Bootstrap">
-                            <option value="Odoo">
-                            <option value="Android Studio">
-                            <option value="Flutter">
-                            <option value="Linux">
-                            <option value="Windows Server">
-                            <option value="Wireshark">
-                            <option value="Docker">
-                            <option value="Virtualización">
-                            <option value="Bash">
-                            <option value="Powershell">
-                            <option value="Kubernetes">
-                        </datalist>
-                        <button>Añadir</button>
-                    </span>
-                    <p class="small-text">a</p>
-                </td>
-            </tr>
-            <tr>
-                <td>Idiomas</td>
-                <td>
-                    <span class="flex gap-xs table-input-button">
-                        <input list="idiomas-list">
-                        <datalist id="idiomas-list">
-                            <option value="Inglés">
-                            <option value="Francés">
-                            <option value="Alemán">
-                            <option value="Chino">
-                            <option value="Japonés">
-                            <option value="Italiano">
-                            <option value="Ruso">
-                            <option value="Catalán">
-                        </datalist>
-                        <button>Añadir</button>
-                    </span>
-                    <p class="small-text">a</p>
-                </td>
-            </tr>
-            <tr>
-                <td>Currículum Vitae</td>
-                <td>
-                    <input type="file">
-                    <p class="small-text">a</p>
-                </td>
-            </tr>
-        </table>
+        <form [formGroup]="alumnoForm">
+            <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
+            <table class="rounded-table settings-table">
+                @for (key of alumnoFieldKeys; track key) {
+                    @if (['ciclos_formativos', 'tecnologias', 'idiomas'].includes(key)) {
+                        <tr>
+                            <td>{{ alumnoLabels[key] }}</td>
+                            <td>
+                                <div class="flex gap-s input-datalist mb-1">
+                                    <input class="table-datalist-input" [attr.list]="key" #inputDatalist>
+                                    <datalist [id]="key">
+                                        @for (label of alumnoDatalistLabels[key]; track label) {
+                                            <option [value]="label"></option>
+                                        }
+                                    </datalist>
+                                    <button class="input-add-button" (click)="addElement(key, inputDatalist.value)">Añadir</button>
+                                </div>
+                                @if (getElementList(key).controls.length > 0) {
+                                    @for (element of getElementList(key).controls; track element; let i = $index) {
+                                        <div class="flex gap-xs mb-1">
+                                            <span class="remove-button" (click)="removeElement(key, i)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12S6.47 2 12 2m3.59 5L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41z"/></svg>
+                                            </span>
+                                            <p class="small-text">{{ element.value }}</p>
+                                        </div>
+                                    }
+                                } @else if (getElementList(key).touched && alumnoForm.invalid) {
+                                    <span class="error">Este campo es obligatorio</span>
+                                }
+                            </td>
+                        </tr>
+                    } @else {
+                        <tr>
+                            <td>{{ alumnoLabels[key] }}</td>
+                            <td>
+                                <input [type]="key === 'cv' ? 'file' : 'text'" [formControlName]="key" class="table-input">
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </form>
+    } @else if (userType() === 'empresa') {
+        <form [formGroup]="empresaForm">
+            <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
+            <table class="rounded-table settings-table">
+                @for (key of empresaFieldKeys; track key) {
+                    <tr>
+                        <td>{{ empresaLabels[key] }}</td>
+                        <td>
+                            <input [type]="key === 'cv' ? 'file' : 'text'" [formControlName]="key" class="table-input">
+                        </td>
+                    </tr>
+                }
+            </table>
+        </form>
+    }
+    <form [formGroup]="passwordForm">
         <table class="rounded-table settings-table">
             <tr>
                 <td>Contraseña para confirmar</td>
                 <td>
-                    <input type="password" class="table-input">
+                    <input type="password" formControlName="password" class="table-input">
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <button type="submit" class="settings-submit-btn">Guardar cambios</button>
+                    <button type="submit" class="settings-submit-btn" (click)="submit()">Guardar cambios</button>
                 </td>
             </tr>
         </table>
-    }
+    </form>
 </div>

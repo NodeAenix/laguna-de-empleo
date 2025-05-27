@@ -144,12 +144,12 @@ Colección `logs_validacion`:
 
 ### Alumnos
 - `GET /alumnos/:id`
-- `PATCH /alumnos`
+- `PUT /alumnos`
 - `DELETE /alumnos`
 
 ### Empresas
 - `GET /empresas/:id`
-- `PATCH /empresas/:id`
+- `PUT /empresas`
 - `DELETE /empresas/:id`
 
 ### Ofertas

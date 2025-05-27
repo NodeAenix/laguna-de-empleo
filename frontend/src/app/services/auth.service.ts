@@ -4,13 +4,14 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { Alumno } from '../interfaces/alumno.interface';
 import { Empresa } from '../interfaces/empresa.interface';
 import { AuthResponse } from '../interfaces/auth-response.interface';
+import { environment } from '../../environments/environment';
 
 type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
-    private readonly BASE_URL = 'http://localhost:3000/auth';
+    private readonly BASE_URL = `${environment.baseUrl}/auth`;
 
     private _authStatus = signal<AuthStatus>('checking');
     private _user = signal<Alumno | Empresa | null>(null);
@@ -53,7 +54,10 @@ export class AuthService {
             })
         );
     }
-
+    
+    // ------------------------
+    //         Usuarios
+    // ------------------------
     getCurrentUser(): Observable<Alumno | Empresa | null> {
         const token = this.token();
 

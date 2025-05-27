@@ -16,11 +16,10 @@ const getEmpresa = async(req, res) => {
     res.json(empresa);
 }
 
-const patchEmpresa = async(req, res) => {
+const putEmpresa = async(req, res) => {
     const uid = req.user._id;
-    const { _id, ...resto } = req.body;
 
-    const updatedEmpresa = removeEmptyFields(resto);
+    const updatedEmpresa = removeEmptyFields(req.body);
     const empresa = await Empresa.findByIdAndUpdate(uid, updatedEmpresa, { new: true });
     
     res.json(empresa);
@@ -38,6 +37,6 @@ const deleteEmpresa = async(req, res) => {
 
 module.exports = {
     getEmpresa,
-    patchEmpresa,
+    putEmpresa,
     deleteEmpresa
 }

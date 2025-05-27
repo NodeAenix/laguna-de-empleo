@@ -4,7 +4,7 @@ export class FormUtils {
 
     static emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
     static passwordPattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$';
-    static phonePattern = '^(679)[0-9]{8}$';
+    static phonePattern = '^(6|7|9)[0-9]{8}$';
 
     private static getTextError(errors: ValidationErrors): string | null {
         for (const key of Object.keys(errors)) {

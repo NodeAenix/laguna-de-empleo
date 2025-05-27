@@ -1,18 +1,34 @@
 const Alumno = require('../models/alumno');
 const Empresa = require('../models/empresa');
+const mongoose = require('mongoose');
 
-const alumnoEmailExists = async(email = '') => {
+const alumnoEmailExists = async(email = '', { req }) => {
     const emailExists = await Alumno.findOne({ email });
+    
     if (emailExists) {
+        if (emailExists._id.equals(new mongoose.Types.ObjectId(req.user._id))) {
+            return true;
+        }
         throw new Error(`El correo electrónico ${email} ya está en uso`);
     }
+
+    return true;
 }
 
-const empresaEmailExists = async(email = '') => {
+const empresaEmailExists = async(email = '', { req }) => {
     const emailExists = await Empresa.findOne({ email });
+
+    console.log(emailExists._id);
+    console.log(req.user._id);
+
     if (emailExists) {
+        if (emailExists._id.equals(new mongoose.Types.ObjectId(req.user._id))) {
+            return true;
+        }
         throw new Error(`El correo electrónico ${email} ya está en uso`);
     }
+
+    return true;
 }
 
 const validateNif = async(nif = '') => {
