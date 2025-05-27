@@ -1,7 +1,22 @@
 const mongoose = require('mongoose');
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 const { removeEmptyFields } = require('../helpers/utils');
 const Alumno = require('../models/alumno');
 
+// Almacenamiento de "multer" (para los archivos de los CV)
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, uuidv4() + '-' + file.originalname);
+    }
+});
+
+const upload = multer({ storage });
+
+// Endpoints
 const getAlumno = async(req, res) => {
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -20,6 +35,11 @@ const putAlumno = async(req, res) => {
     const uid = req.user._id;
 
     const updatedAlumno = removeEmptyFields(req.body);
+
+    if (req.file) {
+        updatedAlumno.cv = req.file.path;
+    }
+
     const alumno = await Alumno.findByIdAndUpdate(uid, updatedAlumno, { new: true });
 
     res.json(alumno);

@@ -27,6 +27,8 @@ export class SettingsPageComponent implements OnInit {
     alumnoUser = signal<Alumno | null>(null);
     empresaUser = signal< Empresa | null>(null);
     userType = signal<'alumno' | 'empresa' | null>(null);
+    selectedFile = signal<File | null>(null);
+    cvPath = signal<string>('');
     formUtils = FormUtils;
 
     // Formulario del alumno
@@ -154,6 +156,10 @@ export class SettingsPageComponent implements OnInit {
                     this.alumnoUser()?.ciclos_formativos.forEach(value => ciclos_formativos.push(this.fb.control(value)));
                     this.alumnoUser()?.tecnologias.forEach(value => tecnologias.push(this.fb.control(value)));
                     this.alumnoUser()?.idiomas.forEach(value => idiomas.push(this.fb.control(value)));
+
+                    if (this.alumnoUser()?.cv) {
+                        this.cvPath.set(this.alumnoUser()?.cv!);
+                    }
                 } else if (this.userType() === 'empresa') {
                     this.empresaUser.set(user as Empresa);
                     this.empresaForm.patchValue(user as Empresa);
@@ -204,6 +210,28 @@ export class SettingsPageComponent implements OnInit {
         this.getElementList(key).removeAt(index);
     }
 
+    onFileSelected(event: Event) {
+        const element = event.target as HTMLInputElement;
+
+        if (!element.files || element.files.length === 0) {
+            return;
+        }
+
+        const file = element.files[0];
+
+        if (file.type !== 'application/pdf') {
+            this.messageService.showMessage({ text: 'El archivo CV tiene debe ser PDF', type: 'info' });
+            return;
+        }
+
+        if (element.files?.length > 1) {
+            this.messageService.showMessage({ text: 'Solo se admite un archivo CV', type: 'error' });
+            return;
+        }
+
+        this.cvPath.set(URL.createObjectURL(file));
+    }
+
     submit() {
         const type = this.userType();
         const form = type === 'alumno' ? this.alumnoForm : this.empresaForm;
@@ -220,7 +248,20 @@ export class SettingsPageComponent implements OnInit {
             return;
         }
 
-        this.userService.updateUser(type === 'alumno' ? 'alumnos' : 'empresas', { ...form.value, password }).subscribe({
+        // Payload del update
+        const formData = new FormData();
+        Object.keys(form.value).forEach(key => {
+            formData.append(key, (form.value as any)[key]);
+        });
+
+        formData.append('password', password);
+
+        if (this.selectedFile()) {
+            formData.append('cv', this.selectedFile()!);
+        }
+
+        // doesn't work, needs to be fixed
+        this.userService.updateUser(type === 'alumno' ? 'alumnos' : 'empresas', formData).subscribe({
             next: () => {
                 this.messageService.showMessage({ text: 'Datos actualizados con éxito', type: 'success' });
                 this.router.navigateByUrl('/perfil')

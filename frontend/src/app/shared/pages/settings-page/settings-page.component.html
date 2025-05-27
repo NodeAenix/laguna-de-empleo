@@ -55,7 +55,14 @@
                         <tr>
                             <td>{{ alumnoLabels[key] }}</td>
                             <td>
-                                <input [type]="key === 'cv' ? 'file' : 'text'" [formControlName]="key" class="table-input">
+                                @if (key === 'cv') {
+                                    <input type="file" accept="application/pdf" (change)="onFileSelected($event)" [formControlName]="key" class="table-input">
+                                    @if (cvPath()) {
+                                        <a [href]="cvPath()" target="_blank">Ver CV</a>
+                                    }
+                                } @else {
+                                    <input type="text" [formControlName]="key" class="table-input">
+                                }
                             </td>
                         </tr>
                     }

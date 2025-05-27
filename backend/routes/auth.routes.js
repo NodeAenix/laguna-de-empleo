@@ -8,8 +8,10 @@ const Alumno = require('../models/alumno');
 const Empresa = require('../models/empresa');
 const Admin = require('../models/admin');
 const { validateJWT } = require('../middlewares/validate-jwt');
+const multer = require('multer');
 
 const router = Router();
+const upload = multer({ dest: 'uploads/' });
 
 // Registrar alumno
 router.post('/registro-alumnos', [
@@ -21,6 +23,7 @@ router.post('/registro-alumnos', [
     check('telefono').custom(checkPhoneNumber),
     check('ciclos_formativos', 'Los ciclos formativos son obligatorios').notEmpty(),
     check('tecnologias', 'Las tecnologías son obligatorias').notEmpty(),
+    upload.single('cv'),
     validateFields
 ], registerModel(Alumno));
 

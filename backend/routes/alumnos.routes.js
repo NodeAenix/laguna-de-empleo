@@ -5,9 +5,11 @@ const { alumnoEmailExists } = require('../helpers/db-validators');
 const { checkEmail, checkPhoneNumber, checkPassword } = require('../helpers/db-patterns');
 const { validateFields } = require('../middlewares/validate-fields');
 const { validateJWT } = require('../middlewares/validate-jwt');
+const multer = require('multer');
 const Alumno = require('../models/alumno');
 
 const router = Router();
+const upload = multer({ dest: 'uploads/' });
 
 // Obtener alumno por ID
 router.get('/:id', getAlumno);
@@ -21,6 +23,7 @@ router.put('/', [
     check('telefono').custom(checkPhoneNumber),
     check('ciclos_formativos').notEmpty(),
     check('tecnologias').notEmpty(),
+    upload.single('cv'),
     validateFields
 ], putAlumno);
 

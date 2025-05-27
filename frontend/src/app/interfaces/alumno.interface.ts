@@ -10,4 +10,5 @@ export interface Alumno {
     idiomas:           string[];
     estado:            string;
     fecha_registro:    Date;
+    cv?:               string;
 }

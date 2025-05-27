@@ -12,7 +12,7 @@ export class UserService {
     private http = inject(HttpClient);
     private authService = inject(AuthService);
     
-    updateUser(type: 'alumnos' | 'empresas', payload: any): Observable<any> {
+    updateUser(type: 'alumnos' | 'empresas', payload: FormData): Observable<any> {
         const headers = {
             Authorization: `Bearer ${this.authService.getToken()}`
         }
