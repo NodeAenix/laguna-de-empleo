@@ -19,7 +19,7 @@ const getEmpresa = async(req, res) => {
 const putEmpresa = async(req, res) => {
     const uid = req.user._id;
 
-    const updatedEmpresa = removeEmptyFields(req.body);
+    const updatedEmpresa = req.body;
     const empresa = await Empresa.findByIdAndUpdate(uid, updatedEmpresa, { new: true });
     
     res.json(empresa);

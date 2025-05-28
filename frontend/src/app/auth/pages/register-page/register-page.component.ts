@@ -159,6 +159,7 @@ export class RegisterPageComponent {
             return;
         }
 
+        console.log('bruh', form.value);
         this.authService.register(type, form.value).subscribe({
             next: (response) => {
                 if (response.success) {
@@ -169,6 +170,7 @@ export class RegisterPageComponent {
                 }
             },
             error: (error) => {
+                console.log(error);
                 this.messageService.showMessage({ text: 'Error al hacer el registro', type: 'error' });
             }
         });

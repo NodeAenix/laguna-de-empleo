@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { FormUtils } from '../../../utils/form-utils';
 import { MessageService } from '../../../services/message.service';
 import { UserService } from '../../../services/user.service';
+import { commonDatalist } from '../../../utils/datalist-options';
 
 @Component({
     selector: 'app-settings-page',
@@ -58,51 +59,7 @@ export class SettingsPageComponent implements OnInit {
         cv: 'CV',
     };
 
-    alumnoDatalistLabels: Record<string, string[]> = {
-        ciclos_formativos: [
-            'Desarrollo de Aplicaciones Multiplataforma',
-            'Desarrollo de Aplicaciones Web',
-            'Administración de Sistemas Microinformáticos y Redes'
-        ],
-        tecnologias: [
-            'Java',
-            'SpringBoot',
-            'Git',
-            'SQL',
-            'PL/SQL',
-            'MongoDB',
-            'React',
-            'NodeJS',
-            'Angular',
-            'C++',
-            'Python',
-            'C#',
-            '.NET',
-            'PHP',
-            'Bootstrap',
-            'Odoo',
-            'Android Studio',
-            'Flutter',
-            'Linux',
-            'Windows Server',
-            'Wireshark',
-            'Docker',
-            'Virtualización',
-            'Bash',
-            'Powershell',
-            'Kubernetes'
-        ],
-        idiomas: [
-            'Inglés',
-            'Francés',
-            'Alemán',
-            'Chino',
-            'Japonés',
-            'Italiano',
-            'Ruso',
-            'Catalán'
-        ]
-    }
+    alumnoDatalistLabels = commonDatalist;
 
     // Formulario de la empresa
     empresaForm = this.fb.group({

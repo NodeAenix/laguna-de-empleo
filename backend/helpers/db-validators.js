@@ -18,9 +18,6 @@ const alumnoEmailExists = async(email = '', { req }) => {
 const empresaEmailExists = async(email = '', { req }) => {
     const emailExists = await Empresa.findOne({ email });
 
-    console.log(emailExists._id);
-    console.log(req.user._id);
-
     if (emailExists) {
         if (emailExists._id.equals(new mongoose.Types.ObjectId(req.user._id))) {
             return true;

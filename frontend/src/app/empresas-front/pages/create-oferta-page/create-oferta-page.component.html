@@ -1,1 +1,28 @@
-<p>create-oferta-page works!</p>,
+<div class="container">
+    <form>
+        <div class="form-box">
+            <h1 class="text-center">Creando oferta . . .</h1>
+            <div class="form-field">
+                <label>Título</label>
+                <input type="text">
+            </div>
+            <div class="form-field">
+                <label>Descripción</label>
+                <textarea></textarea>
+            </div>
+            <div class="form-field">
+                <label>Modalidad</label>
+                <select>
+                    <option value="presencial">Presencial</option>
+                    <option value="distancia">A distancia</option>
+                    <option value="mixta">Mixta</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label>Dirección</label>
+                <input type="text">
+            </div>
+            <button class="submit-btn" type="submit" (click)="submit()">Crear oferta</button>
+        </div>
+    </form>
+</div>

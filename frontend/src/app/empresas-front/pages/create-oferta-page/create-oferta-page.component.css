@@ -1,0 +1,19 @@
+select, textarea {
+    background-color: var(--color-bg-form);
+    border: var(--border-button);
+    border-radius: var(--small-border-radius);
+    font-size: var(--small-font-size);
+    color: var(--color-text);
+    padding: .5rem;
+    transition: border-color .3s ease;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 8rem;
+}
+
+select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
