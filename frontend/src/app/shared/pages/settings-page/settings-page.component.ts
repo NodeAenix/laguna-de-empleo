@@ -230,6 +230,7 @@ export class SettingsPageComponent implements OnInit {
         }
 
         this.cvPath.set(URL.createObjectURL(file));
+        this.selectedFile.set(file);
     }
 
     submit() {
@@ -248,23 +249,28 @@ export class SettingsPageComponent implements OnInit {
             return;
         }
 
-        // Payload del update
+        // Payload FormData
         const formData = new FormData();
-        Object.keys(form.value).forEach(key => {
-            formData.append(key, (form.value as any)[key]);
+        
+        Object.entries(form.value).forEach(([key, value]) => {
+            if (Array.isArray(value)) {
+                value.forEach(v => formData.append(key, v));
+            } else {
+                formData.append(key, value as string);
+            }
         });
 
         formData.append('password', password);
 
         if (this.selectedFile()) {
-            formData.append('cv', this.selectedFile()!);
+            formData.append('cv', this.selectedFile() ?? '');
         }
 
-        // doesn't work, needs to be fixed
+        // Actualizar usuario
         this.userService.updateUser(type === 'alumno' ? 'alumnos' : 'empresas', formData).subscribe({
             next: () => {
                 this.messageService.showMessage({ text: 'Datos actualizados con éxito', type: 'success' });
-                this.router.navigateByUrl('/perfil')
+                this.router.navigateByUrl('/perfil');
             },
             error: () => {
                 this.messageService.showMessage({ text: 'Error al actualizar los datos', type: 'error' });

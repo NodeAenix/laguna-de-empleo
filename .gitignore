@@ -51,6 +51,10 @@ backend/dist
 # Logs
 backend/*.log
 
+# Backend uploads
+backend/uploads/*
+!backend/uploads/.gitkeep
+
 # --- SYSTEM FILES ---
 
 .DS_Store

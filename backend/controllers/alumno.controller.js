@@ -10,7 +10,8 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/');
     },
     filename: (req, file, cb) => {
-        cb(null, uuidv4() + '-' + file.originalname);
+        const filename = `${uuidv4()}-${file.originalname}.pdf`;
+        cb(null, filename);
     }
 });
 
@@ -34,10 +35,12 @@ const getAlumno = async(req, res) => {
 const putAlumno = async(req, res) => {
     const uid = req.user._id;
 
-    const updatedAlumno = removeEmptyFields(req.body);
+    const updatedAlumno = req.body;
 
+    console.log('test');
+    console.log(req.file);
     if (req.file) {
-        updatedAlumno.cv = req.file.path;
+        updatedAlumno.cv = req.file.path.replace(/\\/g, '/');
     }
 
     const alumno = await Alumno.findByIdAndUpdate(uid, updatedAlumno, { new: true });

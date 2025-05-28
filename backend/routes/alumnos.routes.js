@@ -17,13 +17,13 @@ router.get('/:id', getAlumno);
 // Actualizar perfil
 router.put('/', [
     validateJWT(Alumno),
+    upload.single('cv'),
     check('nif').notEmpty(),
     check('email').custom((email, { req }) => alumnoEmailExists(email, { req })).custom(checkEmail),
     check('password').custom(checkPassword),
     check('telefono').custom(checkPhoneNumber),
     check('ciclos_formativos').notEmpty(),
     check('tecnologias').notEmpty(),
-    upload.single('cv'),
     validateFields
 ], putAlumno);
 
