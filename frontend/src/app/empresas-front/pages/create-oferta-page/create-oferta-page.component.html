@@ -1,26 +1,82 @@
 <div class="container">
-    <form>
+    <form [formGroup]="ofertaForm">
         <div class="form-box">
-            <h1 class="text-center">Creando oferta . . .</h1>
+            <h1 class="text-center">
+                Creando oferta
+                @if (title().trim().length > 0) {
+                    <span id="oferta-title">{{ title() }}</span>
+                } @else {
+                    . . .
+                }
+            </h1>
             <div class="form-field">
                 <label>Título</label>
-                <input type="text">
+                <input type="text" formControlName="titulo" (input)="updateTitle(tituloInput)" maxlength="50" #tituloInput>
+                @if (ofertaForm.get('titulo')?.hasError('maxlength')) {
+
+                }
+                @if (formUtils.isValidField(ofertaForm, 'titulo')) {
+                    <span class="error">
+                        {{ formUtils.getFieldError(ofertaForm, 'titulo') }}
+                    </span>
+                }
             </div>
             <div class="form-field">
                 <label>Descripción</label>
-                <textarea></textarea>
+                <textarea formControlName="descripcion"></textarea>
+                @if (formUtils.isValidField(ofertaForm, 'descripcion')) {
+                    <span class="error">
+                        {{ formUtils.getFieldError(ofertaForm, 'descripcion') }}
+                    </span>
+                }
+            </div>
+            <div class="form-field">
+                <label>Tecnologías</label>
+                <div class="button-checkbox">
+                    @for (label of datalistLabels['tecnologias']; track label) {
+                        <button type="button" [class.active]="isSelectedTecnologia(label)" (click)="toggleSelectedTecnologia(label)">{{ label }}</button>
+                    }
+                </div>
+            </div>
+            <div class="form-field">
+                <label>Idiomas</label>
+                <div class="button-checkbox">
+                    @for (label of datalistLabels['idiomas']; track label) {
+                        <button type="button" [class.active]="isSelectedIdioma(label)" (click)="toggleSelectedIdioma(label)">{{ label }}</button>
+                    }
+                </div>
             </div>
             <div class="form-field">
                 <label>Modalidad</label>
-                <select>
+                <select formControlName="modalidad">
+                    <option value="">-- Seleccione una modalidad --</option>
                     <option value="presencial">Presencial</option>
                     <option value="distancia">A distancia</option>
                     <option value="mixta">Mixta</option>
                 </select>
+                @if (formUtils.isValidField(ofertaForm, 'modalidad')) {
+                    <span class="error">
+                        {{ formUtils.getFieldError(ofertaForm, 'modalidad') }}
+                    </span>
+                }
             </div>
             <div class="form-field">
                 <label>Dirección</label>
-                <input type="text">
+                <input type="text" formControlName="direccion">
+                @if (formUtils.isValidField(ofertaForm, 'direccion')) {
+                    <span class="error">
+                        {{ formUtils.getFieldError(ofertaForm, 'direccion') }}
+                    </span>
+                }
+            </div>
+            <div class="form-field">
+                <label>Fecha de expiración</label>
+                <input type="date" formControlName="fecha_expiracion">
+                @if (formUtils.isValidField(ofertaForm, 'fecha_expiracion')) {
+                    <span class="error">
+                        {{ formUtils.getFieldError(ofertaForm, 'fecha_expiracion') }}
+                    </span>
+                }
             </div>
             <button class="submit-btn" type="submit" (click)="submit()">Crear oferta</button>
         </div>

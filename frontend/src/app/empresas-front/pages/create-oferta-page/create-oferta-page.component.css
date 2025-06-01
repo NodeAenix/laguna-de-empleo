@@ -1,3 +1,7 @@
+#oferta-title {
+    color: var(--color-link);
+}
+
 select, textarea {
     background-color: var(--color-bg-form);
     border: var(--border-button);

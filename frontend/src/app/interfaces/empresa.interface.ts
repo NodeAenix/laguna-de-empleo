@@ -1,4 +1,5 @@
 export interface Empresa {
+    _id:              string;
     cif:              string;
     email:            string;
     password:         string;

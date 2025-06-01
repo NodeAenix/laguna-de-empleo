@@ -1,12 +1,14 @@
-import { Component, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormUtils } from '../../../utils/form-utils';
 import { MessageService } from '../../../services/message.service';
 import { commonDatalist } from '../../../utils/datalist-options';
+import { OfertaService } from '../../../services/oferta.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-create-oferta-page',
-    imports: [],
+    imports: [ReactiveFormsModule],
     templateUrl: './create-oferta-page.component.html',
     styleUrl: './create-oferta-page.component.css'
 })
@@ -14,50 +16,84 @@ export class CreateOfertaPageComponent {
 
     private fb = inject(FormBuilder);
     private messageService = inject(MessageService);
+    private ofertaService = inject(OfertaService);
+    private router = inject(Router);
 
     formUtils = FormUtils;
 
     ofertaForm = this.fb.group({
-        empresa_id: [''],
-        titulo: ['', [Validators.required, FormUtils.notBlank]],
+        titulo: ['', [Validators.required, Validators.maxLength(50), FormUtils.notBlank]],
         descripcion: ['', [Validators.required, FormUtils.notBlank]],
         tecnologias: this.fb.array<FormControl<string>>([], [Validators.required]),
-        idiomas: this.fb.array<FormControl<string>>([], [Validators.required]),
+        idiomas: this.fb.array<FormControl<string>>([]),
         modalidad: ['', [Validators.required, FormUtils.notBlank]],
         direccion: ['', [Validators.required, FormUtils.notBlank]],
-        fecha_expiracion: ['', [Validators.required, FormUtils.notBlank]],
-        candidatos: this.fb.array<FormControl<string>>([], [Validators.required])
+        fecha_expiracion: ['', [Validators.required, FormUtils.notFutureDate]],
     });
 
+    title = signal<string>('');
     datalistLabels = commonDatalist;
 
-    addElement(key: string, value: string) {
-        const formArray = this.ofertaForm.get(key) as FormArray;
-        const existingValues = formArray.value as string[];
+    selectedTecnologias = new Set<string>();
+    selectedIdiomas = new Set<string>();
 
-        if (existingValues.includes(value.trim())) {
-            this.messageService.showMessage({ text: 'Valor ya añadido', type: 'error' });
-            return;
-        }
-
-        if (!this.datalistLabels[key].includes(value.trim())) {
-            this.messageService.showMessage({ text: 'Valor no admitido', type: 'error' });
-            return;
-        }
-
-        formArray.push(new FormControl(value));
+    updateTitle(inputTitle: HTMLInputElement) {
+        this.title.set(inputTitle.value);
     }
 
-    getElementList(key: string): FormArray {
-        return this.ofertaForm.get(key) as FormArray;
+    toggleSelectedTecnologia(tecnologia: string) {
+        this.selectedTecnologias.has(tecnologia)
+            ? this.selectedTecnologias.delete(tecnologia)
+            : this.selectedTecnologias.add(tecnologia);
     }
 
-    removeElement(key: string, index: number) {
-        this.getElementList(key).removeAt(index);
+    isSelectedTecnologia(tecnologia: string): boolean {
+        return this.selectedTecnologias.has(tecnologia);
+    }
+
+    toggleSelectedIdioma(idioma: string) {
+        this.selectedIdiomas.has(idioma)
+            ? this.selectedIdiomas.delete(idioma)
+            : this.selectedIdiomas.add(idioma);
+    }
+
+    isSelectedIdioma(idioma: string): boolean {
+        return this.selectedIdiomas.has(idioma);
     }
 
     submit() {
-        
+        if (this.selectedTecnologias.size === 0) {
+            this.messageService.showMessage({ text: 'Selecciona alguna tecnología', type: 'info' });
+            return;
+        }
+
+        const tecnologiasArray = this.ofertaForm.get('tecnologias') as FormArray;
+        const idiomasArray = this.ofertaForm.get('idiomas') as FormArray;
+
+        this.selectedTecnologias.forEach(tecnologia => {
+            tecnologiasArray.push(this.fb.control(tecnologia));
+        });
+        this.selectedIdiomas.forEach(idioma => {
+            idiomasArray.push(this.fb.control(idioma));
+        });
+
+        if (this.ofertaForm.invalid) {
+            this.ofertaForm.markAllAsTouched();
+            console.log(this.ofertaForm.value);
+            this.messageService.showMessage({ text: 'Por favor, revise los datos', type: 'error' });
+            return;
+        }
+
+        // En caso de que no haya habido ningún error
+        this.ofertaService.createOferta(this.ofertaForm.value).subscribe({
+            next: () => {
+                this.messageService.showMessage({ text: 'Oferta creada con éxito', type: 'success' });
+                this.router.navigateByUrl('/ofertas');
+            },
+            error: () => {
+                this.messageService.showMessage({ text: 'Ha ocurrido un error', type: 'error' });
+            }
+        });
     }
 
 }

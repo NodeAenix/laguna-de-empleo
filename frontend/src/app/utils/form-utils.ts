@@ -30,6 +30,8 @@ export class FormUtils {
                     }
                 case 'notBlank':
                     return 'No se admiten solo espacios';
+                case 'notFutureDate':
+                    return 'La fecha no puede ser anterior a la actual';
                 default:
                     return null;
             }
@@ -62,6 +64,13 @@ export class FormUtils {
     static notBlank(control: AbstractControl): ValidationErrors | null {
         const value = control.value;
         return (value && value.trim().length > 0 ? null : { notBlank: true });
+    }
+
+    static notFutureDate(control: AbstractControl): ValidationErrors | null {
+        const inputDate = new Date(control.value);
+        const today = new Date();
+
+        return inputDate > today ? null : { notFutureDate: true };
     }
 
 }

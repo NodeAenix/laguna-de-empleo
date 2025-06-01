@@ -39,7 +39,11 @@ export class LoginPageComponent {
                 this.router.navigate(['/']);
                 return;
             }
-            this.messageService.showMessage({ text: 'Error al iniciar sesión - Revise los datos', type: 'error' });
+            if (this.activeTab() === 'alumnos') {
+                this.messageService.showMessage({ text: 'Alumno no encontrado - Revise los datos', type: 'error' });
+            } else {
+                this.messageService.showMessage({ text: 'Empresa no encontrada - Revise los datos', type: 'error' });
+            }
         });
     }
     
