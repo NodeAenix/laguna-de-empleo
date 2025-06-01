@@ -155,7 +155,7 @@ Colección `logs_validacion`:
 ### Ofertas
 - `POST /ofertas`
 - `GET /ofertas`
-- `GET /ofertas/:id`
+- `GET /ofertas/yo`
 - `PATCH /ofertas/:id`
 - `DELETE /ofertas/:id`
 

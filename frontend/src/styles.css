@@ -18,6 +18,8 @@
     --color-header: #ee9454;
     --color-header-link: #fff;
     --color-header-link-hover: #445aa3;
+    --color-card: #dfe0ea;
+    --color-card-description: #bfc0d0;
     
     /* Tamaño de fuentes y bordes */
     --font-size: 100%; /* 16px */
@@ -53,6 +55,8 @@
     --color-header: #eb8f4e;
     --color-header-link: #eee;
     --color-header-link-hover: #445aa3;
+    --color-card: #47474a;
+    --color-card-description: #5b5b61;
 }
 
 /* Utils */
@@ -307,8 +311,48 @@ input[type="checkbox"] {
     background-color: var(--color-link);
 }
 
+.oferta-card {
+    display: flex;
+    background-color: var(--color-card);
+    border-radius: var(--border-radius);
+}
 
-/* Responsive y modo oscuro */
+.oferta-card .card-color {
+    background-color: var(--color-link);
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    width: 1rem;
+}
+
+.oferta-card .card-content {
+    padding: 1rem;
+    width: 100%;
+}
+
+.card-description {
+    padding: 1rem;
+    background-color: var(--color-card-description);
+    border-radius: var(--small-border-radius);
+}
+
+.empty-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: var(--color-card);
+    font-size: 1.25rem;
+    border-radius: var(--border-radius);
+}
+
+.empty-card svg {
+    width: 4rem;
+    height: 4rem;
+    color: var(--color-primary);
+}
+
+
+/* Responsive */
 @media (min-width: 768px) {
     :root {
         font-size: 112.5%; /* ~18px */

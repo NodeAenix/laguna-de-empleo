@@ -28,18 +28,10 @@ const getOfertas = async(req, res) => {
     res.json(ofertas);
 }
 
-const getOfertaById = async(req, res) => {
-    const id = req.params.id;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ msg: 'ID inválido' });
-    }
-
-    const oferta = await Oferta.findById(id);
-    if (!oferta) {
-        return res.status(404).json({ msg: 'Oferta no encontrada' });
-    }
-
-    res.json(oferta);
+const getOfertasFromCurrentUser = async(req, res) => {
+    const uid = req.user._id;
+    const ofertas = await Oferta.find({ empresa_id: uid });
+    res.json(ofertas);
 }
 
 const patchOferta = async(req, res) => {
@@ -81,7 +73,7 @@ const deleteOferta = async(req, res) => {
 module.exports = {
     postOferta,
     getOfertas,
-    getOfertaById,
+    getOfertasFromCurrentUser,
     patchOferta,
     deleteOferta
 }

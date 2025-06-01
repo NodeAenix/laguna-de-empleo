@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validate-fields');
-const { postOferta, getOfertas, getOfertaById, patchOferta, deleteOferta } = require('../controllers/oferta.controller');
+const { postOferta, getOfertas, getOfertasFromCurrentUser, patchOferta, deleteOferta } = require('../controllers/oferta.controller');
 const { validateJWT } = require('../middlewares/validate-jwt');
 const Empresa = require('../models/empresa');
 
@@ -22,8 +22,8 @@ router.post('/', [
 // Obtener ofertas
 router.get('/', getOfertas);
 
-// Obtener oferta por ID
-router.get('/:id', getOfertaById);
+// Obtener ofertas de la empresa actual
+router.get('/yo', validateJWT(Empresa), getOfertasFromCurrentUser);
 
 // Actualizar oferta
 router.patch('/:id', [

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { FormGroup } from '@angular/forms';
+import { Oferta } from '../interfaces/oferta.interface';
 
 @Injectable({providedIn: 'root'})
 export class OfertaService {
@@ -18,6 +19,13 @@ export class OfertaService {
             Authorization: `Bearer ${this.authService.getToken()}`
         }
         return this.http.post<any>(this.BASE_URL, payload, { headers });
+    }
+
+    getOfertas(): Observable<Oferta[]> {
+        const headers = {
+            Authorization: `Bearer ${this.authService.getToken()}`
+        }
+        return this.http.get<Oferta[]>(`${this.BASE_URL}/yo`, { headers });
     }
 
 }
