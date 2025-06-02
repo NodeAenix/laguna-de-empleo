@@ -1,10 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormUtils } from '../../../utils/form-utils';
 import { MessageService } from '../../../services/message.service';
 import { commonDatalist } from '../../../utils/datalist-options';
 import { OfertaService } from '../../../services/oferta.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
     selector: 'app-create-oferta-page',
@@ -12,12 +13,13 @@ import { Router } from '@angular/router';
     templateUrl: './create-oferta-page.component.html',
     styleUrl: './create-oferta-page.component.css'
 })
-export class CreateOfertaPageComponent {
+export class CreateOfertaPageComponent implements OnInit {
 
     private fb = inject(FormBuilder);
     private messageService = inject(MessageService);
     private ofertaService = inject(OfertaService);
     private router = inject(Router);
+    private authService = inject(AuthService);
 
     formUtils = FormUtils;
 
@@ -36,6 +38,17 @@ export class CreateOfertaPageComponent {
 
     selectedTecnologias = new Set<string>();
     selectedIdiomas = new Set<string>();
+
+    ngOnInit(): void {
+        this.authService.getCurrentUser().subscribe({
+            next: (user) => {
+                const userType = this.authService.getUserType(user);
+                if (userType === 'alumno') {
+                    this.router.navigateByUrl('/');
+                }
+            }
+        });
+    }
 
     updateTitle(inputTitle: HTMLInputElement) {
         this.title.set(inputTitle.value);

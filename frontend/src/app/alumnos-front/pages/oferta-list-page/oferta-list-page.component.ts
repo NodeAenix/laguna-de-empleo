@@ -3,6 +3,7 @@ import { OfertaService } from '../../../services/oferta.service';
 import { Oferta } from '../../../interfaces/oferta.interface';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
     selector: 'app-oferta-list-page',
@@ -13,13 +14,21 @@ import { DatePipe } from '@angular/common';
 export class OfertaListPageComponent implements OnInit {
     
     private ofertaService = inject(OfertaService);
+    private authService = inject(AuthService);
     
     ofertas = signal<Oferta[]>([]);
+    userType = signal<'alumno' | 'empresa' | null>(null);
 
     ngOnInit(): void {
         this.ofertaService.getOfertas().subscribe({
             next: (ofertas) => this.ofertas.set(ofertas),
             error: (error) => console.error(error)
+        });
+
+        this.authService.getCurrentUser().subscribe({
+            next: (user) => {
+                this.userType.set(this.authService.getUserType(user));
+            }
         });
     }
 
