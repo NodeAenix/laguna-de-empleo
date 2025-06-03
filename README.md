@@ -161,7 +161,7 @@ Colección `logs_validacion`:
 
 ### Postulaciones
 - `POST /postulaciones`
-- `GET /postulaciones/:id`
+- `GET /postulaciones/yo`
 - `PATCH /postulaciones/:id/estado`
 - `DELETE /postulaciones/:id`
 

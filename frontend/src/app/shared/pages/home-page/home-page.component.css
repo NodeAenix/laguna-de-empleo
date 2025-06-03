@@ -1,0 +1,30 @@
+.home-subtitle {
+    font-weight: 600;
+    font-style: italic;
+    font-size: 120%;
+    margin-bottom: 2rem;
+}
+
+.sign-me-up-button {
+    border: 2px solid var(--color-primary);
+    border-radius: var(--small-border-radius);
+    background-color: transparent;
+    padding: .45rem;
+    font-size: var(--small-font-size);
+    color: var(--color-text);
+    transition: all .2s ease;
+}
+
+.sign-me-up-button:hover {
+    cursor: pointer;
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.already-singend-up {
+    border: 2px solid var(--color-link);
+    border-radius: var(--small-border-radius);
+    padding: .45rem;
+    text-align: center;
+    font-size: var(--small-font-size);
+}

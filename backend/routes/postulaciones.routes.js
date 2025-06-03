@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { postPostulacion, getPostulacion, patchPostulacion, deletePostulacion } = require('../controllers/postulacion.controller');
+const { postPostulacion, getOfertasPostuladasAlumno, patchPostulacion, deletePostulacion } = require('../controllers/postulacion.controller');
 const { validateJWT } = require('../middlewares/validate-jwt');
 const Alumno = require('../models/alumno');
 const Empresa = require('../models/empresa');
@@ -15,8 +15,8 @@ router.post('/', [
     validateFields
 ], postPostulacion);
 
-// Obtener postulación por ID
-router.get('/:id', getPostulacion);
+// Obtener postulaciones del alumno actual
+router.get('/yo', validateJWT(Alumno), getOfertasPostuladasAlumno);
 
 // Actualizar el estado de una postulación
 router.patch('/:id/estado', validateJWT(Empresa), patchPostulacion);

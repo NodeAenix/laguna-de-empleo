@@ -1,11 +1,12 @@
 import { Alumno } from './alumno.interface';
 
 export interface Oferta {
+    _id:              string;
     titulo:            string;
     descripcion:       string;
     tecnologias:       string[];
     idiomas:           string[];
-    candidatos:        Alumno[];
+    candidatos:        string[];
     modalidad:         string;
     direccion:         string;
     estado:            string;

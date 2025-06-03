@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Oferta = require('../models/oferta');
-const { removeEmptyFields } = require('../helpers/utils');
+const Alumno = require('../models/alumno');
 
 const postOferta = async(req, res) => {
     const uid = req.user._id;
@@ -34,6 +34,29 @@ const getOfertasFromCurrentUser = async(req, res) => {
     res.json(ofertas);
 }
 
+const getFilteredOfertasForCurrentUser = async(req, res) => {
+    const uid = req.user._id;
+    const alumno = await Alumno.findById(uid);
+    
+    if (!alumno) {
+        return res.status(404).json({ msg: 'Alumno no encontrado' });
+    }
+
+    const tecnologiasAlumno = alumno.tecnologias || [];
+    const idiomasAlumno = alumno.idiomas || [];
+
+    const ofertas = await Oferta.find();
+    const filteredOfertas = ofertas.filter(oferta => {
+        const tecnologias = oferta.tecnologias.filter(t => tecnologiasAlumno.includes(t));
+        const idiomas = oferta.idiomas.filter(i => idiomasAlumno.includes(i));
+        const checkTecnologias = tecnologias.length >= 2;
+        const checkIdiomas = idiomasAlumno.length === 0 || idiomas;
+        return checkTecnologias && checkIdiomas;
+    });
+
+    res.json(filteredOfertas);
+}
+
 const patchOferta = async(req, res) => {
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -41,7 +64,7 @@ const patchOferta = async(req, res) => {
     }
 
     const { _id, ...resto } = req.body;
-    const updatedOferta = removeEmptyFields(resto);
+    const updatedOferta = resto;
     const oferta = await Oferta.findByIdAndUpdate(id, updatedOferta, { new: true });
 
     if (!oferta) {
@@ -74,6 +97,7 @@ module.exports = {
     postOferta,
     getOfertas,
     getOfertasFromCurrentUser,
+    getFilteredOfertasForCurrentUser,
     patchOferta,
     deleteOferta
 }

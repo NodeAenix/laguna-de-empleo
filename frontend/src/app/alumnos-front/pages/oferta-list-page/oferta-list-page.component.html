@@ -8,13 +8,24 @@
                 <div class="card-description">
                     <pre>{{ oferta.descripcion }}</pre>
                 </div>
-                <p><strong>Modalidad</strong>: {{ oferta.modalidad }}</p>
-                <p><strong>Dirección</strong>: {{ oferta.direccion }}</p>
-                <p><strong>Tecnologías</strong>: {{ oferta.tecnologias.join(', ') }}</p>
-                <p><strong>Idiomas</strong>: {{ oferta.idiomas.length > 0 ? oferta.idiomas.join(', ') : 'sin especificar' }}</p>
-                <p><strong>Fecha de publicación</strong>: {{ oferta.fecha_publicacion | date: 'dd/MM/yyyy' }}</p>
-                <p><strong>Fecha de expiración</strong>: {{ oferta.fecha_expiracion | date: 'dd/MM/yyyy' }}</p>
-                <p><strong>Candidatos:</strong> sin candidatos...</p>
+                <div class="flex-col gap-xs">
+                    <span class="flex ai-center gap-s">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 11.5A2.5 2.5 0 0 1 9.5 9A2.5 2.5 0 0 1 12 6.5A2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7"/></svg>
+                        {{ oferta.direccion }}
+                    </span>
+                    <span class="flex ai-center gap-s">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6h16v10H4m16 2a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4c-1.11 0-2 .89-2 2v10a2 2 0 0 0 2 2H0v2h24v-2z"/></svg>
+                        {{ oferta.tecnologias.join(', ') }}
+                    </span>
+                    <span class="flex ai-center gap-s">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m12.87 15.07l-2.54-2.51l.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35C8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5l3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7l1.62-4.33L19.12 17z"/></svg>
+                        {{ oferta.idiomas.length > 0 ? oferta.idiomas.join(', ') : 'sin especificar' }}
+                    </span>
+                    <span class="flex ai-center gap-s">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 7v6l5.2 3.1l.8-1.2l-4.5-2.7V7zm9 5v6h2v-6zm0 8v2h2v-2zm-2 0c-1.7 1.3-3.7 2-6 2c-5.5 0-10-4.5-10-10S6.5 2 12 2c4.8 0 8.9 3.4 9.8 8h-2.1c-.9-3.4-4-6-7.7-6c-4.4 0-8 3.6-8 8s3.6 8 8 8c2.4 0 4.5-1.1 6-2.7z"/></svg>
+                        Expira el {{ oferta.fecha_expiracion | date: 'dd/MM/yyyy' }}
+                    </span>
+                </div>
             </div>
         </div>
     } @empty {
@@ -23,7 +34,7 @@
             @if (userType() === 'empresa') {
                 <p>¡No tienes ninguna oferta! <a routerLink="/crear-oferta">Crea una aquí</a></p>
             } @else {
-                <p>¡Todvía no tienes ninguna oferta!</p>
+                <p>¡Todavía no tienes ninguna oferta!</p>
             }
         </div>
     }

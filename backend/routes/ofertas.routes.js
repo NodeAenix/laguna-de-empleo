@@ -1,9 +1,10 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validate-fields');
-const { postOferta, getOfertas, getOfertasFromCurrentUser, patchOferta, deleteOferta } = require('../controllers/oferta.controller');
+const { postOferta, getOfertas, getOfertasFromCurrentUser, patchOferta, deleteOferta, getFilteredOfertasForCurrentUser } = require('../controllers/oferta.controller');
 const { validateJWT } = require('../middlewares/validate-jwt');
 const Empresa = require('../models/empresa');
+const Alumno = require('../models/alumno');
 
 const router = Router();
 
@@ -24,6 +25,9 @@ router.get('/', getOfertas);
 
 // Obtener ofertas de la empresa actual
 router.get('/yo', validateJWT(Empresa), getOfertasFromCurrentUser);
+
+// Obtener ofertas filtradas para el alumno actual
+router.get('/filtrado', validateJWT(Alumno), getFilteredOfertasForCurrentUser);
 
 // Actualizar oferta
 router.patch('/:id', [
