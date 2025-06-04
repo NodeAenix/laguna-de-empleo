@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const { generateJWT } = require('../helpers/generateJWT');
+const Alumno = require('../models/alumno');
+const Empresa = require('../models/empresa');
 
 // Almacenamiento de "multer" (para los archivos de los CV)
 const storage = multer.diskStorage({
@@ -75,8 +77,30 @@ const checkStatus = (req, res) => {
     });
 }
 
+const getUserById = async(req, res) => {
+    const { id } = req.params;
+
+    try {
+        const alumno = await Alumno.findById(id);
+        if (alumno) {
+            return res.json({ type: 'alumno', user: alumno });
+        }
+
+        const empresa = await Empresa.findById(id);
+        if (empresa) {
+            return res.json({ type: 'empresa', user: empresa });
+        }
+
+        return res.status(404).json({ msg: 'Usuario no encontrado' });
+    } catch(error) {
+        res.status(500).json({ msg: 'Error por parte del servidor' });
+    }
+
+}
+
 module.exports = {
     registerModel,
     loginModel,
-    checkStatus
+    checkStatus,
+    getUserById
 }

@@ -20,7 +20,7 @@ const postOferta = async(req, res) => {
 }
 
 const getOfertas = async(req, res) => {
-    const ofertas = await Oferta.find();
+    const ofertas = await Oferta.find().populate('candidatos', 'nombre apellidos');
     if (!ofertas) {
         return res.status(404).json({ msg: 'No hay ofertas' });
     }
@@ -30,13 +30,13 @@ const getOfertas = async(req, res) => {
 
 const getOfertasFromCurrentUser = async(req, res) => {
     const uid = req.user._id;
-    const ofertas = await Oferta.find({ empresa_id: uid });
+    const ofertas = await Oferta.find({ empresa_id: uid }).populate('candidatos', 'nombre apellidos');
     res.json(ofertas);
 }
 
 const getFilteredOfertasForCurrentUser = async(req, res) => {
     const uid = req.user._id;
-    const alumno = await Alumno.findById(uid);
+    const alumno = await Alumno.findById(uid).populate('candidatos', 'nombre apellidos');
     
     if (!alumno) {
         return res.status(404).json({ msg: 'Alumno no encontrado' });
@@ -45,7 +45,8 @@ const getFilteredOfertasForCurrentUser = async(req, res) => {
     const tecnologiasAlumno = alumno.tecnologias || [];
     const idiomasAlumno = alumno.idiomas || [];
 
-    const ofertas = await Oferta.find();
+    // Pasamos el nombre de la empresa también en la respuesta del endpoint mediante el "populate"
+    const ofertas = await Oferta.find().populate('empresa_id', 'nombre');
     const filteredOfertas = ofertas.filter(oferta => {
         const tecnologias = oferta.tecnologias.filter(t => tecnologiasAlumno.includes(t));
         const idiomas = oferta.idiomas.filter(i => idiomasAlumno.includes(i));

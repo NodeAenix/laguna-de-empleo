@@ -6,7 +6,10 @@
             <div class="oferta-card">
                 <div class="card-color"></div>
                 <div class="card-content flex-col gap-xs">
-                    <h2>{{ oferta.titulo }}</h2>
+                    <div class="flex jc-space-between ai-center gap-xs word-break">
+                        <h2>{{ oferta.titulo }}</h2>
+                        <p>Empresa: <a [routerLink]="['/perfil', oferta.empresa_id._id]">{{ oferta.empresa_id.nombre }}</a></p>
+                    </div>
                     <p><strong>Modalidad</strong>: {{ oferta.modalidad }}</p>
                     <div class="card-description">
                         <pre>{{ oferta.descripcion }}</pre>

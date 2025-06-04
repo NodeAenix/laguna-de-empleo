@@ -1,3 +1,26 @@
-:host {
-  display: block;
+.li-margin {
+    margin-left: 1rem;
+}
+
+.candidatos-buttons {
+    border: 1px solid var(--color-text);
+    border-radius: var(--small-border-radius);
+    padding: 0 .5rem;
+    color: var(--color-text);
+    background-color: var(--color-card);
+    transition: all .2s ease;
+}
+
+.candidatos-buttons.deny:hover {
+    cursor: pointer;
+    color: var(--color-text-opposite);
+    border-color: var(--error-color);
+    background-color: var(--error-color);
+}
+
+.candidatos-buttons.mark-read:hover {
+    cursor: pointer;
+    color: var(--color-text-opposite);
+    border-color: var(--info-color);
+    background-color: var(--info-color);
 }

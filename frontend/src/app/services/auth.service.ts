@@ -5,6 +5,7 @@ import { Alumno } from '../interfaces/alumno.interface';
 import { Empresa } from '../interfaces/empresa.interface';
 import { AuthResponse } from '../interfaces/auth-response.interface';
 import { environment } from '../../environments/environment';
+import { User } from '../interfaces/user.interface';
 
 type AuthStatus = 'checking' | 'authenticated' | 'not-authenticated';
 
@@ -79,6 +80,10 @@ export class AuthService {
             return null;
         }
         return 'razon_social' in user ? 'empresa' : 'alumno';
+    }
+
+    getUserById(id: string): Observable<User> {
+        return this.http.get<User>(`${this.BASE_URL}/user/${id}`);
     }
 
     logout() {

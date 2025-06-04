@@ -3,6 +3,7 @@ const { Schema, model } = require('mongoose');
 const OfertaSchema = Schema({
     empresa_id: {
         type: Schema.Types.ObjectId,
+        ref: 'Empresa'
     },
     titulo: {
         type: String,
@@ -39,7 +40,8 @@ const OfertaSchema = Schema({
         default: 'disponible'
     },
     candidatos: {
-        type: [Schema.Types.ObjectId]
+        type: [Schema.Types.ObjectId],
+        ref: 'Alumno'
     }
 });
 

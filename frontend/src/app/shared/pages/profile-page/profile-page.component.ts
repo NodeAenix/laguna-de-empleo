@@ -1,7 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
 import { Alumno } from '../../../interfaces/alumno.interface';
 import { Empresa } from '../../../interfaces/empresa.interface';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
     selector: 'app-profile-page',
@@ -11,6 +12,7 @@ import { Empresa } from '../../../interfaces/empresa.interface';
 })
 export class ProfilePageComponent implements OnInit {
     
+    private route = inject(ActivatedRoute);
     private authService = inject(AuthService);
 
     alumnoUser = signal<Alumno | null>(null);
@@ -18,15 +20,18 @@ export class ProfilePageComponent implements OnInit {
     userType = signal<'alumno' | 'empresa' | null>(null);
 
     ngOnInit(): void {
-        this.authService.getCurrentUser().subscribe({
-            next: (user) => {
-                this.userType.set(this.authService.getUserType(user));
-                if (this.userType() === 'alumno') {
-                    this.alumnoUser.set(user as Alumno);
-                } else if (this.userType() === 'empresa') {
-                    this.empresaUser.set(user as Empresa);
+        this.route.paramMap.subscribe(params => {
+            const userId = params.get('id')!;
+            this.authService.getUserById(userId).subscribe({
+                next: ({ type, user }) => {
+                    this.userType.set(type);
+                    if (type === 'alumno') {
+                        this.alumnoUser.set(user as Alumno);
+                    } else if (type === 'empresa') {
+                        this.empresaUser.set(user as Empresa);
+                    }
                 }
-            }
+            });
         });
     }
 

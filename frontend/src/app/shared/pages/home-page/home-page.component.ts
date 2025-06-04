@@ -2,16 +2,16 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Alumno } from '../../../interfaces/alumno.interface';
 import { Empresa } from '../../../interfaces/empresa.interface';
-import { Oferta } from '../../../interfaces/oferta.interface';
+import { Oferta, OfertaFiltered } from '../../../interfaces/oferta.interface';
 import { OfertaService } from '../../../services/oferta.service';
 import { DatePipe } from '@angular/common';
 import { PostulacionService } from '../../../services/postulacion.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MessageService } from '../../../services/message.service';
 
 @Component({
     selector: 'app-home-page',
-    imports: [DatePipe],
+    imports: [DatePipe, RouterLink],
     templateUrl: './home-page.component.html',
     styleUrl: './home-page.component.css'
 })
@@ -26,7 +26,7 @@ export class HomePageComponent implements OnInit {
     userType = signal<'alumno' | 'empresa' | null>(null);
     alumnoUser = signal<Alumno | null>(null);
     empresaUser = signal< Empresa | null>(null);
-    ofertas = signal<Oferta[]>([]);
+    ofertas = signal<OfertaFiltered[]>([]);
 
     ngOnInit(): void {
         this.authService.getCurrentUser().subscribe({
@@ -37,6 +37,7 @@ export class HomePageComponent implements OnInit {
                     this.ofertaService.getFilteredOfertas().subscribe({
                         next: (ofertas) => {
                             this.ofertas.set(ofertas);
+                            console.log(ofertas);
                         }
                     });
                 } else if (this.userType() === 'empresa') {

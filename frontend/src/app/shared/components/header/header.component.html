@@ -5,10 +5,10 @@
             <ul>
                 <li><a [routerLink]="['/']" routerLinkActive="link-active" [routerLinkActiveOptions]="{ exact: true }" class="header-link">INICIO</a></li>
                 <li><a [routerLink]="['/ofertas']" routerLinkActive="link-active" class="header-link">MIS OFERTAS</a></li>
-                @if (type === 'empresa') {
+                @if (type() === 'empresa') {
                     <li><a [routerLink]="['/crear-oferta']" routerLinkActive="link-active" class="header-link">CREAR OFERTA</a></li>
                 }
-                <li><a [routerLink]="['/perfil']" routerLinkActive="link-active" class="header-link">PERFIL</a></li>
+                <li><a [routerLink]="['/perfil', userId()]" routerLinkActive="link-active" class="header-link">PERFIL</a></li>
                 <li><a [routerLink]="['/ajustes']" routerLinkActive="link-active" class="header-link">AJUSTES</a></li>
             </ul>
         </nav>

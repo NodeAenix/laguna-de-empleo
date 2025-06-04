@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { registerModel, loginModel, checkStatus } = require('../controllers/auth.controller');
+const { registerModel, loginModel, checkStatus, getUserById } = require('../controllers/auth.controller');
 const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validate-fields');
 const { alumnoEmailExists, empresaEmailExists, validateNif } = require('../helpers/db-validators');
@@ -72,5 +72,8 @@ router.post('/login-admin', [
 
 // Check status
 router.get('/check-status', validateJWT(null), checkStatus);
+
+// Obtener usuario por id
+router.get('/user/:id', getUserById);
 
 module.exports = router;
