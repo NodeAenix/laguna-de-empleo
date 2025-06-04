@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray, FormGroup, ValidationErrors } from "@angular/forms";
+import { AbstractControl, FormArray, FormGroup, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 export class FormUtils {
 
@@ -71,6 +71,14 @@ export class FormUtils {
         const today = new Date();
 
         return inputDate > today ? null : { notFutureDate: true };
+    }
+
+    static passwordMatchValidatorFn(passwordKey: string, confirmPasswordKey: string): ValidatorFn {
+        return (formGroup: AbstractControl): ValidationErrors | null => {
+            const password = formGroup.get(passwordKey)?.value;
+            const confirmPassword = formGroup.get(confirmPasswordKey)?.value;
+            return password === confirmPassword ? null : { passwordMismatch: true };
+        }
     }
 
 }

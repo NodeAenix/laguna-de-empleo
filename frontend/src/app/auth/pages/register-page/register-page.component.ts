@@ -4,6 +4,7 @@ import { AuthService } from '../../../services/auth.service';
 import { MessageService } from '../../../services/message.service';
 import { Router, RouterLink } from '@angular/router';
 import { FormUtils } from '../../../utils/form-utils';
+import { commonDatalist } from '../../../utils/datalist-options';
 
 @Component({
     selector: 'app-register-page',
@@ -25,6 +26,7 @@ export class RegisterPageComponent {
         nif: ['', Validators.required],
         email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
         password: ['', [Validators.required, Validators.pattern(FormUtils.passwordPattern)]],
+        confirm_password: ['', [Validators.required, Validators.pattern(FormUtils.passwordPattern)]],
         nombre: ['', [Validators.required, FormUtils.notBlank]],
         apellidos: ['', [Validators.required, FormUtils.notBlank]],
         telefono: ['', [Validators.required, Validators.pattern(FormUtils.phonePattern)]],
@@ -32,6 +34,8 @@ export class RegisterPageComponent {
         tecnologias: this.fb.array<FormControl<string>>([], Validators.required),
         idiomas: this.fb.array<FormControl<string>>([], Validators.required),
         cv: ['']
+    }, {
+        validators: FormUtils.passwordMatchValidatorFn('password', 'confirm_password')
     });
 
     alumnoFieldKeys = Object.keys(this.alumnoForm.controls);
@@ -40,6 +44,7 @@ export class RegisterPageComponent {
         nif: 'NIF',
         email: 'Email',
         password: 'Contraseña',
+        confirm_password: 'Confirmar contraseña',
         nombre: 'Nombre',
         apellidos: 'Apellidos',
         telefono: 'Teléfono',
@@ -49,63 +54,22 @@ export class RegisterPageComponent {
         cv: 'CV',
     };
 
-    alumnoDatalistLabels: Record<string, string[]> = {
-        ciclos_formativos: [
-            'Desarrollo de Aplicaciones Multiplataforma',
-            'Desarrollo de Aplicaciones Web',
-            'Administración de Sistemas Microinformáticos y Redes'
-        ],
-        tecnologias: [
-            'Java',
-            'SpringBoot',
-            'Git',
-            'SQL',
-            'PL/SQL',
-            'MongoDB',
-            'React',
-            'NodeJS',
-            'Angular',
-            'C++',
-            'Python',
-            'C#',
-            '.NET',
-            'PHP',
-            'Bootstrap',
-            'Odoo',
-            'Android Studio',
-            'Flutter',
-            'Linux',
-            'Windows Server',
-            'Wireshark',
-            'Docker',
-            'Virtualización',
-            'Bash',
-            'Powershell',
-            'Kubernetes'
-        ],
-        idiomas: [
-            'Inglés',
-            'Francés',
-            'Alemán',
-            'Chino',
-            'Japonés',
-            'Italiano',
-            'Ruso',
-            'Catalán'
-        ]
-    }
+    alumnoDatalistLabels = commonDatalist;
 
     // Formulario de la empresa
     empresaForm = this.fb.group({
         cif: ['', Validators.required],
         email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
         password: ['', [Validators.required, Validators.pattern(FormUtils.passwordPattern)]],
+        confirm_password: ['', [Validators.required, Validators.pattern(FormUtils.passwordPattern)]],
         nombre: ['', [Validators.required, FormUtils.notBlank]],
         razon_social: ['', [Validators.required, FormUtils.notBlank]],
         direccion_fiscal: ['', [Validators.required, FormUtils.notBlank]],
         persona_contacto: ['', [Validators.required, FormUtils.notBlank]],
         telefono: ['', [Validators.required, Validators.pattern(FormUtils.phonePattern)]],
         descripcion: ['', [Validators.required, FormUtils.notBlank]]
+    }, {
+        validators: FormUtils.passwordMatchValidatorFn('password', 'confirm_password')
     });
 
     empresaFieldKeys = Object.keys(this.empresaForm.controls);
@@ -114,6 +78,7 @@ export class RegisterPageComponent {
         cif: 'CIF',
         email: 'Email',
         password: 'Contraseña',
+        confirm_password: 'Confirmar contraseña',
         nombre: 'Nombre',
         razon_social: 'Razón Social',
         direccion_fiscal: 'Dirección Fiscal',
@@ -153,25 +118,29 @@ export class RegisterPageComponent {
         const type = this.activeTab();
         const form = this.currentForm();
 
+        if (form.errors?.['passwordMismatch']) {
+            this.messageService.showMessage({ text: 'Las contraseñas no coinciden', type: 'error' });
+            return;
+        }
+
         if (form.invalid) {
             form.markAllAsTouched();
             this.messageService.showMessage({ text: 'Por favor, revise los datos', type: 'error' });
             return;
         }
 
-        console.log('bruh', form.value);
         this.authService.register(type, form.value).subscribe({
             next: (response) => {
                 if (response.success) {
                     this.messageService.showMessage({ text: '¡Usuario registrado con éxito!', type: 'success' });
                     this.router.navigateByUrl('/iniciar-sesion');
                 } else {
-                    this.messageService.showMessage({ text: 'Error al hacer el registro', type: 'error' });
+                    this.messageService.showMessage({ text: 'Error al hacer el registro. Revise los datos', type: 'error' });
                 }
             },
             error: (error) => {
                 console.log(error);
-                this.messageService.showMessage({ text: 'Error al hacer el registro', type: 'error' });
+                this.messageService.showMessage({ text: 'Error al hacer el registro. Revise los datos', type: 'error' });
             }
         });
     }

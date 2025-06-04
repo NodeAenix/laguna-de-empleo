@@ -16,7 +16,7 @@ const upload = multer({ storage });
 
 // Endpoints
 const registerModel = (Model) => async(req, res) => {
-    const body = req.body;
+    const { body } = req.body;
 
     try {
         const modelExists = await Model.findOne({ email: body.email });
