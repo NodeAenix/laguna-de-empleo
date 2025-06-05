@@ -34,6 +34,7 @@ const OfertaSchema = Schema({
     },
     fecha_expiracion: {
         type: Date,
+        required: [true, 'La fecha de expiración es obligatoria']
     },
     estado: {
         type: String,

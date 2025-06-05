@@ -24,3 +24,30 @@
     border-color: var(--info-color);
     background-color: var(--info-color);
 }
+
+.p-estado, .p-estado-red {
+    background-color: var(--color-bg);
+    border-radius: var(--small-border-radius);
+    font-size: var(--small-font-size);
+    padding: 0 .5rem;
+}
+
+.p-estado {
+    color: var(--info-color);
+}
+
+.p-estado-red {
+    color: var(--error-color);
+}
+
+.remove-oferta svg {
+    color: var(--error-color);
+    width: 1.5rem;
+    height: 1.5rem;
+    transition: all .2s ease;
+}
+
+.remove-oferta svg:hover {
+    cursor: pointer;
+    filter: brightness(1.2);
+}

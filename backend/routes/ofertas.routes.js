@@ -30,14 +30,9 @@ router.get('/yo', validateJWT(Empresa), getOfertasFromCurrentUser);
 router.get('/filtrado', validateJWT(Alumno), getFilteredOfertasForCurrentUser);
 
 // Actualizar oferta
-router.patch('/:id', [
-    check('titulo').optional({ values: [null, ''] }),
-    check('descripcion').optional({ values: [null, ''] }),
-    check('tecnologias').optional({ values: [null, ''] }),
-    check('idiomas').optional({ values: [null, ''] }),
-    check('modalidad').optional({ values: [null, ''] }),
-    check('direccion').optional({ values: [null, ''] }),
-    validateJWT(Empresa),
+router.patch('/', [
+    check('estado', 'El estado es obligatorio').notEmpty(),
+    validateJWT(null),
     validateFields
 ], patchOferta);
 

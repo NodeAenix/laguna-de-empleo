@@ -4,7 +4,14 @@
         <div class="oferta-card">
             <div class="card-color"></div>
             <div class="card-content flex-col gap-xs">
-                <h2>{{ oferta.titulo }}</h2>
+                <div class="flex jc-space-between ai-center gap-xs word-break">
+                    <h2>{{ oferta.titulo }}</h2>
+                    @if (userType() === 'empresa') {
+                        <span class="remove-oferta">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12S6.47 2 12 2m3.59 5L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41z"/></svg>
+                        </span>
+                    }
+                </div>
                 <div class="card-description">
                     <pre>{{ oferta.descripcion }}</pre>
                 </div>
@@ -25,10 +32,29 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 7v6l5.2 3.1l.8-1.2l-4.5-2.7V7zm9 5v6h2v-6zm0 8v2h2v-2zm-2 0c-1.7 1.3-3.7 2-6 2c-5.5 0-10-4.5-10-10S6.5 2 12 2c4.8 0 8.9 3.4 9.8 8h-2.1c-.9-3.4-4-6-7.7-6c-4.4 0-8 3.6-8 8s3.6 8 8 8c2.4 0 4.5-1.1 6-2.7z"/></svg>
                         Expira el {{ oferta.fecha_expiracion | date: 'dd/MM/yyyy' }}
                     </span>
+                    <span class="flex ai-center gap-s">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 5c3.87 0 7 3.13 7 7s-3.13 7-7 7s-7-3.13-7-7s3.13-7 7-7m0-3c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12S6.5 2 12 2m0 2c-4.42 0-8 3.58-8 8s3.58 8 8 8s8-3.58 8-8s-3.58-8-8-8"/></svg>
+                        <p><strong>Estado:</strong> {{ oferta.estado }}</p>
+                    </span>
 
                     @if (userType() === 'alumno') {
-                        <p><strong>Estado de la oferta:</strong> {{ oferta.estado }}</p>
-                        <p class="grey-info">En caso de que la empresa de acepte o te rechace, te aparecerá aquí.</p>
+                        @if (getEstadoPostulacion(oferta.postulaciones, alumnoUser()!._id, oferta._id) === 'visto') {
+                            <span class="flex ai-center gap-s">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
+                                <p class="p-estado">Tu postulación ha sido marcada como vista</p>
+                            </span>
+                        } @else if (getEstadoPostulacion(oferta.postulaciones, alumnoUser()!._id, oferta._id) === 'rechazado') {
+                            <span class="flex ai-center gap-s">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-3.4 14L12 13.4L8.4 17L7 15.6l3.6-3.6L7 8.4L8.4 7l3.6 3.6L15.6 7L17 8.4L13.4 12l3.6 3.6z"/></svg>
+                                <p class="p-estado-red">Vaya... Tu postulación ha sido rechazada</p>
+                            </span>
+                        } @else {
+                            @if (oferta.estado === 'disponible') {
+                                <p class="grey-info">En caso de que la empresa de acepte o te rechace, te aparecerá aquí.</p>
+                            } @else {
+                                <p class="grey-info">¡Vaya! Esta oferta ya ha expirado...</p>
+                            }
+                        }
                     }
 
                     @if (userType() === 'empresa') {
@@ -37,8 +63,18 @@
                             @for (candidato of oferta.candidatos; track $index) {
                                 <li class="li-margin mb-1">
                                     <div class="flex gap-xs">
-                                        <button type="button" class="candidatos-buttons deny">Rechazar</button>
-                                        <button type="button" class="candidatos-buttons mark-read">Marcar como visto</button>
+                                        @if (getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) === 'postulado') {
+                                            <button type="button" (click)="denyCandidato(candidato._id, oferta._id)" class="candidatos-buttons deny">Rechazar</button>
+                                            <button type="button" (click)="markCandidatoAsRead(candidato._id, oferta._id)" class="candidatos-buttons mark-read">Marcar como visto</button>
+                                        } @else if (getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) === 'visto') {
+                                            <p class="p-estado flex ai-center">
+                                                {{ getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) }}
+                                            </p>
+                                        } @else {
+                                            <p class="p-estado-red flex ai-center">
+                                                {{ getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) }}
+                                            </p>
+                                        }
                                         <a [routerLink]="['/perfil', candidato._id]">{{ `${candidato.nombre} ${candidato.apellidos}` }}</a>
                                     </div>
                                 </li>

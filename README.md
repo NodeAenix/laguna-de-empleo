@@ -109,7 +109,7 @@ Colección `ofertas`:
 - `dirección`: dirección en donde se realizará el trabajo (a no ser que sea enteramente presencial).
 - `fecha_publicacion`: fecha de publicación de la oferta.
 - `fecha_expiracion`: fecha de expiración de la oferta.
-- `estado`: disponible o terminada.
+- `estado`: disponible o expirado.
 - `candidatos`: lista de los identificadores de los candidatos que se postulan en la oferta.
 
 Colección `postulaciones`:
@@ -117,7 +117,7 @@ Colección `postulaciones`:
 - `alumno_id`: identificador del alumno candidato.
 - `oferta_id`: identificador de la oferta.
 - `fecha_postulacion`: fecha en la que el alumno se ha postulado.
-- `estado`: postulado (cuando el alumno se postula en la oferta), visto (cuando la empresa marca que ha visto la candidatura del alumno), aceptado (si la empresa lo acepta), rechazado (si aceptan a otro candidato) o cancelado (si el alumno cancela su postulación).
+- `estado`: postulado (cuando el alumno se postula en la oferta), visto (cuando la empresa marca que ha visto la candidatura del alumno) o rechazado (si la empresa rechaza el alumno).
 
 ### Colecciones adicionales
 Al disponer de usuarios administradores, también se dispone de la siguiente colección.
@@ -156,7 +156,7 @@ Colección `logs_validacion`:
 - `POST /ofertas`
 - `GET /ofertas`
 - `GET /ofertas/yo`
-- `PATCH /ofertas/:id`
+- `PATCH /ofertas`
 - `DELETE /ofertas/:id`
 
 ### Postulaciones

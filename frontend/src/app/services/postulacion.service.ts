@@ -3,7 +3,6 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { Postulacion } from '../interfaces/postulacion.interface';
 import { Oferta } from '../interfaces/oferta.interface';
 
 @Injectable({providedIn: 'root'})
@@ -26,6 +25,13 @@ export class PostulacionService {
             Authorization: `Bearer ${this.authService.getToken()}`
         }
         return this.http.get<Oferta[]>(`${this.BASE_URL}/yo`, { headers });
+    }
+
+    patchEstadoPostulacion(payload: { alumnoId: string, ofertaId: string, estado: 'visto' | 'rechazado' }): Observable<any> {
+        const headers = {
+            Authorization: `Bearer ${this.authService.getToken()}`
+        }
+        return this.http.patch<any>(`${this.BASE_URL}/estado`, payload, { headers });
     }
     
 }

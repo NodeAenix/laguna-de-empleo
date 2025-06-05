@@ -35,24 +35,22 @@ const getOfertasPostuladasAlumno = async(req, res) => {
     const postulaciones = await Postulacion.find({ alumno_id: uid });
     const ofertaIds = postulaciones.map(p => p.oferta_id);
     const ofertas = await Oferta.find({ _id: { $in: ofertaIds } });
+    const ofertasWithEstado = ofertas.map(oferta => {
+        const postulacionList = postulaciones.filter(p => p.oferta_id.toString() === oferta._id.toString());
+        return { ...oferta.toObject(), postulaciones: postulacionList }
+    });
 
-    res.json(ofertas);
+    res.json(ofertasWithEstado);
 }
 
 const patchPostulacion = async(req, res) => {
-    const id = req.params.id;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ msg: 'ID inválido' });
-    }
+    const { alumnoId, ofertaId, estado } = req.body;
     
-    const postulacion = await Postulacion.findById(id);
-    if (!postulacion) {
-        return res.status(404).json({ msg: 'Postulación no encontrada' });
-    }
-    
-    const { estado } = req.body;
-    postulacion.estado = estado;
-    postulacion.save();
+    const postulacion = await Postulacion.findOneAndUpdate(
+        { alumno_id: alumnoId, oferta_id: ofertaId },
+        { estado: estado },
+        { new: true }
+    );
 
     res.json(postulacion);
 }

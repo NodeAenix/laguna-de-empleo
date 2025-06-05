@@ -40,9 +40,9 @@ export class LoginPageComponent {
                 return;
             }
             if (this.activeTab() === 'alumnos') {
-                this.messageService.showMessage({ text: 'Alumno no encontrado - Revise los datos', type: 'error' });
+                this.messageService.showMessage({ text: 'Alumno error - Revise los datos', type: 'error' });
             } else {
-                this.messageService.showMessage({ text: 'Empresa no encontrada - Revise los datos', type: 'error' });
+                this.messageService.showMessage({ text: 'Empresa error - Revise los datos', type: 'error' });
             }
         });
     }

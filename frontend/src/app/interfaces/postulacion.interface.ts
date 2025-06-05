@@ -3,5 +3,5 @@ export interface Postulacion {
     alumno_id:          string;
     oferta_id:          string;
     fecha_postulacion:  Date;
-    estado:             string;
+    estado:             'postulado' | 'visto' | 'rechazado';
 }

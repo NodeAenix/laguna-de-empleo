@@ -19,7 +19,7 @@ router.post('/', [
 router.get('/yo', validateJWT(Alumno), getOfertasPostuladasAlumno);
 
 // Actualizar el estado de una postulación
-router.patch('/:id/estado', validateJWT(Empresa), patchPostulacion);
+router.patch('/estado', validateJWT(Empresa), patchPostulacion);
 
 // Borrar postulación
 router.delete('/:id', validateJWT(Alumno), deletePostulacion);

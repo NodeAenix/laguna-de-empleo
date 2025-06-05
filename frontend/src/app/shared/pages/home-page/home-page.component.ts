@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Alumno } from '../../../interfaces/alumno.interface';
 import { Empresa } from '../../../interfaces/empresa.interface';
-import { Oferta, OfertaFiltered } from '../../../interfaces/oferta.interface';
+import { Candidato, OfertaFiltered } from '../../../interfaces/oferta.interface';
 import { OfertaService } from '../../../services/oferta.service';
 import { DatePipe } from '@angular/common';
 import { PostulacionService } from '../../../services/postulacion.service';
@@ -36,8 +36,9 @@ export class HomePageComponent implements OnInit {
                     this.alumnoUser.set(user as Alumno);
                     this.ofertaService.getFilteredOfertas().subscribe({
                         next: (ofertas) => {
-                            this.ofertas.set(ofertas);
-                            console.log(ofertas);
+                            const now = new Date();
+                            const ofertasDisponibles = ofertas.filter(o => new Date(o.fecha_expiracion) >= now);
+                            this.ofertas.set(ofertasDisponibles);
                         }
                     });
                 } else if (this.userType() === 'empresa') {
@@ -47,7 +48,7 @@ export class HomePageComponent implements OnInit {
         });
     }
 
-    isPostulado(candidatos: [{ _id: string, nombre: string, apellidos: string }]) {
+    isPostulado(candidatos: Candidato[]) {
         const alumno = this.alumnoUser();
         if (!alumno) {
             return false;

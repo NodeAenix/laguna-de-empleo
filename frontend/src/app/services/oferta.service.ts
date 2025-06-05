@@ -3,7 +3,6 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
-import { FormGroup } from '@angular/forms';
 import { Oferta, OfertaFiltered } from '../interfaces/oferta.interface';
 
 @Injectable({providedIn: 'root'})
@@ -33,6 +32,13 @@ export class OfertaService {
             Authorization: `Bearer ${this.authService.getToken()}`
         }
         return this.http.get<OfertaFiltered[]>(`${this.BASE_URL}/filtrado`, { headers });
+    }
+
+    patchEstadoOferta(payload: { id: string, estado: string }): Observable<any> {
+        const headers = {
+            Authorization: `Bearer ${this.authService.getToken()}`
+        }
+        return this.http.patch<any>(this.BASE_URL, payload, { headers });
     }
 
 }
