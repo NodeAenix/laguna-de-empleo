@@ -47,12 +47,12 @@ export class HomePageComponent implements OnInit {
         });
     }
 
-    isPostulado(candidatos: string[]) {
+    isPostulado(candidatos: [{ _id: string, nombre: string, apellidos: string }]) {
         const alumno = this.alumnoUser();
         if (!alumno) {
             return false;
         }
-        return candidatos.includes(alumno._id);
+        return candidatos.some(c => c._id === alumno._id);
     }
 
     signUpToOferta(ofertaId: string) {
