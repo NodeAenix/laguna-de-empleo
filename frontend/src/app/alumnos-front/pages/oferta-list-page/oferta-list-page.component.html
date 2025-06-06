@@ -74,7 +74,7 @@
     
                         @if (userType() === 'empresa') {
                             <details>
-                                <summary class="cursor-pointer">Candidatos</summary>
+                                <summary class="cursor-pointer">Candidatos <span class="grey-info">({{ oferta.candidatos.length }})</span></summary>
                                 <ul>
                                     @for (candidato of oferta.candidatos; track $index) {
                                         <li class="li-margin mb-1">

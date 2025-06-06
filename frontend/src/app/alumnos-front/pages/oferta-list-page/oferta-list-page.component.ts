@@ -78,7 +78,6 @@ export class OfertaListPageComponent implements OnInit {
     }
 
     getEstadoPostulacion(postulaciones: Postulacion[], alumnoId: string, ofertaId: string): string {
-        console.log('postulaciones:', postulaciones);
         const postulacion = postulaciones.find(p =>
             p.alumno_id === alumnoId && p.oferta_id === ofertaId
         );

@@ -28,7 +28,7 @@ export interface OfertaFiltered {
     descripcion:       string;
     tecnologias:       string[];
     idiomas:           string[];
-    candidatos:        Candidato[];
+    candidatos:        string[];
     modalidad:         string;
     direccion:         string;
     estado:            string;

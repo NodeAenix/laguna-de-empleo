@@ -37,7 +37,10 @@ export class HomePageComponent implements OnInit {
                     this.ofertaService.getFilteredOfertas().subscribe({
                         next: (ofertas) => {
                             const now = new Date();
-                            const ofertasDisponibles = ofertas.filter(o => new Date(o.fecha_expiracion) >= now);
+                            const ofertasDisponibles = ofertas.filter(
+                                o => new Date(o.fecha_expiracion) >= now
+                                && !this.isPostulado(o.candidatos)
+                            );
                             this.ofertas.set(ofertasDisponibles);
                         }
                     });
@@ -48,12 +51,12 @@ export class HomePageComponent implements OnInit {
         });
     }
 
-    isPostulado(candidatos: Candidato[]) {
+    isPostulado(candidatos: string[]) {
         const alumno = this.alumnoUser();
         if (!alumno) {
             return false;
         }
-        return candidatos.some(c => c._id === alumno._id);
+        return candidatos.some(id => id === alumno._id);
     }
 
     signUpToOferta(ofertaId: string) {
