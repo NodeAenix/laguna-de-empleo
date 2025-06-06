@@ -41,4 +41,11 @@ export class OfertaService {
         return this.http.patch<any>(this.BASE_URL, payload, { headers });
     }
 
+    deleteOferta(id: string): Observable<any> {
+        const headers = {
+            Authorization: `Bearer ${this.authService.getToken()}`
+        }
+        return this.http.delete<any>(`${this.BASE_URL}/${id}`, { headers });
+    }
+
 }

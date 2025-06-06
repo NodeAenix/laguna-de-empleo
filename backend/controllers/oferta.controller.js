@@ -46,7 +46,7 @@ const getOfertasFromCurrentUser = async(req, res) => {
 
 const getFilteredOfertasForCurrentUser = async(req, res) => {
     const uid = req.user._id;
-    const alumno = await Alumno.findById(uid).populate('candidatos', 'nombre apellidos');
+    const alumno = await Alumno.findById(uid);
     
     if (!alumno) {
         return res.status(404).json({ msg: 'Alumno no encontrado' });
@@ -91,6 +91,9 @@ const deleteOferta = async(req, res) => {
         if (!oferta) {
             return res.status(404).json({ msg: 'Oferta no encontrada' });
         }
+
+        // Borramos también cualquier postulación que tenía asociada esta oferta
+        await Postulacion.deleteMany({ oferta_id: id });
     
         res.json({ msg: 'Oferta borrada con éxito' });
     } catch (error) {

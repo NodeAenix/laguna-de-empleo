@@ -1,97 +1,117 @@
 <div class="container">
     <h1 class="text-center mb-2">Tus ofertas</h1>
-    @for (oferta of ofertas(); track $index) {
-        <div class="oferta-card">
-            <div class="card-color"></div>
-            <div class="card-content flex-col gap-xs">
-                <div class="flex jc-space-between ai-center gap-xs word-break">
-                    <h2>{{ oferta.titulo }}</h2>
-                    @if (userType() === 'empresa') {
-                        <span class="remove-oferta">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12S6.47 2 12 2m3.59 5L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41z"/></svg>
-                        </span>
-                    }
-                </div>
-                <div class="card-description">
-                    <pre>{{ oferta.descripcion }}</pre>
-                </div>
-                <div class="flex-col gap-xs">
-                    <span class="flex ai-center gap-s">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 11.5A2.5 2.5 0 0 1 9.5 9A2.5 2.5 0 0 1 12 6.5A2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7"/></svg>
-                        {{ oferta.direccion }}
-                    </span>
-                    <span class="flex ai-center gap-s">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6h16v10H4m16 2a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4c-1.11 0-2 .89-2 2v10a2 2 0 0 0 2 2H0v2h24v-2z"/></svg>
-                        {{ oferta.tecnologias.join(', ') }}
-                    </span>
-                    <span class="flex ai-center gap-s">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m12.87 15.07l-2.54-2.51l.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35C8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5l3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7l1.62-4.33L19.12 17z"/></svg>
-                        {{ oferta.idiomas.length > 0 ? oferta.idiomas.join(', ') : 'sin especificar' }}
-                    </span>
-                    <span class="flex ai-center gap-s">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 7v6l5.2 3.1l.8-1.2l-4.5-2.7V7zm9 5v6h2v-6zm0 8v2h2v-2zm-2 0c-1.7 1.3-3.7 2-6 2c-5.5 0-10-4.5-10-10S6.5 2 12 2c4.8 0 8.9 3.4 9.8 8h-2.1c-.9-3.4-4-6-7.7-6c-4.4 0-8 3.6-8 8s3.6 8 8 8c2.4 0 4.5-1.1 6-2.7z"/></svg>
-                        Expira el {{ oferta.fecha_expiracion | date: 'dd/MM/yyyy' }}
-                    </span>
-                    <span class="flex ai-center gap-s">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 5c3.87 0 7 3.13 7 7s-3.13 7-7 7s-7-3.13-7-7s3.13-7 7-7m0-3c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12S6.5 2 12 2m0 2c-4.42 0-8 3.58-8 8s3.58 8 8 8s8-3.58 8-8s-3.58-8-8-8"/></svg>
-                        <p><strong>Estado:</strong> {{ oferta.estado }}</p>
-                    </span>
-
-                    @if (userType() === 'alumno') {
-                        @if (getEstadoPostulacion(oferta.postulaciones, alumnoUser()!._id, oferta._id) === 'visto') {
-                            <span class="flex ai-center gap-s">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
-                                <p class="p-estado">Tu postulación ha sido marcada como vista</p>
-                            </span>
-                        } @else if (getEstadoPostulacion(oferta.postulaciones, alumnoUser()!._id, oferta._id) === 'rechazado') {
-                            <span class="flex ai-center gap-s">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-3.4 14L12 13.4L8.4 17L7 15.6l3.6-3.6L7 8.4L8.4 7l3.6 3.6L15.6 7L17 8.4L13.4 12l3.6 3.6z"/></svg>
-                                <p class="p-estado-red">Vaya... Tu postulación ha sido rechazada</p>
-                            </span>
-                        } @else {
-                            @if (oferta.estado === 'disponible') {
-                                <p class="grey-info">En caso de que la empresa de acepte o te rechace, te aparecerá aquí.</p>
-                            } @else {
-                                <p class="grey-info">¡Vaya! Esta oferta ya ha expirado...</p>
-                            }
-                        }
-                    }
-
-                    @if (userType() === 'empresa') {
-                        <p><strong>Candidatos: </strong></p>
-                        <ul>
-                            @for (candidato of oferta.candidatos; track $index) {
-                                <li class="li-margin mb-1">
-                                    <div class="flex gap-xs">
-                                        @if (getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) === 'postulado') {
-                                            <button type="button" (click)="denyCandidato(candidato._id, oferta._id)" class="candidatos-buttons deny">Rechazar</button>
-                                            <button type="button" (click)="markCandidatoAsRead(candidato._id, oferta._id)" class="candidatos-buttons mark-read">Marcar como visto</button>
-                                        } @else if (getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) === 'visto') {
-                                            <p class="p-estado flex ai-center">
-                                                {{ getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) }}
-                                            </p>
-                                        } @else {
-                                            <p class="p-estado-red flex ai-center">
-                                                {{ getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) }}
-                                            </p>
-                                        }
-                                        <a [routerLink]="['/perfil', candidato._id]">{{ `${candidato.nombre} ${candidato.apellidos}` }}</a>
-                                    </div>
-                                </li>
-                            }
-                        </ul>
-                    }
+    <div class="flex-col gap-l">
+        <!-- Popup de confirmar borrado -->
+        @if (showDeletePopup()) {
+            <div class="popup-overlay flex jc-center ai-center">
+                <div class="delete-popup flex-col gap-m">
+                    <p>¿Estás seguro de que quieres eliminar esta oferta?</p>
+                    <div class="flex gap-xs">
+                        <button type="button" (click)="removeSelectedOferta()" class="delete-btn">Eliminar</button>
+                        <button type="button" (click)="showDeletePopup.set(false)" class="cancel-btn">Cancelar</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    } @empty {
-        <div class="empty-card">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21.86 12.5A4.3 4.3 0 0 0 19 11c0-1.95-.68-3.6-2.04-4.96S13.95 4 12 4c-1.58 0-3 .47-4.25 1.43s-2.08 2.19-2.5 3.72c-1.25.28-2.29.93-3.08 1.95S1 13.28 1 14.58c0 1.51.54 2.8 1.61 3.85C3.69 19.5 5 20 6.5 20h12c1.25 0 2.31-.44 3.19-1.31c.87-.88 1.31-1.94 1.31-3.19q0-1.725-1.14-3m-1.59 4.77c-.48.49-1.07.73-1.77.73h-12c-.97 0-1.79-.34-2.47-1C3.34 16.29 3 15.47 3 14.5s.34-1.79 1.03-2.47C4.71 11.34 5.53 11 6.5 11H7c0-1.38.5-2.56 1.46-3.54C9.44 6.5 10.62 6 12 6s2.56.5 3.54 1.46C16.5 8.44 17 9.62 17 11v2h1.5c.7 0 1.29.24 1.77.73S21 14.8 21 15.5s-.24 1.29-.73 1.77M11 15h2v2h-2zm3.43-6.32c.54.45.81 1.07.81 1.82c0 .5-.15.91-.44 1.32c-.3.39-.67.68-1.13.93c-.26.16-.43.32-.52.51A1.7 1.7 0 0 0 13 14h-2c0-.55.11-.92.3-1.18c.2-.26.55-.57 1.07-.91c.26-.16.47-.35.63-.59c.15-.23.23-.51.23-.82c0-.32-.09-.56-.27-.74c-.18-.2-.46-.29-.76-.29c-.27 0-.49.08-.7.23c-.15.15-.25.38-.25.69H9.28c-.05-.75.22-1.39.78-1.8C10.6 8.2 11.31 8 12.2 8c.94 0 1.69.23 2.23.68"/></svg>
-            @if (userType() === 'empresa') {
-                <p>¡No tienes ninguna oferta! <a routerLink="/crear-oferta">Crea una aquí</a></p>
-            } @else {
-                <p>¡Todavía no tienes ninguna oferta!</p>
-            }
-        </div>
-    }
+        }
+        
+        @for (oferta of ofertas(); track $index) {
+            <div class="oferta-card">
+                <div class="card-color"></div>
+                <div class="card-content flex-col gap-xs">
+                    <div class="flex jc-space-between ai-center gap-xs word-break">
+                        <h2>{{ oferta.titulo }}</h2>
+                        @if (userType() === 'empresa') {
+                            <!-- Botón de borrar oferta -->
+                            <span class="remove-oferta" (click)="selectOfertaAndShowDeletePopup(oferta._id)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12S6.47 2 12 2m3.59 5L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41z"/></svg>
+                            </span>
+                        }
+                    </div>
+                    <div class="card-description">
+                        <pre class="white-space-wrap">{{ oferta.descripcion }}</pre>
+                    </div>
+                    <div class="flex-col gap-xs">
+                        <span class="flex ai-center gap-s">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 11.5A2.5 2.5 0 0 1 9.5 9A2.5 2.5 0 0 1 12 6.5A2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7"/></svg>
+                            {{ oferta.direccion }}
+                        </span>
+                        <span class="flex ai-center gap-s">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4 6h16v10H4m16 2a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4c-1.11 0-2 .89-2 2v10a2 2 0 0 0 2 2H0v2h24v-2z"/></svg>
+                            {{ oferta.tecnologias.join(', ') }}
+                        </span>
+                        <span class="flex ai-center gap-s">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m12.87 15.07l-2.54-2.51l.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35C8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5l3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7l1.62-4.33L19.12 17z"/></svg>
+                            {{ oferta.idiomas.length > 0 ? oferta.idiomas.join(', ') : 'sin especificar' }}
+                        </span>
+                        <span class="flex ai-center gap-s">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11 7v6l5.2 3.1l.8-1.2l-4.5-2.7V7zm9 5v6h2v-6zm0 8v2h2v-2zm-2 0c-1.7 1.3-3.7 2-6 2c-5.5 0-10-4.5-10-10S6.5 2 12 2c4.8 0 8.9 3.4 9.8 8h-2.1c-.9-3.4-4-6-7.7-6c-4.4 0-8 3.6-8 8s3.6 8 8 8c2.4 0 4.5-1.1 6-2.7z"/></svg>
+                            Expira el {{ oferta.fecha_expiracion | date: 'dd/MM/yyyy' }}
+                        </span>
+                        <span class="flex ai-center gap-s">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 5c3.87 0 7 3.13 7 7s-3.13 7-7 7s-7-3.13-7-7s3.13-7 7-7m0-3c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12S6.5 2 12 2m0 2c-4.42 0-8 3.58-8 8s3.58 8 8 8s8-3.58 8-8s-3.58-8-8-8"/></svg>
+                            <p><strong>Estado:</strong> {{ oferta.estado }}</p>
+                        </span>
+    
+                        @if (userType() === 'alumno') {
+                            @if (getEstadoPostulacion(oferta.postulaciones, alumnoUser()!._id, oferta._id) === 'visto') {
+                                <span class="flex ai-center gap-s">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
+                                    <p class="p-estado">Tu postulación ha sido marcada como vista</p>
+                                </span>
+                            } @else if (getEstadoPostulacion(oferta.postulaciones, alumnoUser()!._id, oferta._id) === 'rechazado') {
+                                <span class="flex ai-center gap-s">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-3.4 14L12 13.4L8.4 17L7 15.6l3.6-3.6L7 8.4L8.4 7l3.6 3.6L15.6 7L17 8.4L13.4 12l3.6 3.6z"/></svg>
+                                    <p class="p-estado-red">Vaya... Tu postulación ha sido rechazada</p>
+                                </span>
+                            } @else {
+                                @if (oferta.estado === 'disponible') {
+                                    <p class="grey-info">En caso de que la empresa de acepte o te rechace, te aparecerá aquí.</p>
+                                } @else {
+                                    <p class="grey-info">¡Vaya! Esta oferta ya ha expirado...</p>
+                                }
+                            }
+                        }
+    
+                        @if (userType() === 'empresa') {
+                            <details>
+                                <summary class="cursor-pointer">Candidatos</summary>
+                                <ul>
+                                    @for (candidato of oferta.candidatos; track $index) {
+                                        <li class="li-margin mb-1">
+                                            <div class="flex gap-xs">
+                                                @if (getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) === 'postulado') {
+                                                    <button type="button" (click)="denyCandidato(candidato._id, oferta._id)" class="candidatos-buttons deny">Rechazar</button>
+                                                    <button type="button" (click)="markCandidatoAsRead(candidato._id, oferta._id)" class="candidatos-buttons mark-read">Marcar como visto</button>
+                                                } @else if (getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) === 'visto') {
+                                                    <p class="p-estado flex ai-center">
+                                                        {{ getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) }}
+                                                    </p>
+                                                } @else {
+                                                    <p class="p-estado-red flex ai-center">
+                                                        {{ getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) }}
+                                                    </p>
+                                                }
+                                                <a [routerLink]="['/perfil', candidato._id]">{{ `${candidato.nombre} ${candidato.apellidos}` }}</a>
+                                            </div>
+                                        </li>
+                                    } @empty {
+                                        <p class="grey-info">Todavía no hay candidatos que se hayan postulado a esta oferta.</p>
+                                    }
+                                </ul>
+                            </details>
+                        }
+                    </div>
+                </div>
+            </div>
+        } @empty {
+            <div class="empty-card">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21.86 12.5A4.3 4.3 0 0 0 19 11c0-1.95-.68-3.6-2.04-4.96S13.95 4 12 4c-1.58 0-3 .47-4.25 1.43s-2.08 2.19-2.5 3.72c-1.25.28-2.29.93-3.08 1.95S1 13.28 1 14.58c0 1.51.54 2.8 1.61 3.85C3.69 19.5 5 20 6.5 20h12c1.25 0 2.31-.44 3.19-1.31c.87-.88 1.31-1.94 1.31-3.19q0-1.725-1.14-3m-1.59 4.77c-.48.49-1.07.73-1.77.73h-12c-.97 0-1.79-.34-2.47-1C3.34 16.29 3 15.47 3 14.5s.34-1.79 1.03-2.47C4.71 11.34 5.53 11 6.5 11H7c0-1.38.5-2.56 1.46-3.54C9.44 6.5 10.62 6 12 6s2.56.5 3.54 1.46C16.5 8.44 17 9.62 17 11v2h1.5c.7 0 1.29.24 1.77.73S21 14.8 21 15.5s-.24 1.29-.73 1.77M11 15h2v2h-2zm3.43-6.32c.54.45.81 1.07.81 1.82c0 .5-.15.91-.44 1.32c-.3.39-.67.68-1.13.93c-.26.16-.43.32-.52.51A1.7 1.7 0 0 0 13 14h-2c0-.55.11-.92.3-1.18c.2-.26.55-.57 1.07-.91c.26-.16.47-.35.63-.59c.15-.23.23-.51.23-.82c0-.32-.09-.56-.27-.74c-.18-.2-.46-.29-.76-.29c-.27 0-.49.08-.7.23c-.15.15-.25.38-.25.69H9.28c-.05-.75.22-1.39.78-1.8C10.6 8.2 11.31 8 12.2 8c.94 0 1.69.23 2.23.68"/></svg>
+                @if (userType() === 'empresa') {
+                    <p>¡No tienes ninguna oferta! <a routerLink="/crear-oferta">Crea una aquí</a></p>
+                } @else {
+                    <p>¡Todavía no tienes ninguna oferta!</p>
+                }
+            </div>
+        }
+    </div>
 </div>

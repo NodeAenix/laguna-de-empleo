@@ -337,6 +337,12 @@ input[type="checkbox"] {
     border-radius: var(--small-border-radius);
 }
 
+.white-space-wrap {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
 .empty-card {
     display: flex;
     flex-direction: column;

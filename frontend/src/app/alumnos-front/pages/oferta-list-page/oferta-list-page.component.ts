@@ -25,6 +25,8 @@ export class OfertaListPageComponent implements OnInit {
     ofertas = signal<Oferta[]>([]);
     userType = signal<'alumno' | 'empresa' | null>(null);
     alumnoUser = signal<Alumno | null>(null);
+    showDeletePopup = signal(false);
+    selectedOfertaToDelete = signal<string>('');
 
     ngOnInit(): void {
         this.authService.getCurrentUser().subscribe({
@@ -76,6 +78,7 @@ export class OfertaListPageComponent implements OnInit {
     }
 
     getEstadoPostulacion(postulaciones: Postulacion[], alumnoId: string, ofertaId: string): string {
+        console.log('postulaciones:', postulaciones);
         const postulacion = postulaciones.find(p =>
             p.alumno_id === alumnoId && p.oferta_id === ofertaId
         );
@@ -98,6 +101,20 @@ export class OfertaListPageComponent implements OnInit {
             next: () => this.messageService.showMessage({ text: 'Candidato marcado como visto', type: 'info' }),
             error: () => this.messageService.showMessage({ text: 'Vaya... Ha ocurrido un error', type: 'error' })
         });
+    }
+
+    removeSelectedOferta() {
+        this.ofertaService.deleteOferta(this.selectedOfertaToDelete()).subscribe({
+            next: () => {
+                this.showDeletePopup.set(false);
+                location.reload();
+            }
+        });
+    }
+
+    selectOfertaAndShowDeletePopup(id: string) {
+        this.selectedOfertaToDelete.set(id);
+        this.showDeletePopup.set(true);
     }
 
 }
