@@ -23,6 +23,7 @@ export class OfertaListPageComponent implements OnInit {
     private messageService = inject(MessageService);
     
     ofertas = signal<Oferta[]>([]);
+    filteredOfertas = signal<Oferta[]>([]); // ofertas filtradas por el usuario
     userType = signal<'alumno' | 'empresa' | null>(null);
     alumnoUser = signal<Alumno | null>(null);
     showDeletePopup = signal(false);
@@ -43,12 +44,14 @@ export class OfertaListPageComponent implements OnInit {
                                         next: (updatedOferta) => {
                                             ofertas[index] = updatedOferta;
                                             this.ofertas.set([...ofertas]);
+                                            this.filteredOfertas.set([...ofertas]);
                                         },
                                         error: (err) => console.error(err)
                                     });
                                 }
                             });
                             this.ofertas.set([...ofertas]);
+                            this.filteredOfertas.set([...ofertas]);
                         },
                         error: (error) => console.error(error)
                     });
@@ -63,18 +66,29 @@ export class OfertaListPageComponent implements OnInit {
                                         next: (updatedOferta) => {
                                             ofertas[index] = updatedOferta;
                                             this.ofertas.set([...ofertas]);
+                                            this.filteredOfertas.set([...ofertas]);
                                         },
                                         error: (err) => console.error(err)
                                     });
                                 }
                             });
                             this.ofertas.set([...ofertas]);
+                            this.filteredOfertas.set([...ofertas]);
                         },
                         error: (error) => console.error(error)
                     });
                 }
             }
         });
+    }
+
+    searchOfertas(query: string) {
+        console.log(query);
+        const filtered = this.ofertas().filter(oferta =>
+            oferta.titulo.toLowerCase().includes(query) ||
+            oferta.descripcion.toLowerCase().includes(query)
+        );
+        this.filteredOfertas.set(filtered);
     }
 
     getEstadoPostulacion(postulaciones: Postulacion[], alumnoId: string, ofertaId: string): string {

@@ -1,3 +1,35 @@
+.searchbar input, .searchbar button {
+    border-radius: var(--small-border-radius);
+    font-size: var(--small-font-size);
+}
+
+.searchbar input {
+    flex: 1;
+    padding: .35rem .5rem;
+    color: var(--color-text);
+    border: var(--border-button);
+    background-color: var(--color-bg-form);
+    transition: border-color .2s ease;
+}
+
+.searchbar input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.searchbar button {
+    padding: 0 .75rem;
+    color: white;
+    border: none;
+    background-color: var(--color-primary-dark);
+    transition: all .2s ease;
+}
+
+.searchbar button:hover {
+    cursor: pointer;
+    background-color: var(--color-primary);
+}
+
 .li-margin {
     margin-left: 1rem;
 }
