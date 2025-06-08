@@ -2,9 +2,15 @@
     @if (userType() === 'alumno') {
         <h1 class="text-center">¡Bienvenid&#64; de vuelta, {{ alumnoUser()?.nombre }}!</h1>
         <h3 class="home-subtitle text-center">¿Qué ofertas te podrían interesar hoy?</h3>
-
+        
         <div class="flex-col gap-xl">
-            @for (oferta of ofertas(); track $index) {
+            <!-- Filtro de búsqueda -->
+            <div class="searchbar flex gap-xs">
+                <input type="text" #searchbarText>
+                <button type="button" (click)="searchOfertas(searchbarText.value)">Buscar</button>
+            </div>
+            
+            @for (oferta of filteredOfertas(); track $index) {
                 <div class="oferta-card">
                     <div class="card-color"></div>
                     <div class="card-content flex-col gap-xs">

@@ -27,6 +27,7 @@ export class HomePageComponent implements OnInit {
     alumnoUser = signal<Alumno | null>(null);
     empresaUser = signal< Empresa | null>(null);
     ofertas = signal<OfertaFiltered[]>([]);
+    filteredOfertas = signal<OfertaFiltered[]>([]); // ofertas filtradas por el usuario
 
     ngOnInit(): void {
         this.authService.getCurrentUser().subscribe({
@@ -42,6 +43,7 @@ export class HomePageComponent implements OnInit {
                                 && !this.isPostulado(o.candidatos)
                             );
                             this.ofertas.set(ofertasDisponibles);
+                            this.filteredOfertas.set(ofertasDisponibles);
                         }
                     });
                 } else if (this.userType() === 'empresa') {
@@ -49,6 +51,14 @@ export class HomePageComponent implements OnInit {
                 }
             }
         });
+    }
+
+    searchOfertas(query: string) {
+        const filtered = this.ofertas().filter(oferta =>
+            oferta.titulo.toLowerCase().includes(query.trim()) ||
+            oferta.descripcion.toLowerCase().includes(query.trim())
+        );
+        this.filteredOfertas.set(filtered);
     }
 
     isPostulado(candidatos: string[]) {
