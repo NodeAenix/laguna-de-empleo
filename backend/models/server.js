@@ -20,6 +20,7 @@ class Server {
         this.app.use('/empresas', require('../routes/empresas.routes'));
         this.app.use('/ofertas', require('../routes/ofertas.routes'));
         this.app.use('/postulaciones', require('../routes/postulaciones.routes'));
+        this.app.use('/subidas', require('../routes/subida.routes'));
     }
 
     middlewares() {

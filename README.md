@@ -171,3 +171,7 @@ Colección `logs_validacion`:
 - `PATCH /admin/rechazar-alumno/:id`
 - `PATCH /admin/validar-empresa/:id`
 - `PATCH /admin/rechazar-empresa/:id`
+
+### Subida de ficheros
+- `POST /subidas/subir-pdf`
+- `POST /subidas/subir-img`

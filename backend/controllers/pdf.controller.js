@@ -1,0 +1,33 @@
+const Alumno = require('../models/alumno');
+const Empresa = require('../models/empresa');
+
+uploadPdf = async(req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ msg: 'No se ha subido ningún fichero' });
+    }
+
+    const uid = req.user._id;
+    const filePath = `cv/${req.file.filename}`;
+
+    await Alumno.findByIdAndUpdate(uid, { cv: filePath });
+
+    res.json({ msg: 'Fichero subido con éxito', cv: filePath });
+}
+
+uploadImg = async(req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ msg: 'No se ha subido ningún fichero' });
+    }
+
+    const uid = req.user._id;
+    const filePath = `img/${req.file.filename}`;
+
+    await Alumno.findByIdAndUpdate(uid, { img: filePath });
+
+    res.json({ msg: 'Fichero subido con éxito', img: filePath });
+}
+
+module.exports = {
+    uploadPdf,
+    uploadImg
+};
