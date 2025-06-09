@@ -84,8 +84,8 @@ export class OfertaListPageComponent implements OnInit {
 
     searchOfertas(query: string) {
         const filtered = this.ofertas().filter(oferta =>
-            oferta.titulo.toLowerCase().includes(query.trim()) ||
-            oferta.descripcion.toLowerCase().includes(query.trim())
+            oferta.titulo.toLowerCase().includes(query.trim().toLowerCase()) ||
+            oferta.descripcion.toLowerCase().includes(query.trim().toLowerCase())
         );
         this.filteredOfertas.set(filtered);
     }
