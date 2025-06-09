@@ -9,7 +9,12 @@ uploadPdf = async(req, res) => {
     const uid = req.user._id;
     const filePath = `cv/${req.file.filename}`;
 
-    await Alumno.findByIdAndUpdate(uid, { cv: filePath });
+    const alumno = await Alumno.findById(uid);
+    if (!alumno) {
+        return res.status(404).json({ msg: 'Alumno no encontrado' });
+    }
+    alumno.cv = filePath;
+    await alumno.save();
 
     res.json({ msg: 'Fichero subido con éxito', cv: filePath });
 }
@@ -22,11 +27,11 @@ uploadImg = async(req, res) => {
     const uid = req.user._id;
     const filePath = `img/${req.file.filename}`;
 
-    const alumno = Alumno.findById(uid);
+    const alumno = await Alumno.findById(uid);
     if (alumno) {
         await Alumno.findByIdAndUpdate(uid, { img: filePath });
     } else {
-        const empresa = Empresa.findById(uid);
+        const empresa = await Empresa.findById(uid);
         if (!empresa) {
             return res.status(404).json({ msg: 'Usuario no encontrado' });
         }

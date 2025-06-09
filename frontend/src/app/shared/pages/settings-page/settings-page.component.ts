@@ -9,6 +9,7 @@ import { MessageService } from '../../../services/message.service';
 import { UserService } from '../../../services/user.service';
 import { commonDatalist } from '../../../utils/datalist-options';
 import { SubidaService } from '../../../services/subida.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'app-settings-page',
@@ -31,7 +32,6 @@ export class SettingsPageComponent implements OnInit {
     empresaUser = signal< Empresa | null>(null);
     userType = signal<'alumno' | 'empresa' | null>(null);
     cvFile = signal<File | null>(null);
-    cvPath = signal<string>('');
     formUtils = FormUtils;
 
     // Formulario del alumno
@@ -115,10 +115,6 @@ export class SettingsPageComponent implements OnInit {
                     this.alumnoUser()?.ciclos_formativos.forEach(value => ciclos_formativos.push(this.fb.control(value)));
                     this.alumnoUser()?.tecnologias.forEach(value => tecnologias.push(this.fb.control(value)));
                     this.alumnoUser()?.idiomas.forEach(value => idiomas.push(this.fb.control(value)));
-
-                    if (this.alumnoUser()?.cv) {
-                        this.cvPath.set(this.alumnoUser()?.cv ?? '');
-                    }
                 } else if (this.userType() === 'empresa') {
                     this.empresaUser.set(user as Empresa);
                     this.empresaForm.patchValue(user as Empresa);
@@ -210,6 +206,8 @@ export class SettingsPageComponent implements OnInit {
         // Payload FormData
         const formData = new FormData();
         Object.entries(form.value).forEach(([key, value]) => {
+            if (key === 'cv') return;
+
             if (Array.isArray(value)) {
                 value.forEach(v => formData.append(key, v));
             } else {
@@ -223,7 +221,8 @@ export class SettingsPageComponent implements OnInit {
             // CV form data
             const cvFormData = new FormData();
             cvFormData.append('pdfFile', this.cvFile()!);
-            this.subidaService.subirPDF(formData).subscribe({
+            this.subidaService.subirPDF(cvFormData).subscribe({
+                next: () => {},
                 error: () => {
                     this.messageService.showMessage({ text: 'Error al subir el CV', type: 'error' });
                 }
@@ -237,7 +236,7 @@ export class SettingsPageComponent implements OnInit {
                 this.router.navigate(['/perfil', this.userType() === 'alumno' ? this.alumnoUser()?._id : this.empresaUser()?._id]);
             },
             error: () => {
-                this.messageService.showMessage({ text: 'Error al actualizar los datos', type: 'error' });
+                this.messageService.showMessage({ text: 'Error: compruebe los datos y la contraseña', type: 'error' });
             }
         });
     }

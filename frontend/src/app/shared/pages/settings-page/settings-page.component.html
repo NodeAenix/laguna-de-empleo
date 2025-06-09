@@ -58,9 +58,6 @@
                                 @if (key === 'cv') {
                                     <p class="grey-info">Los archivos no deben superar los 5MB</p>
                                     <input type="file" accept="application/pdf" (change)="onFileSelected($event)" [formControlName]="key" class="table-input">
-                                    @if (cvPath()) {
-                                        <a [href]="cvPath()" target="_blank">Ver CV</a>
-                                    }
                                 } @else {
                                     <input type="text" [formControlName]="key" class="table-input">
                                 }

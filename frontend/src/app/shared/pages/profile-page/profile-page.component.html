@@ -29,7 +29,13 @@
             </tr>
             <tr>
                 <td>Currículum Vitae</td>
-                <td><a href="">Ver CV</a></td>
+                <td>
+                    @if (cvPath()) {
+                        <a [href]="cvPath()" target="_blank">Ver CV</a>
+                    } @else {
+                        <p class="grey-info">Sin CV</p>
+                    }
+                </td>
             </tr>
         </table>
     } @else {

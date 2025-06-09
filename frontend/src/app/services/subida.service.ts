@@ -25,5 +25,5 @@ export class SubidaService {
         }
         return this.http.post(`${this.BASE_URL}/subir-img`, img, { headers });
     }
-
+    
 }

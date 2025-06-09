@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../database/config.js');
+const path = require('path');
 
 class Server {
 
@@ -26,6 +27,7 @@ class Server {
     middlewares() {
         this.app.use(cors());
         this.app.use(express.json());
+        this.app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
     }
 
     async connectDB() {

@@ -1,21 +1,6 @@
 const mongoose = require('mongoose');
-const multer = require('multer');
-const { v4: uuidv4 } = require('uuid');
-const { removeEmptyFields } = require('../helpers/utils');
+const bcrypt = require('bcryptjs');
 const Alumno = require('../models/alumno');
-
-// Almacenamiento de "multer" (para los archivos de los CV)
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        const filename = `${uuidv4()}-${file.originalname}.pdf`;
-        cb(null, filename);
-    }
-});
-
-const upload = multer({ storage });
 
 // Endpoints
 const getAlumno = async(req, res) => {
@@ -34,11 +19,20 @@ const getAlumno = async(req, res) => {
 
 const putAlumno = async(req, res) => {
     const uid = req.user._id;
-
     const { password, ...updatedAlumno } = req.body;
-    const alumno = await Alumno.findByIdAndUpdate(uid, updatedAlumno, { new: true });
 
-    res.json(alumno);
+    const alumno = await Alumno.findById(uid);
+    if (!alumno) {
+        return res.status(404).json({ msg: 'Alumno no encontrado' });
+    }
+
+    const passwordMatches = bcrypt.compareSync(password, alumno.password);
+    if (!passwordMatches) {
+        return res.status(401).json({ msg: 'Contraseña incorrecta' });
+    }
+
+    const updated = await Alumno.findByIdAndUpdate(uid, updatedAlumno, { new: true });
+    res.json(updated);
 }
 
 const deleteAlumno = async(req, res) => {
