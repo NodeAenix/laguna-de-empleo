@@ -35,14 +35,7 @@ const getAlumno = async(req, res) => {
 const putAlumno = async(req, res) => {
     const uid = req.user._id;
 
-    const updatedAlumno = req.body;
-
-    console.log('test');
-    console.log(req.file);
-    if (req.file) {
-        updatedAlumno.cv = req.file.path.replace(/\\/g, '/');
-    }
-
+    const { password, ...updatedAlumno } = req.body;
     const alumno = await Alumno.findByIdAndUpdate(uid, updatedAlumno, { new: true });
 
     res.json(alumno);

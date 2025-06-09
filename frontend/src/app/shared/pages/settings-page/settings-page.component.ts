@@ -8,6 +8,7 @@ import { FormUtils } from '../../../utils/form-utils';
 import { MessageService } from '../../../services/message.service';
 import { UserService } from '../../../services/user.service';
 import { commonDatalist } from '../../../utils/datalist-options';
+import { SubidaService } from '../../../services/subida.service';
 
 @Component({
     selector: 'app-settings-page',
@@ -23,12 +24,13 @@ export class SettingsPageComponent implements OnInit {
     private fb = inject(FormBuilder);
     private router = inject(Router);
     private messageService = inject(MessageService);
+    private subidaService = inject(SubidaService);
 
     isDarkMode = false;
     alumnoUser = signal<Alumno | null>(null);
     empresaUser = signal< Empresa | null>(null);
     userType = signal<'alumno' | 'empresa' | null>(null);
-    selectedFile = signal<File | null>(null);
+    cvFile = signal<File | null>(null);
     cvPath = signal<string>('');
     formUtils = FormUtils;
 
@@ -115,7 +117,7 @@ export class SettingsPageComponent implements OnInit {
                     this.alumnoUser()?.idiomas.forEach(value => idiomas.push(this.fb.control(value)));
 
                     if (this.alumnoUser()?.cv) {
-                        this.cvPath.set(this.alumnoUser()?.cv!);
+                        this.cvPath.set(this.alumnoUser()?.cv ?? '');
                     }
                 } else if (this.userType() === 'empresa') {
                     this.empresaUser.set(user as Empresa);
@@ -186,8 +188,7 @@ export class SettingsPageComponent implements OnInit {
             return;
         }
 
-        this.cvPath.set(URL.createObjectURL(file));
-        this.selectedFile.set(file);
+        this.cvFile.set(file);
     }
 
     submit() {
@@ -208,7 +209,6 @@ export class SettingsPageComponent implements OnInit {
 
         // Payload FormData
         const formData = new FormData();
-        
         Object.entries(form.value).forEach(([key, value]) => {
             if (Array.isArray(value)) {
                 value.forEach(v => formData.append(key, v));
@@ -216,18 +216,25 @@ export class SettingsPageComponent implements OnInit {
                 formData.append(key, value as string);
             }
         });
-
         formData.append('password', password);
 
-        if (this.selectedFile()) {
-            formData.append('cv', this.selectedFile() ?? '');
+        // Actualizar CV
+        if (this.cvFile()) {
+            // CV form data
+            const cvFormData = new FormData();
+            cvFormData.append('pdfFile', this.cvFile()!);
+            this.subidaService.subirPDF(formData).subscribe({
+                error: () => {
+                    this.messageService.showMessage({ text: 'Error al subir el CV', type: 'error' });
+                }
+            });
         }
 
-        // Actualizar usuario
+        // Actualizar datos
         this.userService.updateUser(type === 'alumno' ? 'alumnos' : 'empresas', formData).subscribe({
             next: () => {
                 this.messageService.showMessage({ text: 'Datos actualizados con éxito', type: 'success' });
-                this.router.navigateByUrl('/perfil');
+                this.router.navigate(['/perfil', this.userType() === 'alumno' ? this.alumnoUser()?._id : this.empresaUser()?._id]);
             },
             error: () => {
                 this.messageService.showMessage({ text: 'Error al actualizar los datos', type: 'error' });
