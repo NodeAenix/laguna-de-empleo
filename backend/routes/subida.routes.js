@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const upload = require('../middlewares/file-upload');
-const { uploadPdf, uploadImg } = require('../controllers/pdf.controller');
+const { uploadPdf, uploadImg } = require('../controllers/subida.controller');
 const { validateJWT } = require('../middlewares/validate-jwt');
 const Alumno = require('../models/alumno');
 const deleteExistingFile = require('../middlewares/delete-existing-file');

@@ -22,8 +22,17 @@ uploadImg = async(req, res) => {
     const uid = req.user._id;
     const filePath = `img/${req.file.filename}`;
 
-    await Alumno.findByIdAndUpdate(uid, { img: filePath });
-
+    const alumno = Alumno.findById(uid);
+    if (alumno) {
+        await Alumno.findByIdAndUpdate(uid, { img: filePath });
+    } else {
+        const empresa = Empresa.findById(uid);
+        if (!empresa) {
+            return res.status(404).json({ msg: 'Usuario no encontrado' });
+        }
+        await Empresa.findByIdAndUpdate(uid, { img: filePath });
+    }
+    
     res.json({ msg: 'Fichero subido con éxito', img: filePath });
 }
 
