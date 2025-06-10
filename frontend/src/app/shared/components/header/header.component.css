@@ -16,6 +16,10 @@ header {
     padding: .5rem;
 }
 
+#regular-header {
+    width: 100%;
+}
+
 nav {
     display: flex;
     align-items: center;
@@ -67,4 +71,118 @@ nav ul {
     width: 100%;
     height: 2px;
     background-color: var(--color-header-link-hover);
+}
+
+
+/* BARRA DE NAVEGACIÓN LATERAL */
+#responsive-header {
+    display: none;
+}
+
+#responsive-nav-checkbox, #responsive-nav-icon {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 2rem;
+    height: 2rem;
+}
+
+#responsive-nav-checkbox {
+    opacity: 0;
+}
+
+#responsive-nav-icon {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.bar1, .bar2, .bar3 {
+    width: 32px;
+    height: 2px;
+    background-color: white;
+    margin: .45rem 0;
+    transition: transform .4s ease;
+}
+
+.anim-bar .bar1 {
+    transform: translate(0, 11px) rotate(-45deg);
+}
+
+.anim-bar .bar2 {
+    opacity: 0;
+}
+
+.anim-bar .bar3 {
+    transform: translate(0, -11px) rotate(45deg);
+}
+
+#responsive-nav {
+    visibility: hidden;
+    position: absolute;
+    top: 4rem;
+    left: 0;
+    background-color: #222;
+    min-height: 100dvh;
+    width: 12rem;
+    padding: 2rem;
+    z-index: 999;
+    pointer-events: none;
+    transform: translateX(-101%);
+    transition: transform .3s ease-in-out;
+}
+
+/* Animación de entrada de la barra lateral */
+@keyframes animate-responsive-nav {
+    from { transform: translateX(-101%); visibility: hidden; }
+    to { transform: translateX(0%); visibility: visible; }
+}
+
+/* Animación de salida de la barra lateral */
+@keyframes animate-reverse-responsive-nav {
+    from { transform: translateX(0%); visibility: visible; }
+    to { transform: translateX(-101%); visibility: hidden; }
+}
+
+#responsive-nav-checkbox:checked ~ #responsive-nav {
+    animation: animate-responsive-nav .3s forwards;
+    pointer-events: auto;
+}
+
+#responsive-nav-checkbox:not(:checked) ~ #responsive-nav {
+    animation: animate-reverse-responsive-nav .3s forwards;
+    pointer-events: none;
+}
+
+#responsive-nav > ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-size: var(--larger-text-size);
+}
+
+.responsive-header-link {
+    color: var(--text-light-color);
+}
+
+.responsive-header-link-active {
+    color: var(--focus-color);
+}
+
+#logo-text-responsive {
+    display: none;
+}
+
+@media (max-width: 720px) {
+    #regular-header nav {
+        display: none;
+    }
+
+    #logo-text-responsive {
+        display: block;
+    }
+
+    #responsive-header {
+        display: block;
+    }
 }

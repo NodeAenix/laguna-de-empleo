@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
@@ -10,8 +10,10 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
     
-    authService = inject(AuthService);
+    @ViewChild('cbResponsiveNavbar')
+    cbResponsiveNavbar!: ElementRef; // checkbox (oculto) de la barra de navegación lateral
 
+    authService = inject(AuthService);
     userId = signal<string>('');
     type = signal<'alumno' | 'empresa' | null>(null);
 
@@ -22,6 +24,13 @@ export class HeaderComponent implements OnInit {
                 this.type.set(this.authService.getUserType(user));
             }
         });
+    }
+
+    // Animar barras del botón de la barra lateral (se aplica cuando la pantalla es pequeña)
+    animateBars(div: HTMLDivElement) {
+        div.classList.toggle('anim-bar');
+        const checkbox = this.cbResponsiveNavbar.nativeElement as HTMLInputElement;
+        checkbox.checked = !checkbox.checked;
     }
 
 }

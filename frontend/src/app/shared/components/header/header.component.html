@@ -1,7 +1,13 @@
 <header>
-    @if (authService.getToken()) {
-        <img src="assets/logo.svg" alt="Logo" id="logo" [routerLink]="['/']">
-        <nav>
+    <!-- Barra de navegación responsive -->
+    <div id="responsive-header">
+        <input type="checkbox" name="desplegar-menu" id="responsive-nav-checkbox" #cbResponsiveNavbar>
+        <div id="responsive-nav-icon" (click)="animateBars(divBars)" #divBars>
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+        <div id="responsive-nav">
             <ul>
                 <li><a [routerLink]="['/']" routerLinkActive="link-active" [routerLinkActiveOptions]="{ exact: true }" class="header-link">INICIO</a></li>
                 <li><a [routerLink]="['/ofertas']" routerLinkActive="link-active" class="header-link">MIS OFERTAS</a></li>
@@ -11,11 +17,34 @@
                 <li><a [routerLink]="['/perfil', userId()]" routerLinkActive="link-active" class="header-link">PERFIL</a></li>
                 <li><a [routerLink]="['/ajustes']" routerLinkActive="link-active" class="header-link">AJUSTES</a></li>
             </ul>
-        </nav>
-    } @else {
-        <div class="flex ai-center">
-            <img src="assets/logo.svg" alt="Logo" id="logo">
+        </div>
+    </div>
+
+    <!-- Barra de navegación normal -->
+    <div id="regular-header" class="flex jc-center ai-center">
+        @if (authService.getToken()) {
+            <img src="assets/logo.svg" alt="Logo" id="logo" [routerLink]="['/']">
+            <nav>
+                <ul>
+                    <li><a [routerLink]="['/']" routerLinkActive="link-active" [routerLinkActiveOptions]="{ exact: true }" class="header-link">INICIO</a></li>
+                    <li><a [routerLink]="['/ofertas']" routerLinkActive="link-active" class="header-link">MIS OFERTAS</a></li>
+                    @if (type() === 'empresa') {
+                        <li><a [routerLink]="['/crear-oferta']" routerLinkActive="link-active" class="header-link">CREAR OFERTA</a></li>
+                    }
+                    <li><a [routerLink]="['/perfil', userId()]" routerLinkActive="link-active" class="header-link">PERFIL</a></li>
+                    <li><a [routerLink]="['/ajustes']" routerLinkActive="link-active" class="header-link">AJUSTES</a></li>
+                </ul>
+            </nav>
+        } @else {
+            <div class="flex ai-center">
+                <img src="assets/logo.svg" alt="Logo" id="logo">
+                <p id="logo-text">Laguna de Empleo</p>
+            </div>
+        }
+        
+        <!-- Texto que se mostrará cuando la pantalla sea muy pequeña -->
+        <div id="logo-text-responsive" class="flex ai-center">
             <p id="logo-text">Laguna de Empleo</p>
         </div>
-    }
+    </div>
 </header>
