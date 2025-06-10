@@ -9,6 +9,7 @@ import { commonDatalist } from '../../../utils/datalist-options';
 @Component({
     selector: 'app-register-page',
     imports: [ReactiveFormsModule, RouterLink],
+    styleUrl: './register-page.component.css',
     templateUrl: './register-page.component.html'
 })
 export class RegisterPageComponent {
@@ -19,6 +20,7 @@ export class RegisterPageComponent {
     private router = inject(Router);
 
     activeTab = signal<'alumnos' | 'empresas'>('alumnos');
+    checkCbAccepted = signal<boolean>(false);
     formUtils = FormUtils;
 
     // Formulario del alumno
@@ -87,6 +89,7 @@ export class RegisterPageComponent {
 
     currentForm = computed(() => this.activeTab() === 'alumnos' ? this.alumnoForm : this.empresaForm);
 
+    // Métodos para los datalist
     addElement(key: string, value: string) {
         const formArray = this.alumnoForm.get(key) as FormArray;
         const existingValues = formArray.value as string[];
@@ -112,6 +115,7 @@ export class RegisterPageComponent {
         this.getElementList(key).removeAt(index);
     }
 
+    // Registrarse
     submit() {
         const type = this.activeTab();
         const form = this.currentForm();

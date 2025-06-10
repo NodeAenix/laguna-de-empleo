@@ -57,7 +57,15 @@
                     </div>
                 }
             }
-            <button class="submit-btn mb-3" type="submit" (click)="submit()">Registrarse</button>
+            @if (activeTab() === 'alumnos') {
+                <div class="accept-cb-div">
+                    <input type="checkbox" class="accept-cb" (input)="checkCbAccepted.set(acceptCb.checked)" #acceptCb>
+                    <pre class="accept-cb-text">Al registrarte, aceptas que tus datos serán visibles para IES Laguna de Joatzel y para las empresas inscritas en este sitio web.</pre>
+                </div>
+                <button class="submit-btn mb-3" type="submit" (click)="submit()" [disabled]="!checkCbAccepted()">Registrarse</button>
+            } @else {
+                <button class="submit-btn mb-3" type="submit" (click)="submit()">Registrarse</button>
+            }
             <p>¿Ya tienes una cuenta? Inicia sesión <a routerLink="/iniciar-sesion">aquí</a>.</p>
         </form>
     </div>

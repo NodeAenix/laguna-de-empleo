@@ -173,7 +173,7 @@ nav ul {
     display: none;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 550px) {
     #regular-header nav {
         display: none;
     }

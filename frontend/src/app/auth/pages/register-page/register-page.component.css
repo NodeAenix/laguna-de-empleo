@@ -1,0 +1,15 @@
+.accept-cb-div {
+    display: flex;
+    gap: .5rem;
+}
+
+.accept-cb {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.accept-cb-text {
+    white-space: normal;
+    word-break: break-word;
+    text-align: justify;
+}

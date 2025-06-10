@@ -7,6 +7,7 @@
     --color-text: #1f2937;
     --color-text-opposite: #f3f4f6;
     --color-muted: #6b7280;
+    --color-muted-bg: #aab3c7;
     --color-border: #c2c2c2;
     --color-bg: #eff3f6;
     --color-bg-form: #fff;
@@ -42,6 +43,7 @@
     --color-text: #f3f4f6;
     --color-text-opposite: #1f2937;
     --color-muted: #9ca3af;
+    --color-muted-bg: #585b63;
     --color-border: #a1a1a1;
     --color-bg-form: #333;
     --color-text-form: #f3f4f6;
@@ -236,12 +238,18 @@ input[type="checkbox"] {
     background-color: var(--color-primary);
     color: white;
     font-size: var(--font-size);
-    transition: opacity .2s ease;
+    transition: all .2s ease;
 }
 
-.submit-btn:hover {
+.submit-btn:not(:disabled):hover {
     cursor: pointer;
     opacity: .8;
+}
+
+.submit-btn:disabled {
+    cursor: not-allowed;
+    background-color: var(--color-muted-bg);
+    color: var(--color-muted);
 }
 
 .table-input {
@@ -429,5 +437,16 @@ input[type="checkbox"] {
 @media (min-width: 1440px) {
     .container {
         max-width: 1140px;
+    }
+}
+
+@media (max-width: 375px) {
+    .input-datalist {
+        flex-direction: column;
+    }
+
+    .input-add-button {
+        padding-top: .5rem;
+        padding-bottom: .5rem;
     }
 }
