@@ -87,10 +87,20 @@
                                 <ul>
                                     @for (candidato of oferta.candidatos; track $index) {
                                         <li class="li-margin mb-1">
-                                            <div class="flex gap-xs">
+                                            <div class="candidato-div flex gap-xs">
                                                 @if (getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) === 'postulado') {
-                                                    <button type="button" (click)="denyCandidato(candidato._id, oferta._id)" class="candidatos-buttons deny">Rechazar</button>
-                                                    <button type="button" (click)="markCandidatoAsRead(candidato._id, oferta._id)" class="candidatos-buttons mark-read">Marcar como visto</button>
+                                                    <button type="button" (click)="denyCandidato(candidato._id, oferta._id)" class="candidatos-buttons deny">
+                                                        <span class="candidatos-buttons-text">Rechazar</span>
+                                                        <span class="candidatos-buttons-svg">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12z"/></svg>
+                                                        </span>
+                                                    </button>
+                                                    <button type="button" (click)="markCandidatoAsRead(candidato._id, oferta._id)" class="candidatos-buttons mark-read">
+                                                        <span class="candidatos-buttons-text">Marcar como visto</span>
+                                                        <span class="candidatos-buttons-svg">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m23.5 17l-5 5l-3.5-3.5l1.5-1.5l2 2l3.5-3.5zM12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-.25.65-.56 1.26-.92 1.85a5.8 5.8 0 0 0-1.9-.73l.64-1.12a9.821 9.821 0 0 0-17.64 0A9.82 9.82 0 0 0 12 17.5l1.21-.07c-.14.5-.21 1.03-.21 1.57v.46l-1 .04c-5 0-9.27-3.11-11-7.5c1.73-4.39 6-7.5 11-7.5"/></svg>
+                                                        </span>
+                                                    </button>
                                                 } @else if (getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) === 'visto') {
                                                     <p class="p-estado flex ai-center">
                                                         {{ getEstadoPostulacion(oferta.postulaciones, candidato._id, oferta._id) }}

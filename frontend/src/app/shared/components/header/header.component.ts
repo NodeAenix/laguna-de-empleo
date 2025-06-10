@@ -15,13 +15,11 @@ export class HeaderComponent implements OnInit {
 
     authService = inject(AuthService);
     userId = signal<string>('');
-    type = signal<'alumno' | 'empresa' | null>(null);
 
     ngOnInit(): void {
         this.authService.getCurrentUser().subscribe({
             next: (user) => {
                 this.userId.set(user?._id ?? '');
-                this.type.set(this.authService.getUserType(user));
             }
         });
     }

@@ -22,79 +22,85 @@
     @if (userType() === 'alumno') {
         <form [formGroup]="alumnoForm">
             <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
-            <table class="rounded-table settings-table">
-                @for (key of alumnoFieldKeys; track key) {
-                    @if (['ciclos_formativos', 'tecnologias', 'idiomas'].includes(key)) {
-                        <tr>
-                            <td>{{ alumnoLabels[key] }}</td>
-                            <td>
-                                <div class="flex gap-s input-datalist mb-1">
-                                    <input class="table-datalist-input" [attr.list]="key" #inputDatalist>
-                                    <datalist [id]="key">
-                                        @for (label of alumnoDatalistLabels[key]; track label) {
-                                            <option [value]="label"></option>
+            <div class="table-scroll-container">
+                <table class="rounded-table settings-table">
+                    @for (key of alumnoFieldKeys; track key) {
+                        @if (['ciclos_formativos', 'tecnologias', 'idiomas'].includes(key)) {
+                            <tr>
+                                <td>{{ alumnoLabels[key] }}</td>
+                                <td>
+                                    <div class="flex gap-s input-datalist mb-1">
+                                        <input class="table-datalist-input" [attr.list]="key" #inputDatalist>
+                                        <datalist [id]="key">
+                                            @for (label of alumnoDatalistLabels[key]; track label) {
+                                                <option [value]="label"></option>
+                                            }
+                                        </datalist>
+                                        <button class="input-add-button" (click)="addElement(key, inputDatalist.value)">Añadir</button>
+                                    </div>
+                                    @if (getElementList(key).controls.length > 0) {
+                                        @for (element of getElementList(key).controls; track element; let i = $index) {
+                                            <div class="flex gap-xs mb-1">
+                                                <span class="remove-button" (click)="removeElement(key, i)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12S6.47 2 12 2m3.59 5L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41z"/></svg>
+                                                </span>
+                                                <p class="small-text">{{ element.value }}</p>
+                                            </div>
                                         }
-                                    </datalist>
-                                    <button class="input-add-button" (click)="addElement(key, inputDatalist.value)">Añadir</button>
-                                </div>
-                                @if (getElementList(key).controls.length > 0) {
-                                    @for (element of getElementList(key).controls; track element; let i = $index) {
-                                        <div class="flex gap-xs mb-1">
-                                            <span class="remove-button" (click)="removeElement(key, i)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12S6.47 2 12 2m3.59 5L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41z"/></svg>
-                                            </span>
-                                            <p class="small-text">{{ element.value }}</p>
-                                        </div>
+                                    } @else if (getElementList(key).touched && alumnoForm.invalid) {
+                                        <span class="error">Este campo es obligatorio</span>
                                     }
-                                } @else if (getElementList(key).touched && alumnoForm.invalid) {
-                                    <span class="error">Este campo es obligatorio</span>
-                                }
-                            </td>
-                        </tr>
-                    } @else {
-                        <tr>
-                            <td>{{ alumnoLabels[key] }}</td>
-                            <td>
-                                @if (key === 'cv') {
-                                    <p class="grey-info">Los archivos no deben superar los 5MB</p>
-                                    <input type="file" accept="application/pdf" (change)="onFileSelected($event)" [formControlName]="key" class="table-input">
-                                } @else {
-                                    <input type="text" [formControlName]="key" class="table-input">
-                                }
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        } @else {
+                            <tr>
+                                <td>{{ alumnoLabels[key] }}</td>
+                                <td>
+                                    @if (key === 'cv') {
+                                        <p class="grey-info">Los archivos no deben superar los 5MB</p>
+                                        <input type="file" accept="application/pdf" (change)="onFileSelected($event)" [formControlName]="key" class="table-input">
+                                    } @else {
+                                        <input type="text" [formControlName]="key" class="table-input">
+                                    }
+                                </td>
+                            </tr>
+                        }
                     }
-                }
-            </table>
+                </table>
+            </div>
         </form>
     } @else if (userType() === 'empresa') {
         <form [formGroup]="empresaForm">
             <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
-            <table class="rounded-table settings-table">
-                @for (key of empresaFieldKeys; track key) {
-                    <tr>
-                        <td>{{ empresaLabels[key] }}</td>
-                        <td>
-                            <input [type]="key === 'cv' ? 'file' : 'text'" [formControlName]="key" class="table-input">
-                        </td>
-                    </tr>
-                }
-            </table>
+            <div class="table-scroll-container">
+                <table class="rounded-table settings-table">
+                    @for (key of empresaFieldKeys; track key) {
+                        <tr>
+                            <td>{{ empresaLabels[key] }}</td>
+                            <td>
+                                <input [type]="key === 'cv' ? 'file' : 'text'" [formControlName]="key" class="table-input">
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
         </form>
     }
     <form [formGroup]="passwordForm">
-        <table class="rounded-table settings-table">
-            <tr>
-                <td>Contraseña para confirmar</td>
-                <td>
-                    <input type="password" formControlName="password" class="table-input">
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <button type="submit" class="settings-submit-btn" (click)="submit()">Guardar cambios</button>
-                </td>
-            </tr>
-        </table>
+        <div class="table-scroll-container">
+            <table class="rounded-table settings-table">
+                <tr>
+                    <td>Contraseña para confirmar</td>
+                    <td>
+                        <input type="password" formControlName="password" class="table-input">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit" class="settings-submit-btn" (click)="submit()">Guardar cambios</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </form>
 </div>

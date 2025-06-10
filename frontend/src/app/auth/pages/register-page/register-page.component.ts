@@ -33,7 +33,6 @@ export class RegisterPageComponent {
         ciclos_formativos: this.fb.array<FormControl<string>>([], Validators.required),
         tecnologias: this.fb.array<FormControl<string>>([], Validators.required),
         idiomas: this.fb.array<FormControl<string>>([], Validators.required),
-        cv: ['']
     }, {
         validators: FormUtils.passwordMatchValidatorFn('password', 'confirm_password')
     });
@@ -51,7 +50,6 @@ export class RegisterPageComponent {
         ciclos_formativos: 'Ciclos Formativos',
         tecnologias: 'Tecnologías',
         idiomas: 'Idiomas',
-        cv: 'CV',
     };
 
     alumnoDatalistLabels = commonDatalist;

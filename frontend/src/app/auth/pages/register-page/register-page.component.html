@@ -34,11 +34,6 @@
                                 <span class="error">Este campo es obligatorio</span>
                             }
                         </div>
-                    } @else if ('cv' === key) {
-                        <div class="form-field">
-                            <label [for]="key">{{ alumnoLabels[key] }}</label>
-                            <input [id]="key" [formControlName]="key" type="file">
-                        </div>
                     } @else {
                         <div class="form-field">
                             <label [for]="key">{{ alumnoLabels[key] }}</label>

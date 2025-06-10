@@ -1,9 +1,9 @@
-#logo {
+.logo {
     width: 3rem;
     margin-right: 2rem;
 }
 
-#logo-text {
+#logo-text, #logo-text-responsive {
     font-size: 1.5rem;
     font-weight: 600;
     color: white;
@@ -123,7 +123,7 @@ nav ul {
     left: 0;
     background-color: #222;
     min-height: 100dvh;
-    width: 12rem;
+    width: 16rem;
     padding: 2rem;
     z-index: 999;
     pointer-events: none;
@@ -178,11 +178,36 @@ nav ul {
         display: none;
     }
 
+    #logo-text {
+        display: none;
+    }
+
     #logo-text-responsive {
         display: block;
     }
 
     #responsive-header {
         display: block;
+    }
+}
+
+@media (max-width: 425px) {
+    .logo {
+        margin-right: 1rem;
+    }
+
+    #logo-text-responsive {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 355px) {
+    #regular-header {
+        justify-content: end;
+        flex-direction: row-reverse;
+    }
+
+    .logo {
+        margin-left: 1rem;
     }
 }

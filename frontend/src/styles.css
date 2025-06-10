@@ -136,6 +136,11 @@ th, td {
     max-width: 100%;
 }
 
+.table-scroll-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
 
 /* Formularios */
 .form-box {

@@ -1,5 +1,7 @@
 .profile-table {
     width: 100%;
+    min-width: 30rem;
+    table-layout: fixed;
 }
 
 .profile-table th, .profile-table td {

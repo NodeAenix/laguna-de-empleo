@@ -105,3 +105,18 @@
     cursor: pointer;
     background-color: var(--color-border);
 }
+
+.candidatos-buttons-svg {
+    display: none;
+    margin-top: .2rem;
+}
+
+@media (max-width: 550px) {
+    .candidatos-buttons-text {
+        display: none;
+    }
+
+    .candidatos-buttons-svg {
+        display: block;
+    }
+}

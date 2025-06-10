@@ -30,6 +30,8 @@
 
 .settings-table {
     width: 100%;
+    min-width: 30rem;
+    table-layout: fixed;
 }
 
 .settings-table th, .settings-table td {
@@ -77,4 +79,16 @@
 .table-datalist-input:focus {
     outline: none;
     border-color: var(--color-primary);
+}
+
+@media (max-width: 530px) {
+    .settings-actions {
+        flex-direction: column;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .settings-actions span {
+        width: 100%;
+    }
 }
