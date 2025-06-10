@@ -132,7 +132,6 @@ Colección `logs_validacion`:
 - `fecha_validacion`: fecha en la que se ha realizado la validación.
 
 ## Endpoints API REST
-[Documentación API REST](rest-api-docs.md).
 
 ### Auth (login, registro y perfil)
 - `POST /auth/registro-alumnos`
