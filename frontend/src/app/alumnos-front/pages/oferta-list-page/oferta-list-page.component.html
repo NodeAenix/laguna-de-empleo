@@ -138,4 +138,11 @@
             </div>
         }
     </div>
+
+    <!-- Botón flotante de añadir oferta para las empresas -->
+    @if (userType() === 'empresa') {
+        <div id="add-oferta" class="flex jc-center ai-center" (click)="redirectToCreateOferta()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 14h-6v6h-4v-6H4v-4h6V4h4v6h6z"/></svg>
+        </div>
+    }
 </div>

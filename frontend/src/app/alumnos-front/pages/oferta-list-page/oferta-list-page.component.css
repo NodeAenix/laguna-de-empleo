@@ -111,6 +111,33 @@
     margin-top: .2rem;
 }
 
+#add-oferta {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    width: 3rem;
+    height: 3rem;
+    background-color: var(--color-link);
+    border-radius: 100%;
+    transition: background-color .2s ease;
+}
+
+#add-oferta svg {
+    color: #1f2937;
+    scale: 1.5;
+}
+
+#add-oferta:hover {
+    cursor: pointer;
+    background-color: var(--color-link-hover);
+}
+
+@media (max-width: 768px) {
+    #add-oferta svg {
+        scale: 1;
+    }
+}
+
 @media (max-width: 550px) {
     .candidatos-buttons-text {
         display: none;

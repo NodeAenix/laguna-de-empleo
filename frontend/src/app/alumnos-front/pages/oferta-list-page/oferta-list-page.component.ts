@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { OfertaService } from '../../../services/oferta.service';
 import { Oferta } from '../../../interfaces/oferta.interface';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { PostulacionService } from '../../../services/postulacion.service';
@@ -21,6 +21,7 @@ export class OfertaListPageComponent implements OnInit {
     private postulacionService = inject(PostulacionService);
     private authService = inject(AuthService);
     private messageService = inject(MessageService);
+    private router = inject(Router);
     
     ofertas = signal<Oferta[]>([]);
     filteredOfertas = signal<Oferta[]>([]); // ofertas filtradas por el usuario
@@ -127,6 +128,10 @@ export class OfertaListPageComponent implements OnInit {
     selectOfertaAndShowDeletePopup(id: string) {
         this.selectedOfertaToDelete.set(id);
         this.showDeletePopup.set(true);
+    }
+
+    redirectToCreateOferta() {
+        this.router.navigateByUrl('/crear-oferta');
     }
 
 }
