@@ -17,8 +17,10 @@ router.get('/:id', getAlumno);
 // Actualizar perfil
 router.put('/', [
     validateJWT(Alumno),
-    upload.single('cv'),
-    upload.single('img'),
+    upload.fields([
+        { name: 'cv', maxCount: 1 },
+        { name: 'img', maxCount: 1 }
+    ]),
     check('nif').notEmpty(),
     check('email').custom((email, { req }) => alumnoEmailExists(email, { req })).custom(checkEmail),
     check('password').custom(checkPassword),

@@ -23,7 +23,7 @@ export class ProfilePageComponent implements OnInit {
     imageSrc = computed(() => {
         const user = this.alumnoUser() ? this.alumnoUser() : this.empresaUser();
         if (user?.img) {
-            return `${environment.baseUrl}/uploads/${this.empresaUser()?.img}`
+            return `${environment.baseUrl}/uploads/${user.img}`
         }
 
         return 'assets/images/profile-picture.jpeg';
