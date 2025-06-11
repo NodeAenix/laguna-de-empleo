@@ -4,10 +4,11 @@ import { FloatingMessageBoxComponent } from "./shared/components/floating-messag
 import { MessageService } from './services/message.service';
 import { HeaderComponent } from "./shared/components/header/header.component";
 import { AuthService } from './services/auth.service';
+import { FooterComponent } from "./shared/components/footer/footer.component";
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, FloatingMessageBoxComponent, HeaderComponent],
+    imports: [RouterOutlet, FloatingMessageBoxComponent, HeaderComponent, FooterComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css'
 })

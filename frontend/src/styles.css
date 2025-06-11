@@ -21,6 +21,7 @@
     --color-header-link-hover: #445aa3;
     --color-card: #dfe0ea;
     --color-card-description: #bfc0d0;
+    --color-footer: #1a1a1c;
     
     /* Tamaño de fuentes y bordes */
     --font-size: 100%; /* 16px */
@@ -72,6 +73,7 @@
 .jc-center { justify-content: center; }
 .ai-center { align-items: center; }
 .jc-space-between { justify-content: space-between; }
+.jc-space-evenly { justify-content: space-evenly; }
 .text-center { text-align: center; }
 
 .gap-xs { gap: .5rem; }
@@ -136,6 +138,7 @@ th, td {
     padding: 1rem;
     margin: 0 auto;
     max-width: 100%;
+    min-height: 70dvh;
 }
 
 .table-scroll-container {

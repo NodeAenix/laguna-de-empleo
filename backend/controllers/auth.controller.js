@@ -1,24 +1,11 @@
 const bcrypt = require('bcryptjs');
-const multer = require('multer');
 const { generateJWT } = require('../helpers/generateJWT');
 const Alumno = require('../models/alumno');
 const Empresa = require('../models/empresa');
 
-// Almacenamiento de "multer" (para los archivos de los CV)
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, uuidv4() + '-' + file.originalname);
-    }
-});
-
-const upload = multer({ storage });
-
 // Endpoints
 const registerModel = (Model) => async(req, res) => {
-    const { body } = req.body;
+    const body = req.body;
 
     try {
         const modelExists = await Model.findOne({ email: body.email });

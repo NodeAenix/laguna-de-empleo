@@ -52,6 +52,17 @@
             }
         </div>
     } @else if (userType() === 'empresa') {
-        <p>¡Bienvenido de vuelta, {{ empresaUser()?.nombre }}!</p>
+        <h1 class="text-center">¡Bienvenido de vuelta, {{ empresaUser()?.nombre }}!</h1>
+        <h3 class="home-subtitle text-center">¿Qué deseas hacer hoy?</h3>
+        <div class="flex jc-space-evenly ai-center">
+            <span class="empresa-action-card flex-col jc-center ai-center gap-l" routerLink="/ofertas">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 12c2.5 0 4.5 2 4.5 4.5c0 .88-.25 1.71-.69 2.4l3.08 3.1L21 23.39l-3.12-3.07c-.69.43-1.51.68-2.38.68c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5m0 2a2.5 2.5 0 0 0-2.5 2.5a2.5 2.5 0 0 0 2.5 2.5a2.5 2.5 0 0 0 2.5-2.5a2.5 2.5 0 0 0-2.5-2.5M10 4a4 4 0 0 1 4 4c0 .91-.31 1.75-.82 2.43c-.86.32-1.63.83-2.27 1.47L10 12a4 4 0 0 1-4-4a4 4 0 0 1 4-4M2 20v-2c0-2.12 3.31-3.86 7.5-4c-.32.78-.5 1.62-.5 2.5c0 1.29.38 2.5 1 3.5z"/></svg>
+                <p>Explorar candidatos</p>
+            </span>
+            <span class="empresa-action-card flex-col jc-center ai-center gap-l" routerLink="/crear-oferta">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m14.06 9l.94.94L5.92 19H5v-.92zm3.6-6c-.25 0-.51.1-.7.29l-1.83 1.83l3.75 3.75l1.83-1.83c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29m-3.6 3.19L3 17.25V21h3.75L17.81 9.94z"/></svg>
+                <p>Crear una nueva oferta</p>
+            </span>
+        </div>
     }
 </div>

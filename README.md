@@ -69,8 +69,7 @@ Colección `alumnos`:
 - `ciclos_formativos`: ciclos formativos que ha cursado el alumno.
 - `tecnologias`: lista de habilidades técnicas (Java, SpringBoot, Angular, etc).
 - `idiomas`: competencia de idiomas (opcional).
-- `cv_url`: url del archivo del CV (almacenado en una nube - opcional).
-- `descripcion`: breve descripción del perfil del alumno.
+- `cv`: url del archivo del CV (almacenado en una nube - opcional).
 - `estado`: activo, inactivo (si se da de baja) o pendiente (debe ser aceptado por un usuario administrador).
 - `fecha_registro`: fecha de alta en la plataforma.
 

@@ -28,3 +28,22 @@
     text-align: center;
     font-size: var(--small-font-size);
 }
+
+.empresa-action-card {
+    margin-top: 2rem;
+    background-color: var(--color-card);
+    width: 18rem;
+    height: 12rem;
+    border-radius: var(--border-radius);
+    transition: all .3s ease;
+}
+
+.empresa-action-card svg {
+    scale: 2;
+}
+
+.empresa-action-card:hover {
+    cursor: pointer;
+    background-color: var(--color-primary);
+    scale: 1.1;
+}
