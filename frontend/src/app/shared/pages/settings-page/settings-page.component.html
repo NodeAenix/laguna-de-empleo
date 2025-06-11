@@ -21,7 +21,15 @@
     <h2>Actualizar información</h2>
     @if (userType() === 'alumno') {
         <form [formGroup]="alumnoForm">
-            <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
+            <!-- Foto de perfil -->
+            <div class="profile-picture-container">
+                <img [src]="imageSrc()" class="profile-picture" alt="Foto de perfil">
+                <span class="profile-picture-edit flex jc-center ai-center" (click)="triggerImgInput(imgFileInput)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83l3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
+                </span>
+                <input #imgFileInput type="file" accept=".png, .jpg, .jpeg" style="display: none;" (change)="handleImgInputChange(imgFileInput)">
+            </div>
+
             <div class="table-scroll-container">
                 <table class="rounded-table settings-table">
                     @for (key of alumnoFieldKeys; track key) {
@@ -71,7 +79,15 @@
         </form>
     } @else if (userType() === 'empresa') {
         <form [formGroup]="empresaForm">
-            <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
+            <!-- Foto de perfil -->
+            <div class="profile-picture-container">
+                <img [src]="imageSrc()" class="profile-picture" alt="Foto de perfil">
+                <span class="profile-picture-edit flex jc-center ai-center" (click)="triggerImgInput(imgFileInput)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83l3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
+                </span>
+                <input #imgFileInput type="file" accept=".png, .jpg, .jpeg" style="display: none;" (change)="handleImgInputChange(imgFileInput)">
+            </div>
+
             <div class="table-scroll-container">
                 <table class="rounded-table settings-table">
                     @for (key of empresaFieldKeys; track key) {

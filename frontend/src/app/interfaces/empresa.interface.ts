@@ -11,4 +11,5 @@ export interface Empresa {
     descripcion:      string;
     estado:           string;
     fecha_registro:   Date;
+    img?:             string;
 }

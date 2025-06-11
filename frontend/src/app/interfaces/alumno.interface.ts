@@ -11,4 +11,5 @@ export interface Alumno {
     estado:            string;
     fecha_registro:    Date;
     cv?:               string;
+    img?:              string;
 }

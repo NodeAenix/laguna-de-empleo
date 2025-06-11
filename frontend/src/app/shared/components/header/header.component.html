@@ -1,6 +1,6 @@
 <header>
     <!-- Barra de navegación responsive -->
-    @if (authService.getToken()) {
+    @if (userId()) {
         <div id="responsive-header">
             <input type="checkbox" name="desplegar-menu" id="responsive-nav-checkbox" #cbResponsiveNavbar>
             <div id="responsive-nav-icon" (click)="animateBars(divBars)" #divBars>
@@ -21,7 +21,7 @@
 
     <!-- Barra de navegación normal -->
     <div id="regular-header" class="flex jc-center ai-center">
-        @if (authService.getToken()) {
+        @if (userId()) {
             <img src="assets/logo.svg" alt="Logo" class="logo" [routerLink]="['/']">
             <nav>
                 <ul>

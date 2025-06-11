@@ -5,9 +5,11 @@ const { checkEmail, checkPassword, checkPhoneNumber } = require('../helpers/db-p
 const { empresaEmailExists } = require('../helpers/db-validators');
 const { validateFields } = require('../middlewares/validate-fields');
 const { validateJWT } = require('../middlewares/validate-jwt');
+const multer = require('multer');
 const Empresa = require('../models/empresa');
 
 const router = Router();
+const upload = multer({ dest: 'uploads/' });
 
 // Obtener empresa por ID
 router.get('/:id', getEmpresa);
@@ -15,6 +17,7 @@ router.get('/:id', getEmpresa);
 // Actualizar perfil
 router.put('/', [
     validateJWT(Empresa),
+    upload.single('img'),
     check('cif').notEmpty(),
     check('email').custom((email, { req }) => empresaEmailExists(email, { req })).custom(checkEmail),
     check('password').custom(checkPassword),

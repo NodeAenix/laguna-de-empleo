@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Alumno } from '../../../interfaces/alumno.interface';
 import { Empresa } from '../../../interfaces/empresa.interface';
 import { ActivatedRoute } from '@angular/router';
@@ -20,6 +20,14 @@ export class ProfilePageComponent implements OnInit {
     empresaUser = signal<Empresa | null>(null);
     userType = signal<'alumno' | 'empresa' | null>(null);
     cvPath = signal<string>('');
+    imageSrc = computed(() => {
+        const user = this.alumnoUser() ? this.alumnoUser() : this.empresaUser();
+        if (user?.img) {
+            return `${environment.baseUrl}/uploads/${this.empresaUser()?.img}`
+        }
+
+        return 'assets/images/profile-picture.jpeg';
+    });
 
     ngOnInit(): void {
         this.route.paramMap.subscribe(params => {

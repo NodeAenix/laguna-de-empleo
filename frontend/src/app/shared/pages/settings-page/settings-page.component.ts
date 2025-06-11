@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Renderer2, signal } from '@angular/core';
+import { Component, computed, ElementRef, inject, OnInit, Renderer2, signal, ViewChild } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Alumno } from '../../../interfaces/alumno.interface';
 import { Empresa } from '../../../interfaces/empresa.interface';
@@ -18,7 +18,7 @@ import { environment } from '../../../../environments/environment';
     styleUrl: './settings-page.component.css'
 })
 export class SettingsPageComponent implements OnInit {
-    
+
     private renderer = inject(Renderer2);
     private authService = inject(AuthService);
     private userService = inject(UserService);
@@ -29,9 +29,22 @@ export class SettingsPageComponent implements OnInit {
 
     isDarkMode = false;
     alumnoUser = signal<Alumno | null>(null);
-    empresaUser = signal< Empresa | null>(null);
+    empresaUser = signal<Empresa | null>(null);
     userType = signal<'alumno' | 'empresa' | null>(null);
     cvFile = signal<File | null>(null);
+    profilePic = signal<File | null>(null);
+    imageSrc = computed(() => {
+        if (this.profilePic()) {
+            return URL.createObjectURL(this.profilePic()!);
+        }
+
+        const user = this.alumnoUser() ? this.alumnoUser() : this.empresaUser();
+        if (user?.img) {
+            return `${environment.baseUrl}/uploads/${this.empresaUser()?.img}`
+        }
+
+        return 'assets/images/profile-picture.jpeg';
+    });
     formUtils = FormUtils;
 
     // Formulario del alumno
@@ -187,6 +200,31 @@ export class SettingsPageComponent implements OnInit {
         this.cvFile.set(file);
     }
 
+    // Actualizar foto de perfil
+    triggerImgInput(input: HTMLInputElement) {
+        input.click();
+    }
+
+    handleImgInputChange(input: HTMLInputElement) {
+        if (!input.files || input.files.length === 0) {
+            return;
+        }
+
+        const file = input.files[0];
+
+        if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+            this.messageService.showMessage({ text: 'Formato de imagen no válido', type: 'info' });
+            return;
+        }
+
+        if (input.files?.length > 1) {
+            this.messageService.showMessage({ text: 'Solo se admite un archivo', type: 'error' });
+            return;
+        }
+
+        this.profilePic.set(file);
+    }
+
     submit() {
         const type = this.userType();
         const form = type === 'alumno' ? this.alumnoForm : this.empresaForm;
@@ -229,14 +267,30 @@ export class SettingsPageComponent implements OnInit {
             });
         }
 
+        // Actualizar imagen
+        if (this.profilePic()) {
+            // Profile pic form data
+            const profilePicFormData = new FormData();
+            profilePicFormData.append('imgFile', this.profilePic()!);
+            this.subidaService.subirImg(profilePicFormData).subscribe({
+                next: () => {},
+                error: () => {
+                    this.messageService.showMessage({ text: 'Error al subir la imagen', type: 'error' });
+                }
+            });
+        }
+
+        formData.forEach(v => console.log(v));
+
         // Actualizar datos
         this.userService.updateUser(type === 'alumno' ? 'alumnos' : 'empresas', formData).subscribe({
             next: () => {
                 this.messageService.showMessage({ text: 'Datos actualizados con éxito', type: 'success' });
                 this.router.navigate(['/perfil', this.userType() === 'alumno' ? this.alumnoUser()?._id : this.empresaUser()?._id]);
             },
-            error: () => {
-                this.messageService.showMessage({ text: 'Error: compruebe los datos y la contraseña', type: 'error' });
+            error: (err) => {
+                this.messageService.showMessage({ text: 'Error: compruebe los datos y/o la contraseña', type: 'error' });
+                console.error(err);
             }
         });
     }

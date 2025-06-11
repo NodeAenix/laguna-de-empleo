@@ -18,6 +18,7 @@ router.get('/:id', getAlumno);
 router.put('/', [
     validateJWT(Alumno),
     upload.single('cv'),
+    upload.single('img'),
     check('nif').notEmpty(),
     check('email').custom((email, { req }) => alumnoEmailExists(email, { req })).custom(checkEmail),
     check('password').custom(checkPassword),

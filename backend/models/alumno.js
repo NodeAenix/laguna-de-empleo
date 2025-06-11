@@ -41,6 +41,9 @@ const AlumnoSchema = Schema({
     cv: {
         type: String
     },
+    img: {
+        type: String
+    },
     estado: {
         type: String,
         default: 'pendiente'

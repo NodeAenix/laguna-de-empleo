@@ -39,6 +39,9 @@ const EmpresaSchema = Schema({
         type: String,
         required: [true, 'La descripción es obligatoria']
     },
+    img: {
+        type: String
+    },
     estado: {
         type: String,
         default: 'pendiente'

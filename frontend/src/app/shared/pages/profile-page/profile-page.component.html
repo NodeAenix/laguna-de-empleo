@@ -1,7 +1,7 @@
 <div class="container flex-col jc-center text-center gap-s">
     @if (userType() === 'alumno') {
         <h1>Perfil de {{ alumnoUser()?.nombre }}</h1>
-        <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
+        <img [src]="imageSrc()" class="profile-picture" alt="Foto de perfil">
         <div class="table-scroll-container">
             <table class="rounded-table profile-table">
                 <tr>
@@ -42,7 +42,7 @@
         </div>
     } @else {
         <h1>Perfil de {{ empresaUser()?.nombre }}</h1>
-        <img src="assets/images/profile-picture.jpeg" class="profile-picture" alt="Foto de perfil">
+        <img [src]="imageSrc()" class="profile-picture" alt="Foto de perfil">
         <div class="table-scroll-container">
             <table class="rounded-table profile-table">
                 <tr>

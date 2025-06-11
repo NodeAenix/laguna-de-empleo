@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { Alumno } from '../interfaces/alumno.interface';
 import { Empresa } from '../interfaces/empresa.interface';
 import { AuthResponse } from '../interfaces/auth-response.interface';
@@ -29,6 +29,10 @@ export class AuthService {
     user = computed(() => this._user());
     token = computed(() => this._token());
     theme = computed(() => this._theme());
+
+    constructor() {
+        this._token.set(this.getToken());
+    }
 
     // ------------------------
     //     Login y registro
@@ -107,6 +111,7 @@ export class AuthService {
                 Authorization: `Bearer ${this.token()}`
             }
         }).pipe(
+            tap(resp => this._user.set(resp.user)),
             map(resp => this.handleSuccess(resp)),
             catchError(err => this.handleError())
         );
