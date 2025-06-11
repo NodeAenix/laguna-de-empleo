@@ -35,8 +35,8 @@ La aplicación consiste en una bolsa de empleo para antiguos alumnos de ciclos i
 - Los alumnos pueden inscribirse en una oferta para mostrar que están interesadas en ella.
 - La empresa puede ver los perfiles de los alumnos que se inscriben en sus ofertas y leer, aceptar o rechazar al candidato.
 - Si la empresa está interesada en el candidato, contactará con él mediante algún medio de comunicación (correo electrónico o teléfono móvil).
-- Tanto los alumnos como las empresas se pueden dar de baja en el momento que lo deseen.
-- Un usuario administrador controlará el alta de los alumnos y las empresas para evitar perfiles falsos.
+- Tanto los alumnos como las empresas se pueden dar de baja en el momento que lo deseen. `(sin implementar)`
+- Un usuario administrador controlará el alta de los alumnos y las empresas para evitar perfiles falsos. `(sin implementar)`
 
 ### Información del alumno y de la empresa
 **Información en el perfil del alumno** :
